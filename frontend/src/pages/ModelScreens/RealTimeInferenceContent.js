@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import {  Dropdown, Menu, Card, Row, Col, List } from "antd";
+import {  Dropdown, Menu, Card, Row, Col, List, Tabs } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import "./Card.css";
+import FeatureInputForm from "./FeatureInputForm";
 
 const RealTimeInference = () => {
+  const [activeTab, setActiveTab] = useState("1"); // State to track active tab
  
   const [selectedOption, setSelectedOption] = useState("Claim Prosperity");
 
@@ -11,20 +13,39 @@ const RealTimeInference = () => {
     setSelectedOption(e.key);
   };
 
-  const menu = (
-    <Menu onClick={handleMenuClick}>
-      <Menu.Item key="Claim Prosperity"></Menu.Item>
-    </Menu>
-  );
+  // const menu = (
+  //   <Menu onClick={handleMenuClick}>
+  //     <Menu.Item key="Claim Prosperity"></Menu.Item>
+  //   </Menu>
+  // );
 
-  const predictors = ["1)", "2)", "3)", "4)", "5)"];
-  const severity = "High"; // Example severity value (greater than 60%)
-  
+  // const predictors = ["1)", "2)", "3)", "4)", "5)"];
+  // const severity = "High"; // Example severity value (greater than 60%)
+  // const onChange = (key) => {
+  //   console.log(key);
+  // };
+  const items = [
+    {
+      key: '1',
+      label: 'Feature Input',
+      children: <FeatureInputForm setActiveTab={setActiveTab} />,
+    },
+    {
+      key: '2',
+      label: 'Model Info',
+      children: 'Content of Tab Pane 3',
+    },
+    {
+      key: '3',
+      label: 'Output',
+      children: 'Content of Tab Pane 3',
+    },
+  ];
   return (
     <div style={{ padding: 20, border: "1px solid #ccc", borderRadius: 10, background: "white" }}>
+      <Tabs  activeKey={activeTab} onChange={setActiveTab} items={items}  style={{fontWeight: 400}} />
       
-      
-      <Row gutter={16} style={{ marginTop: 20 }}>
+      {/* <Row gutter={16} style={{ marginTop: 20 }}>
         <Col span={8}>
           <Dropdown overlay={menu} trigger={["click"]}>
             <Card hoverable style={{ height: 60, width: 300, cursor: "pointer", boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)", fontSize: "medium" }}>
@@ -70,7 +91,7 @@ const RealTimeInference = () => {
             </Col>
           </Row>
         </Col>
-      </Row>
+      </Row> */}
     </div>
   );
 };
