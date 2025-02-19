@@ -3,6 +3,8 @@ import {  Dropdown, Menu, Card, Row, Col, List, Tabs } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import "./Card.css";
 import FeatureInputForm from "./FeatureInputForm";
+import ModelInfo from "./ModelInfo";
+import OutputDetails from "./Output";
 
 const RealTimeInference = () => {
   const [activeTab, setActiveTab] = useState("1"); // State to track active tab
@@ -28,17 +30,18 @@ const RealTimeInference = () => {
     {
       key: '1',
       label: 'Feature Input',
-      children: <FeatureInputForm setActiveTab={setActiveTab} />,
+      // children: <FeatureInputForm setActiveTab={setActiveTab} />,
+      children: <FeatureInputForm />,
     },
     {
       key: '2',
       label: 'Model Info',
-      children: 'Content of Tab Pane 3',
+      children: <ModelInfo/>,
     },
     {
       key: '3',
       label: 'Output',
-      children: 'Content of Tab Pane 3',
+      children: <OutputDetails/>,
     },
   ];
   return (
