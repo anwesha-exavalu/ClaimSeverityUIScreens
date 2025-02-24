@@ -1,3 +1,4 @@
+// Dashboard.js
 import React, { useState } from "react";
 import { Select, Tooltip, Typography, Button } from "antd";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +20,8 @@ const MLAppStore = () => {
   const handleSelectChange = (value) => {
     setSelectedModel(value);
     setShowButton(true);
+    // Store the selected model in localStorage
+    localStorage.setItem('selectedModel', value);
   };
 
   const handleNextClick = () => {

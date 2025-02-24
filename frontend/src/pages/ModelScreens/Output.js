@@ -1,21 +1,46 @@
 import React from 'react';
 import { Card, Row, Col, Typography, Statistic } from 'antd';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
-import { ArrowUpOutlined, DollarOutlined } from '@ant-design/icons';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { DollarOutlined } from '@ant-design/icons';
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 
-const OutputDetails = () => {
-  const survivalData = [
-    { feature: 'Gender', value: 0.2 },
-    { feature: 'deck', value: 0.1 },
-    { feature: 'PassengerClass', value: 0.09 },
-    { feature: 'Fare', value: 0.05 },
-    { feature: 'Embarked', value: 0.03 },
-    { feature: 'Age', value: 0.02 },
-    { feature: 'No_of_parents_plus_children_on_board', value: 0.015 },
-    { feature: 'No_of_siblings_plus_spouses_on_board', value: 0.01 }
-  ];
+const OutputDetails = ({ predictionData }) => {
+  const formatShapData = () => {
+    if (!predictionData || !predictionData.top_5_shap_values) {
+      return [];
+    }
+    
+    return predictionData.top_5_shap_values.map(([name, value]) => ({
+      feature: name.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+      value: Math.abs(value),
+      actualValue: value
+    }));
+  };
+
+  const getTopFeatures = () => {
+    if (!predictionData || !predictionData.top_5_shap_values) {
+      return "";
+    }
+    
+    const positiveFeatures = predictionData.top_5_shap_values
+      .filter(([_, value]) => value > 0)
+      .map(([name, _]) => name.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));
+      
+    const negativeFeatures = predictionData.top_5_shap_values
+      .filter(([_, value]) => value < 0)
+      .map(([name, _]) => name.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));
+      
+    let summary = "";
+    if (positiveFeatures.length > 0) {
+      summary += `The main factors increasing the claim amount are: ${positiveFeatures.join(', ')}. `;
+    }
+    if (negativeFeatures.length > 0) {
+      summary += `The main factors decreasing the claim amount are: ${negativeFeatures.join(', ')}.`;
+    }
+    
+    return summary;
+  };
 
   return (
     <div style={{ padding: '24px' }}>
@@ -24,55 +49,30 @@ const OutputDetails = () => {
         <Col span={8}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {/* First Card */}
-            <Card style={{  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
+            <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
               <Title level={4}>Predicted Claim Amount</Title>
               <Row gutter={[16, 16]}>
                 <Col span={24}>
                   <Statistic
                     title="Amount"
-                    value={82.5}
-                    // suffix="%"
+                    value={predictionData?.prediction ? predictionData.prediction.toFixed(2) : 0}
                     prefix={<DollarOutlined />}
                     valueStyle={{ color: '#3f8600' }}
                   />
                 </Col>
-                {/* <Col span={24}>
-                  <Statistic
-                    title="Total Features"
-                    value={8}
-                  />
-                </Col>
-                <Col span={24}>
-                  <Statistic
-                    title="Most Important Feature"
-                    value="Gender"
-                    valueStyle={{ fontSize: '16px' }}
-                  />
-                </Col> */}
               </Row>
             </Card>
 
             {/* Second Card */}
-            <Card style={{  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
+            <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
               <Title level={4}>Inference</Title>
               <Row gutter={[16, 16]}>
                 <Col span={24}>
-                <Title level={5}>Summary</Title>
+                  <Title level={5}>Summary</Title>
+                  <Paragraph>
+                    {getTopFeatures()}
+                  </Paragraph>
                 </Col>
-                {/* <Col span={24}>
-                  <Statistic
-                    title="Highest Impact"
-                    value={0.2}
-                    precision={2}
-                  />
-                </Col>
-                <Col span={24}>
-                  <Statistic
-                    title="Lowest Impact"
-                    value={0.01}
-                    precision={2}
-                  />
-                </Col> */}
               </Row>
             </Card>
           </div>
@@ -80,30 +80,37 @@ const OutputDetails = () => {
 
         {/* Right Column - Bar Chart */}
         <Col span={16}>
-          <Card style={{  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
-            <Title level={4}>Average Impact on Predicted Survival (mean absolute SHAP value)</Title>
-            <div style={{ width: '100%', height: '350px', display: 'flex', justifyContent: 'center' }}>
+          <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
+            <Title level={4}>Feature Impact on Prediction (SHAP values)</Title>
+            <div style={{ width: '100%', height: 350 }}>
+                      <ResponsiveContainer>
               <BarChart
-                width={1000}
+                width={400}
                 height={400}
-                data={survivalData}
+                data={formatShapData()}
                 layout="vertical"
-                margin={{ top: 8, right: 30, left: 70, bottom: 5 }}
+                margin={{ top: 8, right: 40, left: 5, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" domain={[0, 0.25]} />
+                <XAxis type="number" />
                 <YAxis 
                   type="category" 
                   dataKey="feature" 
                   width={240}
                 />
-                <Tooltip />
+                <Tooltip 
+                  formatter={(value, name, props) => [
+                    `${props.payload.actualValue.toFixed(2)}`,
+                    'Impact'
+                  ]}
+                />
                 <Bar 
                   dataKey="value" 
                   fill="#1890ff"
                   radius={[0, 4, 4, 0]}
                 />
               </BarChart>
+              </ResponsiveContainer>
             </div>
           </Card>
         </Col>

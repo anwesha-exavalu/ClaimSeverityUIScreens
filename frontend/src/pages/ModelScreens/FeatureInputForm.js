@@ -1,20 +1,66 @@
-import React, { useState } from 'react';
-import { Form, Input, Button, Row, Col, Modal, Card, Alert, Spin } from 'antd';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import React, { useState, useEffect } from 'react';
+import { Form, Input, Button, Row, Col, Alert, Spin, AutoComplete } from 'antd';
 
-const FeatureInputForm = ({ setActiveTab }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [predictionResult, setPredictionResult] = useState(null);
+const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [form] = Form.useForm();
+  const [selectedClaim, setSelectedClaim] = useState('');
+  const [isSearched, setIsSearched] = useState(false);
+
+  // Generate random claim numbers for suggestions
+  const generateClaimNumbers = () => {
+    const numbers = [];
+    for (let i = 0; i < 5; i++) {
+      const randomNum = Math.floor(Math.random() * 9000000) + 1000000;
+      numbers.push({ value: `CLM${randomNum}` });
+    }
+    return numbers;
+  };
+
+  const handleSearch = () => {
+    if (selectedClaim) {
+      setIsSearched(true);
+    }
+  };
+
+  const getData = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      const prefillData = {
+        accident_severity: 3,
+        claimant_age: 23,
+        driver_age: 21,
+        driver_experience_years: 23,
+        historical_claims_count: 1,
+        initial_medical_expenses: 2425,
+        injury_severity: 3,
+        legal_fees: 15366,
+        long_term_care_costs: 67902,
+        ongoing_medical_expenses: 29307,
+        passenger_count: 1,
+        policy_coverage_limits: 48347,
+        policy_deductible: 2249,
+        time_of_accident: 12,
+        vehicle_year: 2005
+      };
+      
+      form.setFieldsValue(prefillData);
+    } catch (err) {
+      setError('Failed to get data. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const onFinish = async (values) => {
     setLoading(true);
     setError(null);
     
     try {
-      const response = await fetch('http://3.90.78.81:5000/predict', {
+      const response = await fetch('http://98.81.182.211:5000/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -40,21 +86,13 @@ const FeatureInputForm = ({ setActiveTab }) => {
       });
 
       const data = await response.json();
-      setPredictionResult(data);
-      setIsModalOpen(true);
+      setPredictionData(data);
+      setActiveTab('2'); // Navigate to ModelInfo tab
     } catch (err) {
       setError('Failed to get prediction. Please try again.');
     } finally {
       setLoading(false);
     }
-  };
-
-  const formatShapData = (shapValues) => {
-    return shapValues.map(([name, value]) => ({
-      name: name.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-      value: Math.abs(value),
-      actualValue: value
-    }));
   };
 
   return (
@@ -68,6 +106,45 @@ const FeatureInputForm = ({ setActiveTab }) => {
           style={{ marginBottom: 16 }}
         />
       )}
+
+      <Row gutter={12} style={{ marginBottom: 24 }}>
+        <Col span={6}>
+          <AutoComplete
+            style={{ width: '90%' }}
+            options={generateClaimNumbers()}
+            placeholder="Search claim number..."
+            value={selectedClaim}
+            onChange={(value) => {
+              setSelectedClaim(value);
+              setIsSearched(false);
+            }}
+          />
+        </Col>
+        <Col>
+          {!isSearched ? (
+            <Button 
+              type="primary"
+              onClick={handleSearch}
+              disabled={!selectedClaim}
+              style={{ 
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)"
+              }}
+            >
+              Search
+            </Button>
+          ) : (
+            <Button 
+              type="primary"
+              onClick={getData}
+              style={{ 
+                boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)"
+              }}
+            >
+              Get Data
+            </Button>
+          )}
+        </Col>
+      </Row>
 
       <Form
         form={form}
@@ -129,7 +206,11 @@ const FeatureInputForm = ({ setActiveTab }) => {
               name="initial_medical_expenses" 
               rules={[{ required: true, message: 'Please input initial expenses' }]}
             >
-              <Input type="number" style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }} />
+              <Input 
+                type="number" 
+                addonBefore="$"
+                style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }} 
+              />
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -147,7 +228,11 @@ const FeatureInputForm = ({ setActiveTab }) => {
               name="legal_fees" 
               rules={[{ required: true, message: 'Please input legal fees' }]}
             >
-              <Input type="number" style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }} />
+              <Input 
+                type="number" 
+                addonBefore="$"
+                style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }} 
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -159,7 +244,11 @@ const FeatureInputForm = ({ setActiveTab }) => {
               name="long_term_care_costs" 
               rules={[{ required: true, message: 'Please input care costs' }]}
             >
-              <Input type="number" style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }} />
+              <Input 
+                type="number" 
+                addonBefore="$"
+                style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }} 
+              />
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -168,7 +257,11 @@ const FeatureInputForm = ({ setActiveTab }) => {
               name="ongoing_medical_expenses" 
               rules={[{ required: true, message: 'Please input ongoing expenses' }]}
             >
-              <Input type="number" style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }} />
+              <Input 
+                type="number" 
+                addonBefore="$"
+                style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }} 
+              />
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -186,7 +279,11 @@ const FeatureInputForm = ({ setActiveTab }) => {
               name="policy_coverage_limits" 
               rules={[{ required: true, message: 'Please input coverage limits' }]}
             >
-              <Input type="number" style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }} />
+              <Input 
+                type="number" 
+                addonBefore="$"
+                style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }} 
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -198,7 +295,11 @@ const FeatureInputForm = ({ setActiveTab }) => {
               name="policy_deductible" 
               rules={[{ required: true, message: 'Please input policy deductible' }]}
             >
-              <Input type="number" style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }} />
+              <Input 
+                type="number" 
+                addonBefore="$"
+                style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }} 
+              />
             </Form.Item>
           </Col>
           <Col span={6}>
@@ -227,8 +328,9 @@ const FeatureInputForm = ({ setActiveTab }) => {
               type="primary" 
               htmlType="submit"
               loading={loading}
+               size="large"
               style={{ 
-                width: "100px", 
+                
                 boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)" 
               }}
             >
@@ -237,56 +339,6 @@ const FeatureInputForm = ({ setActiveTab }) => {
           </Col>
         </Row>
       </Form>
-
-      <Modal
-        title="Prediction Results"
-        open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
-        footer={[
-          <Button key="close" onClick={() => setIsModalOpen(false)}>
-            Close
-          </Button>
-        ]}
-        width={800}
-      >
-        {predictionResult && (
-          <div>
-            <Card style={{ marginBottom: 16 }}>
-              <Row>
-                <Col span={12}>
-                  <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>Predicted Claim Amount</h3>
-                  <p style={{ fontSize: 24, fontWeight: 700, color: '#1890ff' }}>
-                    ${predictionResult.prediction.toFixed(2)}
-                  </p>
-                </Col>
-                <Col span={12}>
-                  <h3 style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>Model Performance</h3>
-                  <p>R² Score: {(predictionResult.r2_score * 100).toFixed(2)}%</p>
-                  <p>Mean Absolute Error: ${predictionResult.mae.toFixed(2)}</p>
-                </Col>
-              </Row>
-            </Card>
-
-            <Card title="Top 5 Feature Impacts (SHAP Values)">
-              <div style={{ height: 400, width: '100%' }}>
-                <ResponsiveContainer>
-                  <BarChart data={formatShapData(predictionResult.top_5_shap_values)}>
-                    <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
-                    <YAxis label={{ value: 'Impact on Prediction', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip 
-                      formatter={(value, name, props) => [
-                        `${props.payload.actualValue.toFixed(2)}`,
-                        'Impact'
-                      ]}
-                    />
-                    <Bar dataKey="value" fill="#1890ff" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </Card>
-          </div>
-        )}
-      </Modal>
     </Spin>
   );
 };

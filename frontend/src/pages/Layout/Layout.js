@@ -39,8 +39,8 @@ const CustomLayout = () => {
         }}
       >
        <Routes>
-          <Route path="/" element={<MLAppStore/>} />
-         <Route path="/model-details/claim-severity" element={<Tab/>}/>
+          <Route path="/" element={<Tab/>} />
+         {/* <Route path="/model-details/claim-severity" element={<Tab/>}/> */}
           
         </Routes>
       </Content>

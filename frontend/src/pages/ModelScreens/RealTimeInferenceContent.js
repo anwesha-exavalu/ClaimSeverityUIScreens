@@ -7,8 +7,12 @@ import ModelInfo from "./ModelInfo";
 import OutputDetails from "./Output";
 
 const RealTimeInference = () => {
-  const [activeTab, setActiveTab] = useState("1"); // State to track active tab
- 
+  const [activeTab, setActiveTab] = useState('1');
+  const [predictionData, setPredictionData] = useState(null);
+
+  const handleTabChange = (key) => {
+    setActiveTab(key);
+  };
   const [selectedOption, setSelectedOption] = useState("Claim Prosperity");
 
   const handleMenuClick = (e) => {
@@ -31,22 +35,22 @@ const RealTimeInference = () => {
       key: '1',
       label: 'Feature Input',
       // children: <FeatureInputForm setActiveTab={setActiveTab} />,
-      children: <FeatureInputForm />,
+      children: <FeatureInputForm setActiveTab={setActiveTab} setPredictionData={setPredictionData} />,
     },
     {
       key: '2',
       label: 'Model Info',
-      children: <ModelInfo/>,
+      children: <ModelInfo predictionData={predictionData} />,
     },
     {
       key: '3',
       label: 'Output',
-      children: <OutputDetails/>,
+      children: <OutputDetails predictionData={predictionData} />,
     },
   ];
   return (
     <div style={{ padding: 20, border: "1px solid #ccc", borderRadius: 10, background: "white" }}>
-      <Tabs  activeKey={activeTab} onChange={setActiveTab} items={items}  style={{fontWeight: 400}} />
+      <Tabs  activeKey={activeTab} onChange={handleTabChange}  items={items}  style={{fontWeight: 400}} />
       
       {/* <Row gutter={16} style={{ marginTop: 20 }}>
         <Col span={8}>
