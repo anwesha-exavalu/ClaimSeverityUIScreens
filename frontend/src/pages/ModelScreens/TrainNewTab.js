@@ -177,7 +177,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
         </Row> */}
  <Row justify="center">
           <Col span={24}>
-            <Card>
+            <Card  style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
               <Title level={4} style={{ marginBottom: 16 }}>
                 List of ML Model
                 <Tooltip title="Choose a model to see available options">
@@ -186,7 +186,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
               </Title>
               <Select
                 value={selectedModel}
-                style={{ width: '30%' }}
+                style={{ width: '30%', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
                 onChange={handleModelSelect}
                 placeholder="Select an ML Model"
               >
@@ -261,7 +261,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
         >
          
             
-              <Card title="Actual vs. Predicted Claims" style={{ marginBottom:'10px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
+              <Card title="Actual vs. Predicted Claims" style={{ marginBottom:'15px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
                 <div style={{ height: 400, width:'100%' }}>
                   <ResponsiveContainer>
                     <ScatterChart
@@ -321,15 +321,27 @@ const ClaimSeverityUI = ({ predictionData }) => {
               </Card>
          
       
-            <Row gutter={[16, 16]}>
+            <Row gutter={[11, 16]}>
+            <Col span={8}>
             <Col span={12}>
-            <Card title="Metrics" bordered={false} style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
+            <Card title="Metrics" bordered={false} style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: '350px' }}>
               <div><p>R² Score: 72.23%</p>
               <p>Mean Absolute Error: 4130</p>
                </div>
             </Card>
             </Col>
             <Col span={12}>
+            <Button 
+              type="primary" 
+              size="large"
+              onClick={handleTrain}
+              style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", marginTop: '100px' }}
+            >
+              Save & Publish
+            </Button>
+          </Col>
+          </Col>
+            <Col span={16}>
               <Card 
                 title={
                   <span>

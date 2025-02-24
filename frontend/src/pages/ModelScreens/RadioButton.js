@@ -83,7 +83,7 @@ const RadioButton = () => {
 
         <Row justify="center">
           <Col span={24}>
-            <Card>
+            <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)"}}>
               <Title level={4} style={{ marginBottom: 16 }}>
                 List of ML Model
                 <Tooltip title="Choose a model to see available options">
@@ -92,7 +92,7 @@ const RadioButton = () => {
               </Title>
               <Select
                 value={selectedModel}
-                style={{ width: '30%' }}
+                style={{ width: '30%', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
                 onChange={handleModelSelect}
                 placeholder="Select an ML Model"
               >
@@ -112,7 +112,7 @@ const RadioButton = () => {
           <>
             <Row justify="center" style={{ marginTop: 16 }}>
               <Col span={24}>
-                <Card>
+                <Card style={{marginBottom: '15px',  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)"}}>
                   {/* <Title level={3} style={{ color: 'royalblue', marginBottom: 24, textAlign: 'center' }}>
                     {selectedModel}
                   </Title>
