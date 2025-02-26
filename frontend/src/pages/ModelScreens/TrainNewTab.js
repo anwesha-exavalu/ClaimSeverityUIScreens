@@ -233,7 +233,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
           title="Training Results"
           visible={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
-          width={1400}
+          width={1600}
           footer={null}
         >
           <Row gutter={[16, 16]}>
@@ -334,8 +334,8 @@ const ClaimSeverityUI = ({ predictionData }) => {
                     <Col span={12}>
                       <Statistic
                         title=" R² Score"
-                        value="72.23"
-                        suffix="%"
+                        value="0.72"
+                       
                       />
                     </Col>
                   </Row>
@@ -354,7 +354,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
                         valueStyle={{ color: '#3f8600' }}
                       />
                       <Statistic
-                        title="Conference Interval"
+                        title="Confidence Interval"
                         // value={predictionData?.mae ? predictionData.mae.toFixed(2) : 0}
                         value="37911.13-46172.13"
                         prefix={<DollarOutlined />}

@@ -183,15 +183,15 @@ const ModelInfo = ({ predictionData }) => {
             <Title level={4}>
               R² Score
               <Tooltip 
-                title="Measures how accurately the model explains variations in claim payouts, indicating its reliability in predicting losses (Ranges 0 to 100%)."
+                title="Measures how accurately the model explains variations in claim payouts, indicating its reliability in predicting losses (Ranges 0 to 1)."
                 overlayStyle={tooltipStyle}
               >
                 <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: '16px', color: '#1890ff' }} />
               </Tooltip>
             </Title>
             <Statistic
-              value={predictionData?.r2_score ? (predictionData.r2_score * 100).toFixed(2) : 0}
-              suffix="%"
+              value={predictionData?.r2_score ? predictionData.r2_score.toFixed(2) : 0}
+             
             />
           </Card>
         </Col>

@@ -65,7 +65,7 @@ const OutputDetails = ({ predictionData }) => {
 
             {/* Second Card */}
             <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",  height: "223px" }}>
-              <Title level={4}>Conference Interval</Title>
+              <Title level={4}>Confidence Interval</Title>
               <Row gutter={[16, 16]}>
                 <Col span={24}>
                   <Statistic 
