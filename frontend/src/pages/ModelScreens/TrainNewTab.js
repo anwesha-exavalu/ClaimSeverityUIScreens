@@ -1,22 +1,25 @@
 import React, { useState } from "react";
-import { 
-  Button, 
-  Select, 
-  Card, 
-  Layout, 
-  Row, 
-  Col, 
-  Tooltip, 
-  Typography, 
-  Alert, 
+import {
+  Button,
+  Select,
+  Card,
+  Layout,
+  Row,
+  Col,
+  Tooltip,
+  Typography,
+  Alert,
+  Statistic,
   Table,
   Modal,
   Upload,
   message
 } from "antd";
-import { DownloadOutlined, UploadOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { DownloadOutlined, UploadOutlined, InfoCircleOutlined, DollarOutlined } from "@ant-design/icons";
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import * as XLSX from 'xlsx';
+import ClaimAnalysisGraph from "./ClaimAnalysisGraph";
+import LossExposureHistogram from "./LossExposureHistogram";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -34,7 +37,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
   const [uploadedFile, setUploadedFile] = useState(null);
 
   const [selectedOption, setSelectedOption] = useState(null);
-  
+
   const handleModelSelect = (value) => {
     setSelectedModel(value);
     setSelectedOption(null);
@@ -64,7 +67,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
 
   const getFeatureWeights = () => {
     if (!predictionData || !predictionData.model_weights) return [];
-    
+
     const { coefficients } = predictionData.model_weights;
     const weights = Object.entries(coefficients)
       .map(([feature, value]) => ({
@@ -75,7 +78,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
       }))
       .sort((a, b) => b.weight - a.weight)
       .slice(0, 5);
-      
+
     const totalWeight = weights.reduce((sum, item) => sum + item.weight, 0);
     return weights.map((item, index) => ({
       ...item,
@@ -120,8 +123,8 @@ const ClaimSeverityUI = ({ predictionData }) => {
   const uploadProps = {
     accept: '.xlsx, .xls',
     beforeUpload: (file) => {
-      const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' || 
-                      file.type === 'application/vnd.ms-excel';
+      const isExcel = file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' ||
+        file.type === 'application/vnd.ms-excel';
       if (!isExcel) {
         message.error('You can only upload Excel files!');
         return false;
@@ -148,36 +151,10 @@ const ClaimSeverityUI = ({ predictionData }) => {
     <Layout style={{ padding: 20, background: "white" }}>
       <Content>
         {/* Top Row - Cards */}
-        {/* <Row gutter={[16, 16]} justify="space-around">
-          <Col span={11}>
-            <Card title="List of ML Model" bordered={false} style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", height:"185px" }}>
-              <Select
-                value={selectedModel}
-                style={{ width: '90%' }}
-                onChange={handleSelectChange}
-                placeholder="Select an ML Model"
-              >
-                {Object.keys(modelDescriptions).map((model) => (
-                  <Option key={model} value={model}>
-                    <Tooltip title={modelDescriptions[model]}>
-                      {model}
-                    </Tooltip>
-                  </Option>
-                ))}
-              </Select>
-            </Card>
-          </Col>
-          <Col span={11}>
-            <Card title="Metrics" bordered={false} style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
-              <div><p>R² Score: 72.23%</p>
-              <p>Mean Absolute Error: 4130</p>
-               </div>
-            </Card>
-          </Col>
-        </Row> */}
- <Row justify="center">
+
+        <Row justify="center">
           <Col span={24}>
-            <Card  style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
+            <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
               <Title level={4} style={{ marginBottom: 16 }}>
                 List of ML Model
                 <Tooltip title="Choose a model to see available options">
@@ -204,9 +181,9 @@ const ClaimSeverityUI = ({ predictionData }) => {
         {/* Button Row */}
         <Row gutter={[16, 16]} justify="center" style={{ marginTop: 16 }}>
           <Col>
-            <Button 
-              type="default" 
-              icon={<DownloadOutlined />} 
+            <Button
+              type="default"
+              icon={<DownloadOutlined />}
               onClick={handleDownload}
               size="large"
               style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
@@ -216,8 +193,8 @@ const ClaimSeverityUI = ({ predictionData }) => {
           </Col>
           <Col>
             <Upload {...uploadProps}>
-              <Button 
-                type="default" 
+              <Button
+                type="default"
                 icon={<UploadOutlined />}
                 size="large"
                 style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
@@ -227,8 +204,8 @@ const ClaimSeverityUI = ({ predictionData }) => {
             </Upload>
           </Col>
           <Col>
-            <Button 
-              type="primary" 
+            <Button
+              type="primary"
               size="large"
               onClick={handleTrain}
               style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
@@ -256,13 +233,13 @@ const ClaimSeverityUI = ({ predictionData }) => {
           title="Training Results"
           visible={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
-          width={1200}
+          width={1400}
           footer={null}
         >
-         
-            
-              <Card title="Actual vs. Predicted Claims" style={{ marginBottom:'15px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
-                <div style={{ height: 400, width:'100%' }}>
+          <Row gutter={[16, 16]}>
+            <Col span={12}>
+              <Card title="Actual vs. Predicted Claims" style={{ marginBottom: '15px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.06)", width: '675px' }}>
+                <div style={{ height: 517, width: '100%' }}>
                   <ResponsiveContainer>
                     <ScatterChart
                       margin={{
@@ -278,7 +255,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
                         dataKey="actual"
                         name="Actual Claim Cost"
                         domain={[30000, 80000]}
-                        label={{ 
+                        label={{
                           value: 'Actual Claim Cost',
                           position: 'bottom',
                           offset: 40
@@ -290,7 +267,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
                         dataKey="predicted"
                         name="Predicted Claim Cost"
                         domain={[30000, 80000]}
-                        label={{ 
+                        label={{
                           value: 'Predicted Claim Cost',
                           angle: -90,
                           position: 'left',
@@ -298,7 +275,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
                         }}
                         tickFormatter={(value) => `${value.toLocaleString()}`}
                       />
-                      <RechartsTooltip 
+                      <RechartsTooltip
                         formatter={(value) => `$${value.toLocaleString()}`}
                         labelFormatter={(value) => `Actual: $${value.toLocaleString()}`}
                       />
@@ -319,48 +296,121 @@ const ClaimSeverityUI = ({ predictionData }) => {
                   </ResponsiveContainer>
                 </div>
               </Card>
-         
-      
-            <Row gutter={[11, 16]}>
-            <Col span={8}>
-            <Col span={12}>
-            <Card title="Metrics" bordered={false} style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: '350px' }}>
-              <div><p>R² Score: 72.23%</p>
-              <p>Mean Absolute Error: 4130</p>
-               </div>
-            </Card>
             </Col>
             <Col span={12}>
-            <Button 
-              type="primary" 
-              size="large"
-              onClick={handleTrain}
-              style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", marginTop: '100px' }}
-            >
-              Save & Publish
-            </Button>
-          </Col>
-          </Col>
-            <Col span={16}>
-              <Card 
-                title={
-                  <span>
-                    Feature Weights
-                    <Tooltip 
-                      title="Feature weights show the relative importance of each feature in making predictions"
-                    >
-                      <InfoCircleOutlined style={{ marginLeft: 8 }} />
-                    </Tooltip>
-                  </span>
-                }
-                style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
-              >
-                <Table 
-                  columns={columns} 
-                  dataSource={getFeatureWeights()}
-                  pagination={false}
-                />
+              <Card title="Relation plot of variables with claim cost" bordered={false} style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.06)", width: '675px', marginBottom: '15px' }}>
+                <div><ClaimAnalysisGraph />
+                </div>
+
               </Card>
+            </Col>
+
+          </Row>
+
+
+          <Row gutter={[16, 16]}>
+            <Col span={12}>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {/* First Card */}
+                <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", height: "223px" }}>
+                  <Title level={4}>Metrices</Title>
+                  <Row gutter={[16, 16]}>
+
+                    <Col span={12}>
+                      <Statistic
+                        title="Average Claim Payout"
+                        value="53,412"
+                        prefix={<DollarOutlined />}
+                        valueStyle={{ color: '#3f8600' }}
+                      />
+                      <Statistic
+                        title="Mean Absolute Error"
+                        value="4,130.50"
+                        prefix={<DollarOutlined />}
+                        valueStyle={{ color: 'crimson' }}
+                      />
+                    </Col>
+                    <Col span={12}>
+                      <Statistic
+                        title=" R² Score"
+                        value="72.23"
+                        suffix="%"
+                      />
+                    </Col>
+                  </Row>
+                </Card>
+
+                {/* Second Card */}
+                <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", height: "223px" }}>
+
+                  <Row gutter={[16, 16]}>
+                    <Col span={24}>
+                      <Statistic
+                        title="Predicted Claim Amount"
+                        // value={predictionData?.mae ? predictionData.mae.toFixed(2) : 0}
+                        value="42,041.63"
+                        prefix={<DollarOutlined />}
+                        valueStyle={{ color: '#3f8600' }}
+                      />
+                      <Statistic
+                        title="Conference Interval"
+                        // value={predictionData?.mae ? predictionData.mae.toFixed(2) : 0}
+                        value="37911.13-46172.13"
+                        prefix={<DollarOutlined />}
+                        valueStyle={{ color: '#1f77b4' }}
+                      />
+
+                    </Col>
+                  </Row>
+                </Card>
+
+              </div>
+            </Col>
+            <Col span={12}>
+              <Card title="Claim cost Vs Number of Occurrences" bordered={false} style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.06)", width: '675px', marginBottom: '15px' }}>
+                <div><LossExposureHistogram />
+                </div>
+              </Card>
+            </Col>
+          </Row>
+
+
+          <Row gutter={[16, 16]}>
+
+
+            <Card
+              title={
+                <span>
+                  Feature Weights
+                  <Tooltip
+                    title="Feature weights show the relative importance of each feature in making predictions"
+                  >
+                    <InfoCircleOutlined style={{ marginLeft: 8 }} />
+                  </Tooltip>
+                </span>
+              }
+              style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: '100%' }}
+            >
+              <Table
+                columns={columns}
+                dataSource={getFeatureWeights()}
+                pagination={false}
+              />
+            </Card>
+
+          </Row>
+          <Row gutter={[16, 16]}>
+            <Col span={21}></Col>
+            <Col span={3}>
+              <Button
+                type="primary"
+                size="large"
+                onClick={handleTrain}
+                style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", marginTop: '100px' }}
+              >
+                Save & Publish
+              </Button>
             </Col>
           </Row>
         </Modal>

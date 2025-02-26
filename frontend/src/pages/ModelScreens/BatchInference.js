@@ -124,24 +124,25 @@ const BatchInference = () => {
             </Upload>
           </Col>
           <Col>
-            <Button 
-              type="default" 
-              icon={<DownloadOutlined />} 
-             
-              size="large"
-              style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
-            >
-              Download Predictions
-            </Button>
-          </Col>
-          <Col>
-            <Button 
+          <Button 
               type="primary" 
               size="large"
              
               style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
             >
               Predict
+            </Button>
+           
+          </Col>
+          <Col>
+          <Button 
+              type="default" 
+              icon={<DownloadOutlined />} 
+              onClick={handleDownload}
+              size="large"
+              style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
+            >
+              Download Predictions
             </Button>
           </Col>
         </Row>

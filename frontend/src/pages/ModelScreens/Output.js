@@ -18,9 +18,14 @@ const OutputDetails = ({ predictionData }) => {
     }));
   };
 
+ 
+    
+    
+      
+
   const getTopFeatures = () => {
     if (!predictionData || !predictionData.top_5_shap_values) {
-      return "";
+      return { positiveFeatures: [], negativeFeatures: [] };
     }
     
     const positiveFeatures = predictionData.top_5_shap_values
@@ -31,16 +36,11 @@ const OutputDetails = ({ predictionData }) => {
       .filter(([_, value]) => value < 0)
       .map(([name, _]) => name.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));
       
-    let summary = "";
-    if (positiveFeatures.length > 0) {
-      summary += `The main factors increasing the claim amount are: ${positiveFeatures.join(', ')}. `;
-    }
-    if (negativeFeatures.length > 0) {
-      summary += `The main factors decreasing the claim amount are: ${negativeFeatures.join(', ')}.`;
-    }
-    
-    return summary;
+    return { positiveFeatures, negativeFeatures };
   };
+
+  const { positiveFeatures, negativeFeatures } = getTopFeatures();
+  
 
   return (
     <div style={{ padding: '24px' }}>
@@ -49,11 +49,11 @@ const OutputDetails = ({ predictionData }) => {
         <Col span={8}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {/* First Card */}
-            <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
+            <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", height: "223px" }}>
               <Title level={4}>Predicted Claim Amount</Title>
               <Row gutter={[16, 16]}>
                 <Col span={24}>
-                  <Statistic
+                  <Statistic 
                     title="Amount"
                     value={predictionData?.prediction ? predictionData.prediction.toFixed(2) : 0}
                     prefix={<DollarOutlined />}
@@ -64,24 +64,27 @@ const OutputDetails = ({ predictionData }) => {
             </Card>
 
             {/* Second Card */}
-            <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
-              <Title level={4}>Inference</Title>
+            <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",  height: "223px" }}>
+              <Title level={4}>Conference Interval</Title>
               <Row gutter={[16, 16]}>
                 <Col span={24}>
-                  <Title level={5}>Summary</Title>
-                  <Paragraph>
-                    {getTopFeatures()}
-                  </Paragraph>
+                  <Statistic 
+                    title="Predicted Claim Amount ± Mean Absolute Error"
+                    value="37911.13-46172.13"
+                    prefix={<DollarOutlined />}
+                    valueStyle={{ color: '#1f77b4' }}
+                  />
                 </Col>
               </Row>
             </Card>
+            
           </div>
         </Col>
 
         {/* Right Column - Bar Chart */}
         <Col span={16}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
-            <Title level={4}>Feature Impact on Prediction (SHAP values)</Title>
+            <Title level={4}>Feature Impact on Prediction (Absolute SHAP values)</Title>
             <div style={{ width: '100%', height: 350 }}>
                       <ResponsiveContainer>
               <BarChart
@@ -110,8 +113,41 @@ const OutputDetails = ({ predictionData }) => {
                   radius={[0, 4, 4, 0]}
                 />
               </BarChart>
-              </ResponsiveContainer>
+              </ResponsiveContainer> 
             </div>
+          </Card>
+        </Col>
+      </Row>
+      <Row gutter={[16, 16]}>
+        <Col>
+          <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", marginTop: "10px", width: "218%" }}>
+            <Title level={4}>Inference</Title>
+            <Row gutter={[16, 16]}>
+              <Col span={24}>
+                <Title level={5}>Summary</Title>
+                <ul>
+                  {positiveFeatures.length > 0 && (
+                    <li>
+                      <Paragraph>
+                        <strong>Factors increasing the claim amount:</strong> {positiveFeatures.join(', ')}
+                      </Paragraph>
+                    </li>
+                  )}
+                  {negativeFeatures.length > 0 && (
+                    <li>
+                      <Paragraph>
+                        <strong>Factors decreasing the claim amount:</strong> {negativeFeatures.join(', ')}
+                      </Paragraph>
+                    </li>
+                  )}
+                  {/* <li>
+                     <Paragraph>
+                      <strong>Confidence:</strong> The predicted amount may vary by ±${interval.deviation} based on the model's mean absolute error.
+                    </Paragraph> 
+                  </li> */}
+                </ul>
+              </Col>
+            </Row>
           </Card>
         </Col>
       </Row>

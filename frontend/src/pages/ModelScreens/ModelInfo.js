@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Table, Typography, Statistic, Tooltip } from 'antd';
-import { InfoCircleOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, DollarOutlined } from '@ant-design/icons';
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 
 const { Title } = Typography;
@@ -8,28 +8,45 @@ const { Title } = Typography;
 const ModelInfo = ({ predictionData }) => {
   // Feature weights data based on model coefficients
   const getFeatureWeights = () => {
-    if (!predictionData || !predictionData.model_weights) {
+    if (!predictionData || !predictionData.model_weights || !predictionData.model_weights.coefficients) {
       return [];
     }
     
     const { coefficients } = predictionData.model_weights;
     
-    const weights = Object.entries(coefficients)
-      .map(([feature, value]) => ({
-        key: feature,
-        feature: feature.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-        weight: Math.abs(value),
-        actualValue: value
-      }))
-      .sort((a, b) => b.weight - a.weight)
-      .slice(0, 5);
-      
-    const totalWeight = weights.reduce((sum, item) => sum + item.weight, 0);
-    return weights.map((item, index) => ({
-      ...item,
-      key: (index + 1).toString(),
-      weight: item.weight / totalWeight
-    }));
+    // Create a data source from the coefficients
+    return Object.entries(coefficients)
+      .map(([feature, value]) => {
+        // Format feature name (convert snake_case to Title Case)
+        const formattedFeature = feature.split('_').map(word => 
+          word.charAt(0).toUpperCase() + word.slice(1)
+        ).join(' ');
+        
+        // Generate explanations based on the coefficient value
+        let explanation = '';
+        if (value > 3000) {
+          explanation = `More Significant, Increases claim cost.`;
+        } 
+        else if(value>0 && value<3000){
+          explanation = `Moderately Significant, Increases claim cost.`;
+        }
+        else {
+          explanation = `Significant, Decreases claim cost.`;
+        }
+        
+        return {
+          key: feature,
+          feature: formattedFeature,
+          weight: value,
+          explanation: explanation
+        };
+      })
+      .sort((a, b) => Math.abs(b.weight) - Math.abs(a.weight))
+      .slice(0, 5)
+      .map((item, index) => ({
+        ...item,
+        key: (index + 1).toString()
+      }));
   };
 
   const columns = [
@@ -42,14 +59,13 @@ const ModelInfo = ({ predictionData }) => {
       title: 'Values',
       dataIndex: 'weight',
       key: 'weight',
-      render: (text) => `${(text * 100).toFixed(1)}`,
+      render: (text) => `${text.toFixed(2)}`,
     },
     {
-        title: 'Explanation',
-        dataIndex: 'explanation',
-        key: 'explanation',
-        
-      },
+      title: 'Explanation',
+      dataIndex: 'explanation',
+      key: 'explanation',
+    },
   ];
 
   const generateData = () => {
@@ -77,28 +93,26 @@ const ModelInfo = ({ predictionData }) => {
     borderRadius: '4px',
     maxWidth: '300px'
   };
-   const [selectedModel, setSelectedModel] = useState('');
   
-    useEffect(() => {
-      // Retrieve the selected model from localStorage when component mounts
-      const model = localStorage.getItem('selectedModel');
-      if (model) {
-        setSelectedModel(model);
-      }
-    }, []);
+  const [selectedModel, setSelectedModel] = useState('');
   
-   
-
+  useEffect(() => {
+    // Retrieve the selected model from localStorage when component mounts
+    const model = localStorage.getItem('selectedModel');
+    if (model) {
+      setSelectedModel(model);
+    }
+  }, []);
+  
   return (
     <div style={{ padding: '24px' }}>
       {/* Scatter Plot */}
       {selectedModel && (
-        <Title level={3} style={{ marginBottom: '5px', color: 'royalblue',  textAlign: "center" }}>
+        <Title level={3} style={{ marginBottom: '5px', color: 'royalblue', textAlign: "center" }}>
           Linear Regression of {selectedModel} Model
         </Title>
       )}
       <Row gutter={[16, 16]}>
-      
         <Col span={24}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
             <Title level={4}>Actual vs. Predicted Claims</Title>
@@ -164,12 +178,12 @@ const ModelInfo = ({ predictionData }) => {
 
       {/* Statistics Cards */}
       <Row gutter={[16, 16]} style={{ marginTop: '16px' }}>
-        <Col span={12}>
+        <Col span={8}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
             <Title level={4}>
               R² Score
               <Tooltip 
-                title="Measures how accurately the model explains variations in claim payouts, indicating its reliability in predicting losses (Ranges 0 to 1)."
+                title="Measures how accurately the model explains variations in claim payouts, indicating its reliability in predicting losses (Ranges 0 to 100%)."
                 overlayStyle={tooltipStyle}
               >
                 <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: '16px', color: '#1890ff' }} />
@@ -181,7 +195,26 @@ const ModelInfo = ({ predictionData }) => {
             />
           </Card>
         </Col>
-        <Col span={12}>
+        <Col span={8}>
+          <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
+            <Title level={4}>
+              Average Claim Payout
+              <Tooltip 
+                title="Average of the claim payout."
+                overlayStyle={tooltipStyle}
+              >
+                <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: '16px', color: '#1890ff' }} />
+              </Tooltip>
+            </Title>
+            <Statistic
+              // value={predictionData?.mae ? predictionData.mae.toFixed(2) : 0}
+              value="53412"
+              prefix={<DollarOutlined />}
+              valueStyle={{ color: '#3f8600' }}
+            />
+          </Card>
+        </Col>
+        <Col span={8}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
             <Title level={4}>
               Mean Absolute Error
@@ -194,6 +227,7 @@ const ModelInfo = ({ predictionData }) => {
             </Title>
             <Statistic
               value={predictionData?.mae ? predictionData.mae.toFixed(2) : 0}
+              prefix={<DollarOutlined />}
               valueStyle={{ color: 'crimson' }}
             />
           </Card>
