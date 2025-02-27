@@ -57,6 +57,13 @@ const ClaimAnalysisGraph = () => {
             { category: 'Snow', value: 64000 },
             { category: 'Fog', value: 60000 },
           ];
+          case 'accident_severity':
+          return [
+            { category: 'Less', value: 35000 },
+            { category: 'Moderate', value: 56000 },
+            { category: 'More', value: 48000 },
+           
+          ];
         case 'vehicle_make':
           return [
             { category: 'Toyota', value: 47000 },
@@ -92,6 +99,7 @@ const ClaimAnalysisGraph = () => {
       claimant_gender: ['#0052cc', '#ff69b4'],
       weather_conditions: ['#4e79a7', '#59a14f', '#9c755f', '#bab0ac'],
       vehicle_make: ['#e15759', '#76b7b2', '#edc949', '#af7aa1', '#ff9da7'],
+      accident_severity: ['#e15759', '#76b7b2', '#edc949'],
       injury_severity: ['#4e79a7', '#f28e2c', '#e15759']
     };
 

@@ -20,6 +20,7 @@ import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip as Recharts
 import * as XLSX from 'xlsx';
 import ClaimAnalysisGraph from "./ClaimAnalysisGraph";
 import LossExposureHistogram from "./LossExposureHistogram";
+import FeatureWeightsTable from "./FeatureweightTable";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -233,7 +234,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
           title="Training Results"
           visible={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
-          width={1600}
+          width={1400}
           footer={null}
         >
           <Row gutter={[16, 16]}>
@@ -392,11 +393,12 @@ const ClaimSeverityUI = ({ predictionData }) => {
               }
               style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: '100%' }}
             >
-              <Table
+              {/* <Table
                 columns={columns}
                 dataSource={getFeatureWeights()}
                 pagination={false}
-              />
+              /> */}
+              <FeatureWeightsTable/>
             </Card>
 
           </Row>

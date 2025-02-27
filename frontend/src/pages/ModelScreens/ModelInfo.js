@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Table, Typography, Statistic, Tooltip } from 'antd';
 import { InfoCircleOutlined, DollarOutlined } from '@ant-design/icons';
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
+import FeatureWeightsTable from './FeatureweightTable';
 
 const { Title } = Typography;
 
@@ -241,17 +242,18 @@ const ModelInfo = ({ predictionData }) => {
             <Title level={4}>
               Feature Weights
               <Tooltip 
-                title="Feature weights show the relative importance of each feature in making predictions. Higher percentages indicate stronger influence on the model's output."
+                title="Feature weights show the relative importance of each feature in making predictions. Higher values indicate stronger influence on the model's output."
                 overlayStyle={tooltipStyle}
               >
                 <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: '16px', color: '#1890ff' }} />
               </Tooltip>
             </Title>
-            <Table 
+            {/* <Table 
               columns={columns} 
               dataSource={getFeatureWeights()}
-              pagination={false}
-            />
+              pagination={true}
+            /> */}
+            <FeatureWeightsTable/>
           </Card>
         </Col>
       </Row>
