@@ -36,7 +36,6 @@ const ClaimSeverityUI = ({ predictionData }) => {
   const [selectedModel, setSelectedModel] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
-
   const [selectedOption, setSelectedOption] = useState(null);
 
   const handleModelSelect = (value) => {
@@ -44,6 +43,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
     setSelectedOption(null);
     localStorage.setItem('selectedModel', value);
   };
+  
   const handleSelectChange = (value) => {
     setSelectedModel(value);
     localStorage.setItem('selectedModel', value);
@@ -148,15 +148,31 @@ const ClaimSeverityUI = ({ predictionData }) => {
     setIsModalVisible(true);
   };
 
+  // Shared card styling for consistency
+  const cardStyle = {
+    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",
+    height: "100%",
+    width: "100%",
+    marginBottom: "1rem"
+    
+  };
+
+  // Statistics card styling
+  const statsCardStyle = {
+    ...cardStyle,
+    display: "flex",
+    flexDirection: "column",
+    marginTop: "1.5rem",
+  };
+
   return (
-    <Layout style={{ padding: 20, background: "white" }}>
+    <Layout style={{ padding: "2.5%", background: "white" }}>
       <Content>
         {/* Top Row - Cards */}
-
         <Row justify="center">
-          <Col span={24}>
-            <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
-              <Title level={4} style={{ marginBottom: 16 }}>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Card style={cardStyle}>
+              <Title level={4} style={{ marginBottom: "1rem" }}>
                 List of ML Model
                 <Tooltip title="Choose a model to see available options">
                   <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: '16px', color: '#1890ff' }} />
@@ -164,7 +180,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
               </Title>
               <Select
                 value={selectedModel}
-                style={{ width: '30%', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
+                style={{ width: '30%', minWidth: "200px", boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
                 onChange={handleModelSelect}
                 placeholder="Select an ML Model"
               >
@@ -179,37 +195,38 @@ const ClaimSeverityUI = ({ predictionData }) => {
             </Card>
           </Col>
         </Row>
+        
         {/* Button Row */}
-        <Row gutter={[16, 16]} justify="center" style={{ marginTop: 16 }}>
-          <Col>
+        <Row gutter={[16, 16]} justify="center" style={{ marginTop: "1rem" }}>
+          <Col xs={24} sm={8} md={8} lg={8} xl={8} className="text-center">
             <Button
               type="default"
               icon={<DownloadOutlined />}
               onClick={handleDownload}
               size="large"
-              style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
+              style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: "100%", maxWidth: "200px" }}
             >
               Download Template
             </Button>
           </Col>
-          <Col>
+          <Col xs={24} sm={8} md={8} lg={8} xl={8} className="text-center">
             <Upload {...uploadProps}>
               <Button
                 type="default"
                 icon={<UploadOutlined />}
                 size="large"
-                style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
+                style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: "100%", maxWidth: "200px" }}
               >
                 Upload Data
               </Button>
             </Upload>
           </Col>
-          <Col>
+          <Col xs={24} sm={8} md={8} lg={8} xl={8} className="text-center">
             <Button
               type="primary"
               size="large"
               onClick={handleTrain}
-              style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
+              style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: "100%", maxWidth: "200px" }}
             >
               Train Model
             </Button>
@@ -217,7 +234,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
         </Row>
 
         {/* Alert for Errors */}
-        <Row style={{ marginTop: 16 }}>
+        <Row style={{ marginTop: "1rem" }}>
           <Col span={24}>
             <Alert
               message="Error"
@@ -234,14 +251,19 @@ const ClaimSeverityUI = ({ predictionData }) => {
           title="Training Results"
           visible={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
-          width={1400}
+          width="90%"
+          style={{ maxWidth: "1400px" }}
           footer={null}
+          bodyStyle={{ padding: "1.5rem" }}
         >
           <Row gutter={[16, 16]}>
-            <Col span={12}>
-              <Card title="Actual vs. Predicted Claims" style={{ marginBottom: '15px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.06)", width: '675px' }}>
-                <div style={{ height: 517, width: '100%' }}>
-                  <ResponsiveContainer>
+            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+              <Card 
+                title="Actual vs. Predicted Claims" 
+                style={{ ...cardStyle, marginBottom: "1rem" }}
+              >
+                <div style={{ height: "500px", width: '100%' }}>
+                  <ResponsiveContainer width="100%" height="100%">
                     <ScatterChart
                       margin={{
                         top: 20,
@@ -298,26 +320,26 @@ const ClaimSeverityUI = ({ predictionData }) => {
                 </div>
               </Card>
             </Col>
-            <Col span={12}>
-              <Card title="Relation plot of variables with claim cost" bordered={false} style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.06)", width: '675px', marginBottom: '15px' }}>
-                <div><ClaimAnalysisGraph />
+            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+              <Card 
+                title="Relation plot of variables with claim cost" 
+                bordered={false} 
+                style={{ ...cardStyle, marginBottom: "1.2rem" }}
+              >
+                <div style={{ height: "500px", width: '100%' }}>
+                  <ClaimAnalysisGraph />
                 </div>
-
               </Card>
             </Col>
-
           </Row>
 
-
           <Row gutter={[16, 16]}>
-            <Col span={12}>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' }}>
                 {/* First Card */}
-                <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", height: "223px" }}>
-                  <Title level={4}>Metrices</Title>
+                <Card style={{ ...statsCardStyle, flex: 1, minHeight: "220px" }}>
+                  <Title level={4}>Metrics</Title>
                   <Row gutter={[16, 16]}>
-
                     <Col span={12}>
                       <Statistic
                         title="Average Claim Payout"
@@ -334,82 +356,74 @@ const ClaimSeverityUI = ({ predictionData }) => {
                     </Col>
                     <Col span={12}>
                       <Statistic
-                        title=" R² Score"
+                        title="R² Score"
                         value="0.72"
-                       
                       />
                     </Col>
                   </Row>
                 </Card>
 
                 {/* Second Card */}
-                <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", height: "223px" }}>
-
+                <Card style={{ ...statsCardStyle, flex: 1, minHeight: "220px" }}>
                   <Row gutter={[16, 16]}>
                     <Col span={24}>
                       <Statistic
                         title="Predicted Claim Amount"
-                        // value={predictionData?.mae ? predictionData.mae.toFixed(2) : 0}
                         value="42,041.63"
                         prefix={<DollarOutlined />}
                         valueStyle={{ color: '#3f8600' }}
                       />
                       <Statistic
                         title="Confidence Interval"
-                        // value={predictionData?.mae ? predictionData.mae.toFixed(2) : 0}
                         value="37911.13-46172.13"
                         prefix={<DollarOutlined />}
                         valueStyle={{ color: '#1f77b4' }}
                       />
-
                     </Col>
                   </Row>
                 </Card>
-
               </div>
             </Col>
-            <Col span={12}>
-              <Card title="Claim cost Vs Number of Occurrences" bordered={false} style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.06)", width: '675px', marginBottom: '15px' }}>
-                <div><LossExposureHistogram />
+            <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+              <Card 
+                title="Claim Amount plot with different frequencies" 
+                bordered={false} 
+                style={{ ...cardStyle, marginBottom: "1rem",  }}
+              >
+                <div style={{ height: "450px", width: '100%' }}>
+                  <LossExposureHistogram />
                 </div>
               </Card>
             </Col>
           </Row>
 
-
-          <Row gutter={[16, 16]}>
-
-
-            <Card
-              title={
-                <span>
-                  Feature Weights
-                  <Tooltip
-                    title="Feature weights show the relative importance of each feature in making predictions"
-                  >
-                    <InfoCircleOutlined style={{ marginLeft: 8 }} />
-                  </Tooltip>
-                </span>
-              }
-              style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: '100%' }}
-            >
-              {/* <Table
-                columns={columns}
-                dataSource={getFeatureWeights()}
-                pagination={false}
-              /> */}
-              <FeatureWeightsTable/>
-            </Card>
-
+          <Row gutter={[16, 16]} style={{ marginTop: "1rem" }}>
+            <Col span={24}>
+              <Card
+                title={
+                  <span>
+                    Feature Weights
+                    <Tooltip
+                      title="Feature weights show the relative importance of each feature in making predictions"
+                    >
+                      <InfoCircleOutlined style={{ marginLeft: 8 }} />
+                    </Tooltip>
+                  </span>
+                }
+                style={cardStyle}
+              >
+                <FeatureWeightsTable/>
+              </Card>
+            </Col>
           </Row>
-          <Row gutter={[16, 16]}>
-            <Col span={21}></Col>
-            <Col span={3}>
+          
+          <Row gutter={[16, 16]} style={{ marginTop: "1rem" }}>
+            <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Button
                 type="primary"
                 size="large"
                 onClick={handleTrain}
-                style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", marginTop: '100px' }}
+                style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
               >
                 Save & Publish
               </Button>

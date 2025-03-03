@@ -41,9 +41,7 @@ const Tab = () => {
           {selectedModel} Model
         </Title>
       )} */}
-      <Title level={3} style={{ color: "royalblue", textAlign: "center" }}>
-        Insurance ML App Store
-      </Title>
+     
       <Tabs 
         defaultActiveKey="1" 
         items={items} 

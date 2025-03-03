@@ -18,11 +18,6 @@ const OutputDetails = ({ predictionData }) => {
     }));
   };
 
- 
-    
-    
-      
-
   const getTopFeatures = () => {
     if (!predictionData || !predictionData.top_5_shap_values) {
       return { positiveFeatures: [], negativeFeatures: [] };
@@ -41,15 +36,21 @@ const OutputDetails = ({ predictionData }) => {
 
   const { positiveFeatures, negativeFeatures } = getTopFeatures();
   
+  // Common card style to maintain consistency
+  const cardStyle = {
+    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",
+    height: "100%",
+    width: "100%"
+  };
 
   return (
-    <div style={{ padding: '24px' }}>
+    <div style={{ padding: '2%' }}>
       <Row gutter={[16, 16]}>
         {/* Left Column */}
-        <Col span={8}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <Col xs={24} sm={24} md={12} lg={8} xl={8}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' }}>
             {/* First Card */}
-            <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", height: "223px" }}>
+            <Card style={cardStyle}>
               <Title level={4}>Predicted Claim Amount</Title>
               <Row gutter={[16, 16]}>
                 <Col span={24}>
@@ -64,7 +65,7 @@ const OutputDetails = ({ predictionData }) => {
             </Card>
 
             {/* Second Card */}
-            <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",  height: "223px" }}>
+            <Card style={{ ...cardStyle, marginTop: '16px' }}>
               <Title level={4}>Confidence Interval</Title>
               <Row gutter={[16, 16]}>
                 <Col span={24}>
@@ -77,50 +78,47 @@ const OutputDetails = ({ predictionData }) => {
                 </Col>
               </Row>
             </Card>
-            
           </div>
         </Col>
 
         {/* Right Column - Bar Chart */}
-        <Col span={16}>
-          <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
+        <Col xs={24} sm={24} md={12} lg={16} xl={16}>
+          <Card style={cardStyle}>
             <Title level={4}>Feature Impact on Prediction (Absolute SHAP values)</Title>
-            <div style={{ width: '100%', height: 350 }}>
-                      <ResponsiveContainer>
-              <BarChart
-                width={400}
-                height={400}
-                data={formatShapData()}
-                layout="vertical"
-                margin={{ top: 8, right: 40, left: 5, bottom: 5 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis 
-                  type="category" 
-                  dataKey="feature" 
-                  width={240}
-                />
-                <Tooltip 
-                  formatter={(value, name, props) => [
-                    `${props.payload.actualValue.toFixed(2)}`,
-                    'Impact'
-                  ]}
-                />
-                <Bar 
-                  dataKey="value" 
-                  fill="#1890ff"
-                  radius={[0, 4, 4, 0]}
-                />
-              </BarChart>
+            <div style={{ width: '100%', height: '350px' }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  layout="vertical"
+                  data={formatShapData()}
+                  margin={{ top: 8, right: 40, left: 5, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" />
+                  <YAxis 
+                    type="category" 
+                    dataKey="feature" 
+                    width={240}
+                  />
+                  <Tooltip 
+                    formatter={(value, name, props) => [
+                      `${props.payload.actualValue.toFixed(2)}`,
+                      'Impact'
+                    ]}
+                  />
+                  <Bar 
+                    dataKey="value" 
+                    fill="#1890ff"
+                    radius={[0, 4, 4, 0]}
+                  />
+                </BarChart>
               </ResponsiveContainer> 
             </div>
           </Card>
         </Col>
       </Row>
       <Row gutter={[16, 16]}>
-        <Col>
-          <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", marginTop: "10px", width: "218%" }}>
+        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+          <Card style={{ ...cardStyle, marginTop: '16px' }}>
             <Title level={4}>Inference</Title>
             <Row gutter={[16, 16]}>
               <Col span={24}>
@@ -140,11 +138,6 @@ const OutputDetails = ({ predictionData }) => {
                       </Paragraph>
                     </li>
                   )}
-                  {/* <li>
-                     <Paragraph>
-                      <strong>Confidence:</strong> The predicted amount may vary by ±${interval.deviation} based on the model's mean absolute error.
-                    </Paragraph> 
-                  </li> */}
                 </ul>
               </Col>
             </Row>

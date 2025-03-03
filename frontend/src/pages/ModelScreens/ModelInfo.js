@@ -96,6 +96,7 @@ const ModelInfo = ({ predictionData }) => {
   };
   
   const [selectedModel, setSelectedModel] = useState('');
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   
   useEffect(() => {
     // Retrieve the selected model from localStorage when component mounts
@@ -103,28 +104,66 @@ const ModelInfo = ({ predictionData }) => {
     if (model) {
       setSelectedModel(model);
     }
+    
+    // Add event listener for window resize
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    
+    // Clean up event listener
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
   
+  // Responsive font sizes based on screen width
+  const getTitleFontSize = () => {
+    if (windowWidth < 576) return '18px';
+    if (windowWidth < 992) return '20px';
+    return '24px';
+  };
+  
+  const getSubtitleFontSize = () => {
+    if (windowWidth < 576) return '16px';
+    if (windowWidth < 992) return '18px';
+    return '20px';
+  };
+  
+  const getStatFontSize = () => {
+    if (windowWidth < 576) return '20px';
+    if (windowWidth < 992) return '24px';
+    return '28px';
+  };
+  
+  // Responsive chart height
+  const getChartHeight = () => {
+    if (windowWidth < 576) return 250;
+    if (windowWidth < 992) return 300;
+    return 350;
+  };
+  
   return (
-    <div style={{ padding: '24px' }}>
+    <div className="model-info-container" style={{ padding: '24px', width: '100%' }}>
       {/* Scatter Plot */}
       {selectedModel && (
-        <Title level={3} style={{ marginBottom: '5px', color: 'royalblue', textAlign: "center" }}>
+        <Title level={3} style={{ marginBottom: '5px', color: 'royalblue', textAlign: "center", fontSize: getTitleFontSize() }}>
           Linear Regression of {selectedModel} Model
         </Title>
       )}
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
-            <Title level={4}>Actual vs. Predicted Claims</Title>
-            <div style={{ width: '100%', height: 350 }}>
-              <ResponsiveContainer>
+            <Title level={4} style={{ fontSize: getSubtitleFontSize() }}>Actual vs. Predicted Claims</Title>
+            <div style={{ width: '100%', height: getChartHeight() }}>
+              <ResponsiveContainer width="100%" height="100%">
                 <ScatterChart
                   margin={{
                     top: 20,
-                    right: 20,
-                    bottom: 60,
-                    left: 60,
+                    right: windowWidth < 576 ? 10 : 20,
+                    bottom: windowWidth < 576 ? 60 : 50,
+                    left: windowWidth < 576 ? 40 : 50,
                   }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
@@ -136,9 +175,11 @@ const ModelInfo = ({ predictionData }) => {
                     label={{ 
                       value: 'Actual Claim Cost',
                       position: 'bottom',
-                      offset: 40
+                      offset: windowWidth < 576 ? 30 : 35,
+                      style: { fontSize: windowWidth < 576 ? '12px' : '14px' }
                     }}
-                    tickFormatter={(value) => `${value.toLocaleString()}`}
+                    tickFormatter={(value) => windowWidth < 576 ? `${(value/1000)}k` : `${value.toLocaleString()}`}
+                    tick={{ fontSize: windowWidth < 576 ? 10 : 12 }}
                   />
                   <YAxis
                     type="number"
@@ -149,9 +190,11 @@ const ModelInfo = ({ predictionData }) => {
                       value: 'Predicted Claim Cost',
                       angle: -90,
                       position: 'left',
-                      offset: 40
+                      offset: windowWidth < 576 ? 25 : 35,
+                      style: { fontSize: windowWidth < 576 ? '12px' : '14px' }
                     }}
-                    tickFormatter={(value) => `${value.toLocaleString()}`}
+                    tickFormatter={(value) => windowWidth < 576 ? `${(value/1000)}k` : `${value.toLocaleString()}`}
+                    tick={{ fontSize: windowWidth < 576 ? 10 : 12 }}
                   />
                   <RechartsTooltip 
                     formatter={(value) => `$${value.toLocaleString()}`}
@@ -177,59 +220,58 @@ const ModelInfo = ({ predictionData }) => {
         </Col>
       </Row>
 
-      {/* Statistics Cards */}
+      {/* Statistics Cards - fixed to 3 cards per row regardless of screen size */}
       <Row gutter={[16, 16]} style={{ marginTop: '16px' }}>
-        <Col span={8}>
+        <Col xs={24} sm={24} md={8} lg={8} xl={8}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
-            <Title level={4}>
+            <Title level={4} style={{ fontSize: getSubtitleFontSize() }}>
               R² Score
               <Tooltip 
                 title="Measures how accurately the model explains variations in claim payouts, indicating its reliability in predicting losses (Ranges 0 to 1)."
                 overlayStyle={tooltipStyle}
               >
-                <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: '16px', color: '#1890ff' }} />
+                <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: windowWidth < 576 ? '14px' : '16px', color: '#1890ff' }} />
               </Tooltip>
             </Title>
             <Statistic
               value={predictionData?.r2_score ? predictionData.r2_score.toFixed(2) : 0}
-             
+              valueStyle={{ fontSize: getStatFontSize() }}
             />
           </Card>
         </Col>
-        <Col span={8}>
+        <Col xs={24} sm={24} md={8} lg={8} xl={8}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
-            <Title level={4}>
+            <Title level={4} style={{ fontSize: getSubtitleFontSize() }}>
               Average Claim Payout
               <Tooltip 
                 title="Average of the claim payout."
                 overlayStyle={tooltipStyle}
               >
-                <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: '16px', color: '#1890ff' }} />
+                <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: windowWidth < 576 ? '14px' : '16px', color: '#1890ff' }} />
               </Tooltip>
             </Title>
             <Statistic
-              // value={predictionData?.mae ? predictionData.mae.toFixed(2) : 0}
               value="53412"
               prefix={<DollarOutlined />}
-              valueStyle={{ color: '#3f8600' }}
+              valueStyle={{ color: '#3f8600', fontSize: getStatFontSize() }}
             />
           </Card>
         </Col>
-        <Col span={8}>
+        <Col xs={24} sm={24} md={8} lg={8} xl={8}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
-            <Title level={4}>
+            <Title level={4} style={{ fontSize: getSubtitleFontSize() }}>
               Mean Absolute Error
               <Tooltip 
                 title="Measures the average difference between the model's predicted claim payouts and the actual payouts, showing the typical error in predictions."
                 overlayStyle={tooltipStyle}
               >
-                <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: '16px', color: '#1890ff' }} />
+                <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: windowWidth < 576 ? '14px' : '16px', color: '#1890ff' }} />
               </Tooltip>
             </Title>
             <Statistic
               value={predictionData?.mae ? predictionData.mae.toFixed(2) : 0}
               prefix={<DollarOutlined />}
-              valueStyle={{ color: 'crimson' }}
+              valueStyle={{ color: 'crimson', fontSize: getStatFontSize() }}
             />
           </Card>
         </Col>
@@ -239,21 +281,18 @@ const ModelInfo = ({ predictionData }) => {
       <Row style={{ marginTop: '16px' }}>
         <Col span={24}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
-            <Title level={4}>
+            <Title level={4} style={{ fontSize: getSubtitleFontSize() }}>
               Feature Weights
               <Tooltip 
                 title="Feature weights show the relative importance of each feature in making predictions. Higher values indicate stronger influence on the model's output."
                 overlayStyle={tooltipStyle}
               >
-                <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: '16px', color: '#1890ff' }} />
+                <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: windowWidth < 576 ? '14px' : '16px', color: '#1890ff' }} />
               </Tooltip>
             </Title>
-            {/* <Table 
-              columns={columns} 
-              dataSource={getFeatureWeights()}
-              pagination={true}
-            /> */}
-            <FeatureWeightsTable/>
+            <div className="table-responsive" style={{ overflowX: 'auto', width: '100%' }}>
+              <FeatureWeightsTable />
+            </div>
           </Card>
         </Col>
       </Row>

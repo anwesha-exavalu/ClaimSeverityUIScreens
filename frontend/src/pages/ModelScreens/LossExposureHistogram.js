@@ -48,7 +48,7 @@ const LossExposureHistogram = () => {
             tick={{ fontSize: 12 }}
             tickFormatter={(value) => value}
             label={{ 
-              value: 'Claim Cost', 
+              value: 'Claim Amount', 
               position: 'insideBottom', 
               offset: -10,
               style: { textAnchor: 'middle' }

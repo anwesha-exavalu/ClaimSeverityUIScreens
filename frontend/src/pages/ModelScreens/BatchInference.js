@@ -6,9 +6,6 @@ import ModelInfo from "./ModelInfo";
 const { Option } = Select;
 const { Title } = Typography;
 
-// Placeholder for the component that will be called in the modal
-
-
 const modelDescriptions = {
   "Claim Propensity": "Predicts the likelihood of a claim being filed.",
   "Claim Severity": "Estimates the potential cost of a claim.",
@@ -38,9 +35,8 @@ const BatchInference = () => {
     </Menu>
   );
   
+  // Responsive button style that adjusts based on screen size
   const buttonStyle = {
-    height: 60,
-    width: 250,
     fontSize: "medium",
     display: "flex",
     alignItems: "center",
@@ -102,9 +98,9 @@ const BatchInference = () => {
   };
   
   return (
-    <div style={{ padding: 24, border: "1px solid #ccc", borderRadius: 10, background: "white" }}>
-      <Row justify="center">
-        <Col span={24}>
+    <div style={{ padding: "3%", border: "1px solid #ccc", borderRadius: 10, background: "white", width: "100%", maxWidth: "100%",margin: '0', }}>
+      <Row gutter={[24, 16]} justify="start" align="top">
+        <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{ justifyContent: 'start' }}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
             <Title level={4} style={{ marginBottom: 16 }}>
               List of ML Model
@@ -114,7 +110,7 @@ const BatchInference = () => {
             </Title>
             <Select
               value={selectedModel}
-              style={{ width: '30%', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
+              style={{ width: '100%', maxWidth: '400px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
               onChange={handleModelSelect}
               placeholder="Select an ML Model"
             >
@@ -130,37 +126,37 @@ const BatchInference = () => {
         </Col>
       </Row>
       
-      <Row gutter={[16, 16]} justify="center" style={{ marginTop: 16 }}>
-        <Col>
+      <Row gutter={[16, 16]} justify="start" style={{ marginTop: 16 }}>
+        <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{ display: 'flex', justifyContent: 'start', marginBottom: '10px' }}>
           <Button 
             type="default" 
             icon={<DownloadOutlined />} 
             onClick={handleDownload}
             size="large"
-            style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
+            style={{ ...buttonStyle, width: '100%', maxWidth: '250px' }}
           >
             Download Sample File
           </Button>
         </Col>
-        <Col>
+        <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{ display: 'flex', justifyContent: 'start', marginBottom: '10px' }}>
           <Upload {...uploadProps}>
             <Button 
               type="default" 
               icon={<UploadOutlined />}
               size="large"
-              style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
+              style={{ ...buttonStyle, width: '100%', maxWidth: '250px' }}
             >
               Upload File
             </Button>
           </Upload>
         </Col>
-        <Col>
+        <Col xs={24} sm={8} md={8} lg={8} xl={8} style={{ display: 'flex', justifyContent: 'start', marginBottom: '10px' }}>
           <Button 
             type="primary" 
             icon={<BarChartOutlined />}
             size="large"
             onClick={showModal}
-            style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
+            style={{ ...buttonStyle, width: '100%', maxWidth: '250px' }}
           >
             Predict
           </Button>
@@ -172,7 +168,8 @@ const BatchInference = () => {
         title={`${selectedModel || 'Model'} Prediction Results`}
         visible={isModalVisible}
         onCancel={handleCancel}
-        width={1000}
+        width="90%"
+        style={{ maxWidth: '1000px' }}
         footer={[
           <Button key="cancel" onClick={handleCancel}>
             Cancel
