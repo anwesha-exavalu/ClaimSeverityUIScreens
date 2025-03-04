@@ -341,7 +341,7 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
                 size="large"
                 style={{ 
                   ...buttonStyle,
-                  width: '40%'
+                  width: '100%'
                 }}
               >
                 Predict
