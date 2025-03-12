@@ -15,19 +15,26 @@ const { Title, Text } = Typography;
 const CustomFooter = () => {
   return (
     <Footer className="custom-footer">
-      <Row justify="center" gutter={[24, 8]}>  {/* Reduced gutter */}
-        <Col xs={24} sm={24} md={12} lg={8} xl={6}>
+      <Row gutter={[24, 8]}>
+        {/* Left side - Title and Tagline */}
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
           <div className="footer-content">
-            <Title level={4} className="footer-title">  {/* Changed from level 3 to 4 */}
+            <Title level={4} className="footer-title">
               <span className="footer-title-red">E</span>xavalu
             </Title>
             <Text className="footer-tagline">STRATEGY.TECHNOLOGY.INNOVATION</Text>
+          </div>
+        </Col>
+        
+        {/* Right side - Social icons and contact */}
+        <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+          <div className="footer-content footer-right">
             <div className="footer-social">
-              <Space size="small">  {/* Changed from middle to small */}
+              <Space size="small">
                 <LinkedinOutlined className="social-icon" />
                 <MailOutlined className="social-icon" />
-                <FacebookOutlined className="social-icon" />
-                <WhatsAppOutlined className="social-icon" />
+                {/* <FacebookOutlined className="social-icon" />
+                <WhatsAppOutlined className="social-icon" /> */}
               </Space>
             </div>
             <div className="footer-contact">
@@ -39,12 +46,17 @@ const CustomFooter = () => {
           </div>
         </Col>
       </Row>
-
-      <div className="footer-copyright">
-        <Text>
-          © {new Date().getFullYear()} www.exavalu.com All Rights Reserved.
-        </Text>
-      </div>
+      
+      {/* Copyright in the middle */}
+      <Row justify="center">
+        <Col>
+          <div className="footer-copyright">
+            <Text>
+              © {new Date().getFullYear()} www.exavalu.com All Rights Reserved.
+            </Text>
+          </div>
+        </Col>
+      </Row>
     </Footer>
   );
 };

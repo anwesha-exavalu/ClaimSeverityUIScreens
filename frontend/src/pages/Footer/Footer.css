@@ -2,18 +2,27 @@
 .custom-footer {
   background: white;
   padding: 12px 20px;  /* Reduced vertical padding */
-  text-align: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
   width: 100%;
   position: relative;
   bottom: 0;
 }
 
-/* Footer Content */
+/* Footer Content - Left side (Title and Tagline) */
 .footer-content {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  margin-bottom: 8px;
+}
+
+/* Align left side content to the left */
+.footer-content {
+  align-items: flex-start;
+}
+
+/* Align right side content to the right */
+.footer-right {
+  align-items: flex-end;
 }
 
 /* Footer Title */
@@ -43,6 +52,7 @@
   font-size: 18px;  /* Slightly smaller icons */
   cursor: pointer;
   transition: color 0.3s ease;
+  margin: 0 4px;
 }
 
 .social-icon:hover {
@@ -53,6 +63,7 @@
 .footer-contact {
   margin: 6px 0;  /* Reduced margin */
   font-size: 13px;  /* Smaller font */
+  text-align: right;
 }
 
 .phone-icon {
@@ -63,10 +74,12 @@
 .footer-copyright {
   margin-top: 10px;  /* Reduced margin */
   font-size: 11px;  /* Smaller font */
+  text-align: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 8px;
 }
 
 /* Responsive Adjustments */
-
 /* Small devices (landscape phones, 576px and up) */
 @media (min-width: 576px) {
   .custom-footer {
@@ -103,5 +116,18 @@
   
   .social-icon {
     font-size: 16px;
+  }
+}
+
+/* Mobile responsiveness for the new layout */
+@media (max-width: 575px) {
+  .footer-content,
+  .footer-right {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .footer-contact {
+    text-align: center;
   }
 }
