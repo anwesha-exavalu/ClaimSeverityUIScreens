@@ -5,6 +5,7 @@ import "./Card.css";
 import FeatureInputForm from "./FeatureInputForm";
 import ModelInfo from "./ModelInfo";
 import OutputDetails from "./Output";
+import CustomerInfo from "./CustomerInfo";
 
 const RealTimeInference = () => {
   const [activeTab, setActiveTab] = useState('1');
@@ -33,17 +34,23 @@ const RealTimeInference = () => {
   const items = [
     {
       key: '1',
-      label: 'Feature Input',
+      label: 'Customer Info',
       // children: <FeatureInputForm setActiveTab={setActiveTab} />,
-      children: <FeatureInputForm setActiveTab={setActiveTab} setPredictionData={setPredictionData} />,
+      children: <CustomerInfo  setActiveTab={setActiveTab} />,
     },
     {
       key: '2',
+      label: 'Feature Input',
+     
+      children: <FeatureInputForm setActiveTab={setActiveTab} setPredictionData={setPredictionData} />,
+    },
+    {
+      key: '3',
       label: 'Model Info',
       children: <ModelInfo predictionData={predictionData} />,
     },
     {
-      key: '3',
+      key: '4',
       label: 'Output',
       children: <OutputDetails predictionData={predictionData} />,
     },

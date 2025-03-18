@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Row, Col, Alert, Spin, AutoComplete } from 'antd';
+import { Form, Input, Button, Row, Col, Alert, Spin, AutoComplete, Card, Typography } from 'antd';
 import { SearchOutlined} from '@ant-design/icons';
+const { Title } = Typography;
 const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [form] = Form.useForm();
   const [selectedClaim, setSelectedClaim] = useState('');
   const [isSearched, setIsSearched] = useState(false);
-
+  const [policyNumber, setPolicyNumber] = useState("");
+  useEffect(() => {
+    // Retrieve the policy number from localStorage that was set in the CustomerInfo component
+    const storedPolicyNumber = localStorage.getItem('currentPolicyNumber');
+    if (storedPolicyNumber) {
+      setPolicyNumber(storedPolicyNumber);
+    }
+    setLoading(false);
+  }, []);
   // Generate random claim numbers for suggestions
   const generateClaimNumbers = () => {
     const numbers = [];
@@ -117,7 +126,14 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
             style={{ marginBottom: '16px', width: '100%' }}
           />
         )}
-
+ <div className="policy-details-container">
+      <Spin spinning={loading}>
+      
+          <Title level={5} style={{ color: 'royalblue', marginBottom: 14,}}>Policy Number - {policyNumber}</Title>
+          {/* Rest of your policy details content */}
+          
+      </Spin>
+    </div>
         <Row gutter={[12, 12]} style={{ marginBottom: '24px', width: '100%' }}>
           <Col xs={24} sm={12} md={6} lg={6}>
             <AutoComplete

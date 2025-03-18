@@ -20,7 +20,12 @@ const { Content } = Layout;
 const modelDescriptions = {
   "Claim Propensity": "Predicts the likelihood of a claim being filed.",
   "Claim Severity": "Estimates the potential cost of a claim.",
-  "Medical Billing Fraud": "Detects fraudulent medical billing activities."
+  "Medical Invoice Analysis": "Medical invoice analysis for Workers’ compensation claims."
+};
+const modelDetailsDescriptions = {
+  "Claim Propensity": "Predicts the likelihood of a claim being filed.",
+  "Claim Severity": "Estimates the potential cost of a claim.",
+  "Medical Invoice Analysis": "Incorrect Provider Specialty Unauthorized Provider Billing AI-powered system helps optimize workers' compensation claims processing by identifying inconsistencies in medical invoices and claim patterns. It enhances adjuster efficiency by flagging cases with anomalies and prioritizing the work, reducing financial losses, and streamlining the investigation process."
 };
 
 const modelRadioOptions = {
@@ -33,9 +38,9 @@ const modelRadioOptions = {
     { label: "Batch Inference", value: "batch" },
     
   ],
-  "Medical Billing Fraud": [
-    { label: "Real-time Fraud Detection", value: "real-time" },
-    { label: "Batch Analysis", value: "batch" }
+  "Medical Invoice Analysis": [
+    { label: "Real Time Inference", value: "real-time-medical" },
+    { label: "Batch Inference", value: "batch-medical" },
   ]
 };
 
@@ -63,6 +68,13 @@ const RadioButton = () => {
     else  if (selectedModel === "Claim Severity" && selectedOption === "batch") {
       return <BatchInference/>;
     }
+    if (selectedModel === "Medical Invoice Analysis" && selectedOption === "real-time-medical") {
+      return <RealTimeInference />;
+    }
+    else  if (selectedModel === "Medical Invoice Analysis" && selectedOption === "batch-medical") {
+      return <BatchInference/>;
+    }
+
 
     return (
       <Card style={{ marginTop: 16 }}>
@@ -113,12 +125,12 @@ const RadioButton = () => {
             <Row justify="center" style={{ marginTop: 16 }}>
               <Col span={24}>
                 <Card style={{marginBottom: '15px',  boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)"}}>
-                  {/* <Title level={3} style={{ color: 'royalblue', marginBottom: 24, textAlign: 'center' }}>
+                  <Title level={3} style={{ color: 'royalblue', marginBottom: 24, textAlign: 'center' }}>
                     {selectedModel}
                   </Title>
                   <Paragraph style={{ textAlign: 'center', fontSize: '16px', marginBottom: 24 }}>
-                    {modelDescriptions[selectedModel]}
-                  </Paragraph> */}
+                    {modelDetailsDescriptions[selectedModel]}
+                  </Paragraph>
                   <Title level={4} style={{ marginBottom: 10 }}>
                     Select Operation Mode
                   </Title>

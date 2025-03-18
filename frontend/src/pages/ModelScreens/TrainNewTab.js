@@ -29,7 +29,7 @@ const { Content } = Layout;
 const modelDescriptions = {
   "Claim Propensity": "Predicts the likelihood of a claim being filed.",
   "Claim Severity": "Estimates the potential cost of a claim.",
-  "Medical Billing Fraud": "Detects fraudulent medical billing activities."
+  "Medical Invoice Analysis": "Medical invoice analysis for Workers’ compensation claims."
 };
 
 const ClaimSeverityUI = ({ predictionData }) => {
