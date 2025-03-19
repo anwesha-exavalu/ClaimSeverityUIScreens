@@ -11,14 +11,17 @@ import {
   Modal,
   message,
   Upload,
-  Typography
+  Typography,
+  AutoComplete
 } from "antd";
 import {
   EditOutlined,
   SaveOutlined,
-  UploadOutlined
+  UploadOutlined,
+  SearchOutlined
 } from "@ant-design/icons";
 const { Title } = Typography;
+
 function CustomerInfo({setActiveTab}) {
   // Form and state management
   const [form] = Form.useForm();
@@ -27,14 +30,15 @@ function CustomerInfo({setActiveTab}) {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [fileList, setFileList] = useState([]);
+  const [selectedCustomerId, setSelectedCustomerId] = useState('');
+  const [isSearched, setIsSearched] = useState(false);
 
   // Hardcoded customer data
   const customerInfo = {
-    customerId: "C7283",
-    firstName: "William",
-    lastName: "Johnson",
+    customerId: "2485",
+    firstName: "John",
+    lastName: "Smith",
     dob: "01/01/1980",
-    
   };
 
   const policyInfo = {
@@ -43,7 +47,6 @@ function CustomerInfo({setActiveTab}) {
     policyEndDate: "12/31/2025",
     product: "Medical",
     coverageAmount: "40,000",
-   
   };
 
   const agentDetails = {
@@ -53,21 +56,72 @@ function CustomerInfo({setActiveTab}) {
     email:"xyz@mail.com"
   };
 
-  const insuranceInfo = {
-    objective: "Retirement Planning",
-    plan: "Premium Life Protection",
-    premiumAmount: "5000",
-    term: "20 years"
-  };
+  
 
-  const medicalInfo = {
-    height: "175",
-    weight: "70",
-    medicalConditions: "None",
-    currentTreatment: "None"
+ 
+
+  // Generate random customer IDs for suggestions
+  const generateCustomerIds = () => {
+    const ids = [];
+    for (let i = 0; i < 5; i++) {
+      const randomNum = Math.floor(Math.random() * 9000) + 1000;
+      ids.push({ value: `C${randomNum}` });
+    }
+    return ids;
   };
 
   // Event handlers
+  const handleSearch = () => {
+    if (selectedCustomerId) {
+      setIsSearched(true);
+      message.success(`Customer ID ${selectedCustomerId} searched successfully`);
+    }
+  };
+
+ //handleGetData function in CustomerInfo component updates localStorage when retrieving customer data:
+const handleGetData = () => {
+    setLoading(true);
+    
+    // Simulate API call with timeout
+    setTimeout(() => {
+      // Set form values with the selected customer ID
+      const formData = {
+        // Use the selected customer ID
+        customerId: selectedCustomerId,
+        
+        // Fill in the rest with hardcoded data
+        firstName: customerInfo.firstName,
+        lastName: customerInfo.lastName,
+        dob: customerInfo.dob,
+        
+        // Policy Info
+        policyNumber: policyInfo.policyNumber,
+        policyStartDate: policyInfo.policyStartDate,
+        policyEndDate: policyInfo.policyEndDate,
+        product: policyInfo.product,
+        coverageAmount: policyInfo.coverageAmount,
+        
+        // Agent Info
+        agentfirstName: agentDetails.agentfirstName,
+        agentlastName: agentDetails.agentlastName,
+        agencyName: agentDetails.agencyName,
+        email: agentDetails.email,
+      };
+      
+      // Update form with values
+      form.setFieldsValue(formData);
+      
+      // Also update localStorage with the same values
+      localStorage.setItem('currentCustomerId', selectedCustomerId);
+      localStorage.setItem('currentCustomerFirstName', customerInfo.firstName);
+      localStorage.setItem('currentCustomerLastName', customerInfo.lastName);
+      localStorage.setItem('currentPolicyNumber', policyInfo.policyNumber);
+      
+      setLoading(false);
+      message.success("Customer data retrieved successfully");
+    }, 1000);
+  };
+
   const handleEditToggle = () => {
     if (isEditMode) {
       // Save the form data if needed
@@ -104,44 +158,23 @@ function CustomerInfo({setActiveTab}) {
   };
 
   // New function to handle Fetch button click
-  const handleFetch = () => {
-    // Get the policy number from the form
-    const policyNumber = form.getFieldValue('policyNumber');
+ // In CustomerInfo.js, modify the handleFetch function
+// In CustomerInfo.js
+const handleFetch = () => {
+    // Get the values directly from the form
+    const formValues = form.getFieldsValue();
     
-    // Store the policy number in localStorage to make it available in the next tab
-    localStorage.setItem('currentPolicyNumber', policyNumber);
+    // Store all necessary data in localStorage
+    localStorage.setItem('currentPolicyNumber', formValues.policyNumber || '');
+    localStorage.setItem('currentCustomerId', formValues.customerId || '');
+    localStorage.setItem('currentCustomerFirstName', formValues.firstName || '');
+    localStorage.setItem('currentCustomerLastName', formValues.lastName || '');
     
     // Navigate to the next tab
-    setActiveTab('2'); // Assuming the next tab key is '2'
+    setActiveTab('2');
     
-    message.success(`Navigating to details for Policy Number: ${policyNumber}`);
+    message.success(`Navigating to details for Policy Number: ${formValues.policyNumber}`);
   };
-
-  // Initialize form with hardcoded values
-  React.useEffect(() => {
-    form.setFieldsValue({
-      // Customer Info
-      customerId: customerInfo.customerId,
-      firstName: customerInfo.firstName,
-      lastName: customerInfo.lastName,
-      dob: customerInfo.dob,
-     
-      
-      // Policy Info
-      policyNumber: policyInfo.policyNumber,
-      policyStartDate: policyInfo.policyStartDate,
-      policyEndDate: policyInfo.policyEndDate,
-      product: policyInfo.product,
-      coverageAmount: policyInfo.coverageAmount,
-      
-      // Agent Info
-      agentfirstName: agentDetails.agentfirstName,
-      agentlastName: agentDetails.agentlastName,
-      agencyName: agentDetails.agencyName,
-      email: agentDetails.email,
-      
-    });
-  }, [form]);
 
   // Shared style objects for consistent UI
   const inputStyle = {
@@ -186,6 +219,43 @@ function CustomerInfo({setActiveTab}) {
                 />
               </Tooltip>
             </div>
+          </Col>
+        </Row>
+
+        {/* New Search Section */}
+        <Row gutter={[12, 12]} style={{ marginBottom: '24px', width: '100%' }}>
+          <Col xs={24} sm={12} md={6} lg={6}>
+            <AutoComplete
+              style={{ width: '100%' }}
+              options={generateCustomerIds()}
+              placeholder="Search customer ID..."
+              value={selectedCustomerId}
+              onChange={(value) => {
+                setSelectedCustomerId(value);
+                setIsSearched(false);
+              }}
+            />
+          </Col>
+          <Col xs={24} sm={12} md={6} lg={6}>
+            {!isSearched ? (
+              <Button 
+                type="primary"
+                onClick={handleSearch}
+                disabled={!selectedCustomerId}
+                style={{ ...buttonStyle, width: '40%' }}
+                icon={<SearchOutlined />}
+              >
+                Search
+              </Button>
+            ) : (
+              <Button 
+                type="primary"
+                onClick={handleGetData}
+                style={{ ...buttonStyle, width: '40%' }}
+              >
+                Get Data
+              </Button>
+            )}
           </Col>
         </Row>
 

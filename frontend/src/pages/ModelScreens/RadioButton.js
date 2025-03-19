@@ -13,6 +13,7 @@ import ClaimSeverityUI from "./TrainNewTab";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import RealTimeInference from "./RealTimeInferenceContent";
 import BatchInference from "./BatchInference";
+import RealTimeInferenceMedical from "./RealTimeInferenceMedical";
 const { Option } = Select;
 const { Title, Paragraph } = Typography;
 const { Content } = Layout;
@@ -25,7 +26,7 @@ const modelDescriptions = {
 const modelDetailsDescriptions = {
   "Claim Propensity": "Predicts the likelihood of a claim being filed.",
   "Claim Severity": "Estimates the potential cost of a claim.",
-  "Medical Invoice Analysis": "Incorrect Provider Specialty Unauthorized Provider Billing AI-powered system helps optimize workers' compensation claims processing by identifying inconsistencies in medical invoices and claim patterns. It enhances adjuster efficiency by flagging cases with anomalies and prioritizing the work, reducing financial losses, and streamlining the investigation process."
+  "Medical Invoice Analysis": "AI-ML powered system that helps optimize workers' compensation claims processing by identifying inconsistencies in medical invoices and claim patterns. It enhances adjuster efficiency by flagging cases with anomalies and prioritizing the work, reducing financial losses, and streamlining the investigation process."
 };
 
 const modelRadioOptions = {
@@ -69,7 +70,7 @@ const RadioButton = () => {
       return <BatchInference/>;
     }
     if (selectedModel === "Medical Invoice Analysis" && selectedOption === "real-time-medical") {
-      return <RealTimeInference />;
+      return <RealTimeInferenceMedical />;
     }
     else  if (selectedModel === "Medical Invoice Analysis" && selectedOption === "batch-medical") {
       return <BatchInference/>;

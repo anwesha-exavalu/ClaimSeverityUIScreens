@@ -6,8 +6,10 @@ import FeatureInputForm from "./FeatureInputForm";
 import ModelInfo from "./ModelInfo";
 import OutputDetails from "./Output";
 import CustomerInfo from "./CustomerInfo";
+import FeatureInputFormMedical from "./FeatureInputFormMedical";
+import OutputDetailsMedical from "./OutputMedical";
 
-const RealTimeInference = () => {
+const RealTimeInferenceMedical = () => {
   const [activeTab, setActiveTab] = useState('1');
   const [predictionData, setPredictionData] = useState(null);
 
@@ -32,27 +34,27 @@ const RealTimeInference = () => {
   //   console.log(key);
   // };
   const items = [
-    // {
-    //   key: '1',
-    //   label: 'Customer Info',
-    //   // children: <FeatureInputForm setActiveTab={setActiveTab} />,
-    //   children: <CustomerInfo  setActiveTab={setActiveTab} />,
-    // },
     {
       key: '1',
-      label: 'Feature Input',
-     
-      children: <FeatureInputForm setActiveTab={setActiveTab} setPredictionData={setPredictionData} />,
+      label: 'Customer Info',
+      // children: <FeatureInputForm setActiveTab={setActiveTab} />,
+      children: <CustomerInfo  setActiveTab={setActiveTab} />,
     },
     {
       key: '2',
-      label: 'Model Info',
-      children: <ModelInfo predictionData={predictionData} />,
+      label: 'Feature Input',
+     
+      children: <FeatureInputFormMedical setActiveTab={setActiveTab} setPredictionData={setPredictionData} />,
     },
+    // {
+    //   key: '3',
+    //   label: 'Model Info',
+    //   children: <ModelInfo predictionData={predictionData} />,
+    // },
     {
       key: '3',
       label: 'Output',
-      children: <OutputDetails predictionData={predictionData} />,
+      children: <OutputDetailsMedical predictionData={predictionData} />,
     },
   ];
   return (
@@ -110,4 +112,4 @@ const RealTimeInference = () => {
   );
 };
 
-export default RealTimeInference; 
+export default RealTimeInferenceMedical; 
