@@ -56,18 +56,9 @@ function CustomerInfo({setActiveTab}) {
     email:"xyz@mail.com"
   };
 
-  
-
- 
-
-  // Generate random customer IDs for suggestions
-  const generateCustomerIds = () => {
-    const ids = [];
-    for (let i = 0; i < 5; i++) {
-      const randomNum = Math.floor(Math.random() * 9000) + 1000;
-      ids.push({ value: `C${randomNum}` });
-    }
-    return ids;
+  // Generate fixed customer ID for dropdown
+  const getCustomerIds = () => {
+    return [{ value: "2485" }];
   };
 
   // Event handlers
@@ -78,8 +69,7 @@ function CustomerInfo({setActiveTab}) {
     }
   };
 
- //handleGetData function in CustomerInfo component updates localStorage when retrieving customer data:
-const handleGetData = () => {
+  const handleGetData = () => {
     setLoading(true);
     
     // Simulate API call with timeout
@@ -157,10 +147,8 @@ const handleGetData = () => {
     setIsModalOpen(true);
   };
 
-  // New function to handle Fetch button click
- // In CustomerInfo.js, modify the handleFetch function
-// In CustomerInfo.js
-const handleFetch = () => {
+  // In CustomerInfo.js
+  const handleFetch = () => {
     // Get the values directly from the form
     const formValues = form.getFieldsValue();
     
@@ -222,12 +210,12 @@ const handleFetch = () => {
           </Col>
         </Row>
 
-        {/* New Search Section */}
+        {/* Search Section with fixed customer ID */}
         <Row gutter={[12, 12]} style={{ marginBottom: '24px', width: '100%' }}>
           <Col xs={24} sm={12} md={6} lg={6}>
             <AutoComplete
               style={{ width: '100%' }}
-              options={generateCustomerIds()}
+              options={getCustomerIds()}
               placeholder="Search customer ID..."
               value={selectedCustomerId}
               onChange={(value) => {
@@ -450,7 +438,7 @@ const handleFetch = () => {
             </Row>
           </div>
 
-          <Row gutter={[24, 16]} style={{ marginTop: '24px' }} justify="start" >
+          <Row gutter={[24, 16]} style={{ marginTop: '24px' }} justify="start" align="middle">
             <Col xs={24} sm={6} md={4} lg={3}>
               <Button 
                 type="primary" 
@@ -465,6 +453,12 @@ const handleFetch = () => {
                 Upload PDF
               </Button>
             </Col>
+            <Col xs={24} sm={8} md={6} lg={6}>
+              <span style={{ marginLeft: '8px' }}>Upload relevant medical document</span>
+            </Col>
+          </Row>
+          
+          <Row gutter={[24, 16]} style={{ marginTop: '16px' }} justify="start">
             <Col xs={24} sm={6} md={4} lg={3}>
               <Button 
                 type="primary" 
