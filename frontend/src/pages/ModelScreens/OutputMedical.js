@@ -1,10 +1,36 @@
-import React from 'react';
-import { Card, Row, Col, Typography, Statistic } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Card, Row, Col, Typography, Statistic, Spin, Form } from 'antd';
 import FeatureImportanceChart from './MedicalChart';
 
 const { Title, Paragraph } = Typography;
 
 const OutputDetailsMedical = ({ predictionData }) => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [form] = Form.useForm();
+ const [policyNumber, setPolicyNumber] = useState("");
+  const [customerId, setCustomerId] = useState("");
+  const [customerFirstName, setCustomerFirstName] = useState("");
+  const [customerLastName, setCustomerLastName] = useState("");
+
+      useEffect(() => {
+        // Set loading to true while we fetch the data
+        setLoading(true);
+        
+        // Retrieve data from localStorage
+        const storedPolicyNumber = localStorage.getItem('currentPolicyNumber');
+        const storedCustomerId = localStorage.getItem('currentCustomerId');
+        const storedFirstName = localStorage.getItem('currentCustomerFirstName');
+        const storedLastName = localStorage.getItem('currentCustomerLastName');
+        
+        // Update state with retrieved values
+        if (storedPolicyNumber) setPolicyNumber(storedPolicyNumber);
+        if (storedCustomerId) setCustomerId(storedCustomerId);
+        if (storedFirstName) setCustomerFirstName(storedFirstName);
+        if (storedLastName) setCustomerLastName(storedLastName);
+        
+      
+      }, []);
   const formatShapData = () => {
     if (!predictionData || !predictionData.top_5_shap_values) {
       return [];
@@ -63,6 +89,41 @@ const OutputDetailsMedical = ({ predictionData }) => {
 
   return (
     <div style={{ padding: '1%' }}>
+         <div className="policy-details-container">
+         
+            <Card>
+              <Row gutter={[14, 14]} style={{ marginBottom: '24px', width: '100%' }}>
+                <Col xs={24} sm={12} md={6} lg={6}>
+                  <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                    Policy Number - {policyNumber}
+                  </Title>
+                </Col>
+                <Col xs={24} sm={12} md={6} lg={6}>
+                  <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                    Customer ID - {customerId}
+                  </Title>
+                </Col>
+                <Col xs={24} sm={12} md={6} lg={6}>
+                  <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                    Customer Name - {customerFirstName} {customerLastName}
+                  </Title>
+                </Col>
+              </Row>
+              <Row gutter={[14, 14]} style={{ marginBottom: '24px', width: '100%' }}>
+                <Col xs={24} sm={12} md={6} lg={6}>
+                  <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                    LOB - Worker's Compensation
+                  </Title>
+                </Col>
+                <Col xs={24} sm={12} md={6} lg={6}>
+                  <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                    Model Name - Medical Invoice Analysis
+                  </Title>
+                </Col>
+              </Row>
+            </Card> 
+          
+        </div>
       <Row gutter={[8, 8]}>
         {/* First row - Small cards and feature importance */}
         <Col xs={24} sm={12} md={6} lg={6} xl={6}>

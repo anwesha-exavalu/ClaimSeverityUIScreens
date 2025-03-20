@@ -113,7 +113,7 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
           />
         )}
         <div className="policy-details-container">
-          <Spin spinning={loading}>
+          
             <Card>
               <Row gutter={[14, 14]} style={{ marginBottom: '24px', width: '100%' }}>
                 <Col xs={24} sm={12} md={6} lg={6}>
@@ -145,7 +145,7 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
                 </Col>
               </Row>
             </Card> 
-          </Spin>
+       
         </div>
         
         <Form
