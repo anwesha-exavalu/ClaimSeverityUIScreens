@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Row, Col, Alert, Spin, Card, Typography, DatePicker } from 'antd';
+import moment from 'moment'; // Import moment for handling dates
 const { Title } = Typography;
 
 const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
@@ -27,24 +28,45 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
     if (storedFirstName) setCustomerFirstName(storedFirstName);
     if (storedLastName) setCustomerLastName(storedLastName);
     
-    fetchFormData();
+    setHardcodedFormData();
   }, []);
 
-  const fetchFormData = async () => {
+  const setHardcodedFormData = () => {
     try {
-      const response = await fetch('http://34.234.94.92:5000/get-form-data', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-
-      const data = await response.json();
-      if (data) {
-        form.setFieldsValue(data);
-      }
+      // Hardcoded form data with proper date objects for DatePicker fields
+      const hardcodedData = {
+        "Insurer FEIN": "6600F655X",
+        "Insurer Postal Code": "01653-0002",
+        "Employer FEIN": "ZZZ0065ZX",
+        "Employer Physical City": "WHARTON",
+        "Employee Mailing City": "EL CAMPO",
+        "Employee Gender Code": "F",
+        "Employee Date of Injury": moment("01-01-2024  00:00:00"), // Convert to moment object
+        "Total Charge Per Bill": "2,039.00",
+        "Admission Hour": "12:00 AM",
+        "Admission Type Code": "3",
+        "First ICD Diagnosis Code": "M77.8",
+        "Second ICD Diagnosis Code": "R60.9",
+        "Third ICD Diagnosis Code": "R29.3",
+        "Principal Diagnosis Code": "M75.91",
+        "Admitting Diagnosis Code": "M75.91",
+        "policy_start_date": moment("01-26-2018  00:00:00"), // Convert to moment object
+        "First ICD Procedure Code": "0PSJ04Z",
+        "Second ICD Procedure Code": "3E0T3BZ",
+        "Billing Provider Last Name or Group": "MATAGORDA REGIONAL MEDICAL CEN",
+        "Billing Provider City": "BAY CITY",
+        "FLAG": "1",
+        "Length_of_Stay": "15",
+        "date_of_joining": moment("10-11-2015  00:00:00"), // Convert to moment object
+        "Diagnosis Related Group Code": "562",
+        "ICD Principal Procedure Code": "0QSH06Z"
+      };
+      
+      // Set the form values
+      form.setFieldsValue(hardcodedData);
     } catch (err) {
-      setError('Failed to fetch form data. Please try again.');
+      setError('Failed to set form data. Please try again.');
+      console.error('Error setting form data:', err);
     } finally {
       setLoading(false);
     }
@@ -55,12 +77,24 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
     setError(null);
     
     try {
+      // Convert moment objects to string format for API
+      const formattedValues = { ...values };
+      if (formattedValues["Employee Date of Injury"] && formattedValues["Employee Date of Injury"].format) {
+        formattedValues["Employee Date of Injury"] = formattedValues["Employee Date of Injury"].format('YYYY-MM-DD');
+      }
+      if (formattedValues["policy_start_date"] && formattedValues["policy_start_date"].format) {
+        formattedValues["policy_start_date"] = formattedValues["policy_start_date"].format('YYYY-MM-DD');
+      }
+      if (formattedValues["date_of_joining"] && formattedValues["date_of_joining"].format) {
+        formattedValues["date_of_joining"] = formattedValues["date_of_joining"].format('YYYY-MM-DD');
+      }
+      
       const response = await fetch('http://34.234.94.92:5000/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(formattedValues),
       });
 
       const data = await response.json();
@@ -68,6 +102,7 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
       setActiveTab('3'); // Navigate to Output tab
     } catch (err) {
       setError('Failed to get prediction. Please try again.');
+      console.error('Error submitting form:', err);
     } finally {
       setLoading(false);
     }
@@ -113,7 +148,7 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
           />
         )}
         <div className="policy-details-container">
-          <Spin spinning={loading}>
+          
             <Card>
               <Row gutter={[14, 14]} style={{ marginBottom: '24px', width: '100%' }}>
                 <Col xs={24} sm={12} md={6} lg={6}>
@@ -145,7 +180,7 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
                 </Col>
               </Row>
             </Card> 
-          </Spin>
+       
         </div>
         
         <Form
