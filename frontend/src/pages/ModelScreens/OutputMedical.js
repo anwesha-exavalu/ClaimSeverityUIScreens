@@ -136,7 +136,7 @@ const OutputDetailsMedical = ({ predictionData }) => {
             <Title level={4}>Model Prediction</Title>
             <Statistic
               value={predictionLabel}
-              valueStyle={{ color: predictionLabel === "Fraud" ? 'crimson' : '#3f8600' }}
+              valueStyle={{ color: predictionLabel === "Fraud" ? 'crimson' : 'red' }}
             />
           </Card>
           <Card style={mediumCardStyle} bordered={true}>

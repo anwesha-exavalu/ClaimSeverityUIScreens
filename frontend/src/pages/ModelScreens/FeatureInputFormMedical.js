@@ -77,31 +77,32 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
     setError(null);
     
     try {
-      // Convert moment objects to string format for API
-      const formattedValues = { ...values };
-      if (formattedValues["Employee Date of Injury"] && formattedValues["Employee Date of Injury"].format) {
-        formattedValues["Employee Date of Injury"] = formattedValues["Employee Date of Injury"].format('YYYY-MM-DD');
-      }
-      if (formattedValues["policy_start_date"] && formattedValues["policy_start_date"].format) {
-        formattedValues["policy_start_date"] = formattedValues["policy_start_date"].format('YYYY-MM-DD');
-      }
-      if (formattedValues["date_of_joining"] && formattedValues["date_of_joining"].format) {
-        formattedValues["date_of_joining"] = formattedValues["date_of_joining"].format('YYYY-MM-DD');
-      }
-      
-      const response = await fetch('http://34.234.94.92:5000/predict', {
-        method: 'POST',
+      const response = await fetch('http://localhost:5000/predict', {
+        method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formattedValues),
+        body: JSON.stringify(values),
       });
 
       const data = await response.json();
       setPredictionData(data);
-      setActiveTab('3'); // Navigate to Output tab
+      setActiveTab('3');
+      // // Convert moment objects to string format for API
+      // const formattedValues = { ...values };
+      // if (formattedValues["Employee Date of Injury"] && formattedValues["Employee Date of Injury"].format) {
+      //   formattedValues["Employee Date of Injury"] = formattedValues["Employee Date of Injury"].format('YYYY-MM-DD');
+      // }
+      // if (formattedValues["policy_start_date"] && formattedValues["policy_start_date"].format) {
+      //   formattedValues["policy_start_date"] = formattedValues["policy_start_date"].format('YYYY-MM-DD');
+      // }
+      // if (formattedValues["date_of_joining"] && formattedValues["date_of_joining"].format) {
+      //   formattedValues["date_of_joining"] = formattedValues["date_of_joining"].format('YYYY-MM-DD');
+      // }
+      
+       // Navigate to Output tab
     } catch (err) {
-      setError('Failed to get prediction. Please try again.');
+      // setError('Failed to get prediction. Please try again.');
       console.error('Error submitting form:', err);
     } finally {
       setLoading(false);
@@ -474,6 +475,7 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
                   ...buttonStyle,
                   width: '100%'
                 }}
+                onClick={() => onFinish()}
               >
                 Predict
               </Button>
