@@ -7,6 +7,28 @@ import FeatureWeightsTable from './FeatureweightTable';
 const { Title } = Typography;
 
 const ModelInfo = ({ predictionData }) => {
+  const [policyNumber, setPolicyNumber] = useState("");
+     const [customerId, setCustomerId] = useState("");
+     const [customerFirstName, setCustomerFirstName] = useState("");
+     const [customerLastName, setCustomerLastName] = useState("");
+      useEffect(() => {
+        // Set loading to true while we fetch the data
+      
+        
+        // Retrieve data from localStorage
+        const storedPolicyNumber = localStorage.getItem('currentPolicyNumber');
+        const storedCustomerId = localStorage.getItem('currentCustomerId');
+        const storedFirstName = localStorage.getItem('currentCustomerFirstName');
+        const storedLastName = localStorage.getItem('currentCustomerLastName');
+        
+        // Update state with retrieved values
+        if (storedPolicyNumber) setPolicyNumber(storedPolicyNumber);
+        if (storedCustomerId) setCustomerId(storedCustomerId);
+        if (storedFirstName) setCustomerFirstName(storedFirstName);
+        if (storedLastName) setCustomerLastName(storedLastName);
+        
+        
+      }, []);
   // Feature weights data based on model coefficients
   const getFeatureWeights = () => {
     if (!predictionData || !predictionData.model_weights || !predictionData.model_weights.coefficients) {
@@ -146,13 +168,51 @@ const ModelInfo = ({ predictionData }) => {
   
   return (
     <div className="model-info-container" style={{ padding: '24px', width: '100%' }}>
+       <div className="policy-details-container">
+                <Card>
+                  <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
+                    <Col xs={24} sm={12} md={6} lg={6}>
+                      <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                        Policy Number - {policyNumber}
+                      </Title>
+                    </Col>
+                    <Col xs={24} sm={12} md={6} lg={6}>
+                      <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                        Customer ID - {customerId}
+                      </Title>
+                    </Col>
+                    <Col xs={24} sm={12} md={6} lg={6}>
+                      <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                        Customer Name - {customerFirstName} {customerLastName}
+                      </Title>
+                    </Col>
+                  </Row>
+                  <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
+                    <Col xs={24} sm={12} md={6} lg={6}>
+                      <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                        LOB - Auto Liability
+                      </Title>
+                    </Col>
+                    <Col xs={24} sm={12} md={6} lg={6}>
+                      <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                        Model Name - Claim severity - Third party auto liability (FNOL)
+                      </Title>
+                    </Col>
+                    <Col xs={24} sm={12} md={6} lg={6}>
+                      <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                        Date of Loss - 01/03/2025
+                      </Title>
+                    </Col>
+                  </Row>
+                </Card>
+              </div>
       {/* Scatter Plot */}
       {selectedModel && (
         <Title level={3} style={{ marginBottom: '5px', color: 'royalblue', textAlign: "center", fontSize: getTitleFontSize() }}>
           Linear Regression of {selectedModel} Model
         </Title>
       )}
-      <Row gutter={[16, 16]}>
+      <Row gutter={[16, 16]} style={{ marginTop: '16px' }}>
         <Col span={24}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
             <Title level={4} style={{ fontSize: getSubtitleFontSize() }}>Actual vs. Predicted Claims</Title>
@@ -221,7 +281,7 @@ const ModelInfo = ({ predictionData }) => {
       </Row>
 
       {/* Statistics Cards - fixed to 3 cards per row regardless of screen size */}
-      <Row gutter={[16, 16]} style={{ marginTop: '16px' }}>
+      <Row gutter={[16, 16]} style={{ marginTop: '16px' }} >
         <Col xs={24} sm={24} md={8} lg={8} xl={8}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
             <Title level={4} style={{ fontSize: getSubtitleFontSize() }}>
@@ -234,7 +294,7 @@ const ModelInfo = ({ predictionData }) => {
               </Tooltip>
             </Title>
             <Statistic
-              value={predictionData?.r2_score ? predictionData.r2_score.toFixed(2) : 0}
+              value={predictionData?.adjusted_r2 ? predictionData.adjusted_r2.toFixed(2) : 0}
               valueStyle={{ fontSize: getStatFontSize() }}
             />
           </Card>
@@ -242,16 +302,16 @@ const ModelInfo = ({ predictionData }) => {
         <Col xs={24} sm={24} md={8} lg={8} xl={8}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
             <Title level={4} style={{ fontSize: getSubtitleFontSize() }}>
-              Average Claim Payout
+              Average Claim Amount
               <Tooltip 
-                title="Average of the claim payout."
+                title="Average of the claim amount."
                 overlayStyle={tooltipStyle}
               >
                 <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: windowWidth < 576 ? '14px' : '16px', color: '#1890ff' }} />
               </Tooltip>
             </Title>
             <Statistic
-              value="53412"
+              value="62887.6"
               prefix={<DollarOutlined />}
               valueStyle={{ color: '#3f8600', fontSize: getStatFontSize() }}
             />
