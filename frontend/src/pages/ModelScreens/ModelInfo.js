@@ -8,27 +8,40 @@ const { Title } = Typography;
 
 const ModelInfo = ({ predictionData }) => {
   const [policyNumber, setPolicyNumber] = useState("");
-     const [customerId, setCustomerId] = useState("");
-     const [customerFirstName, setCustomerFirstName] = useState("");
-     const [customerLastName, setCustomerLastName] = useState("");
-      useEffect(() => {
-        // Set loading to true while we fetch the data
-      
-        
-        // Retrieve data from localStorage
-        const storedPolicyNumber = localStorage.getItem('currentPolicyNumber');
-        const storedCustomerId = localStorage.getItem('currentCustomerId');
-        const storedFirstName = localStorage.getItem('currentCustomerFirstName');
-        const storedLastName = localStorage.getItem('currentCustomerLastName');
-        
-        // Update state with retrieved values
-        if (storedPolicyNumber) setPolicyNumber(storedPolicyNumber);
-        if (storedCustomerId) setCustomerId(storedCustomerId);
-        if (storedFirstName) setCustomerFirstName(storedFirstName);
-        if (storedLastName) setCustomerLastName(storedLastName);
-        
-        
-      }, []);
+  const [customerId, setCustomerId] = useState("");
+  const [customerFirstName, setCustomerFirstName] = useState("");
+  const [customerLastName, setCustomerLastName] = useState("");
+  const [selectedModel, setSelectedModel] = useState('');
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+
+  useEffect(() => {
+    // Retrieve data from localStorage
+    const storedPolicyNumber = localStorage.getItem('currentPolicyNumber');
+    const storedCustomerId = localStorage.getItem('currentCustomerId');
+    const storedFirstName = localStorage.getItem('currentCustomerFirstName');
+    const storedLastName = localStorage.getItem('currentCustomerLastName');
+    const model = localStorage.getItem('selectedModel');
+    
+    // Update state with retrieved values
+    if (storedPolicyNumber) setPolicyNumber(storedPolicyNumber);
+    if (storedCustomerId) setCustomerId(storedCustomerId);
+    if (storedFirstName) setCustomerFirstName(storedFirstName);
+    if (storedLastName) setCustomerLastName(storedLastName);
+    if (model) setSelectedModel(model);
+    
+    // Add event listener for window resize
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    
+    // Clean up event listener
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   // Feature weights data based on model coefficients
   const getFeatureWeights = () => {
     if (!predictionData || !predictionData.model_weights || !predictionData.model_weights.coefficients) {
@@ -50,7 +63,7 @@ const ModelInfo = ({ predictionData }) => {
         if (value > 3000) {
           explanation = `More Significant, Increases claim cost.`;
         } 
-        else if(value>0 && value<3000){
+        else if(value > 0 && value < 3000){
           explanation = `Moderately Significant, Increases claim cost.`;
         }
         else {
@@ -72,42 +85,17 @@ const ModelInfo = ({ predictionData }) => {
       }));
   };
 
-  const columns = [
-    {
-      title: 'Features',
-      dataIndex: 'feature',
-      key: 'feature',
-    },
-    {
-      title: 'Values',
-      dataIndex: 'weight',
-      key: 'weight',
-      render: (text) => `${text.toFixed(2)}`,
-    },
-    {
-      title: 'Explanation',
-      dataIndex: 'explanation',
-      key: 'explanation',
-    },
-  ];
-
+  // Generate data from the actual vs predicted JSON
   const generateData = () => {
-    const data = [];
-    for (let i = 30000; i <= 80000; i += 2000) {
-      const pointCount = Math.floor(Math.random() * 3) + 3;
-      for (let j = 0; j < pointCount; j++) {
-        const variance = (Math.random() - 0.5) * 10000;
-        data.push({
-          actual: i,
-          predicted: i + variance
-        });
-      }
+    if (!predictionData || !predictionData.all_actual_vs_predicted) {
+      return [];
     }
-    return data;
+
+    return Object.entries(predictionData.all_actual_vs_predicted).map(([actual, predicted]) => ({
+      actual: parseFloat(actual),
+      predicted: predicted
+    }));
   };
-
-  const data = generateData();
-
   // Tooltip styles
   const tooltipStyle = {
     backgroundColor: '#e6f7ff',
@@ -116,30 +104,7 @@ const ModelInfo = ({ predictionData }) => {
     borderRadius: '4px',
     maxWidth: '300px'
   };
-  
-  const [selectedModel, setSelectedModel] = useState('');
-  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
-  
-  useEffect(() => {
-    // Retrieve the selected model from localStorage when component mounts
-    const model = localStorage.getItem('selectedModel');
-    if (model) {
-      setSelectedModel(model);
-    }
-    
-    // Add event listener for window resize
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    
-    window.addEventListener('resize', handleResize);
-    
-    // Clean up event listener
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-  
+
   // Responsive font sizes based on screen width
   const getTitleFontSize = () => {
     if (windowWidth < 576) return '18px';
@@ -161,62 +126,104 @@ const ModelInfo = ({ predictionData }) => {
   
   // Responsive chart height
   const getChartHeight = () => {
-    if (windowWidth < 576) return 250;
-    if (windowWidth < 992) return 300;
-    return 350;
+    if (windowWidth < 576) return 300;
+    if (windowWidth < 992) return 350;
+    return 600;
   };
-  
+
+  // Columns for feature weights table
+  const columns = [
+    {
+      title: 'Features',
+      dataIndex: 'feature',
+      key: 'feature',
+    },
+    {
+      title: 'Values',
+      dataIndex: 'weight',
+      key: 'weight',
+      render: (text) => `${text.toFixed(2)}`,
+    },
+    {
+      title: 'Explanation',
+      dataIndex: 'explanation',
+      key: 'explanation',
+    },
+  ];
+
+  // Prepare data for scatter plot and other components
+  const data = generateData();
+
+  // Calculate consistent domain for both axes to match the image
+  const calculateConsistentDomain = () => {
+    return [0, 600000];
+  };
+
+  const consistentDomain = calculateConsistentDomain();
+
+  // Helper function to format numbers in millions
+  const formatMillions = (value) => {
+    return `${(value / 1000000).toFixed(1)}M`;
+  };
+
+  // Create ticks for X and Y axes
+  const axisTicks = [0, 100000, 200000, 300000, 400000, 500000, 600000];
+
+  const featureWeights = getFeatureWeights();
+
   return (
     <div className="model-info-container" style={{ padding: '24px', width: '100%' }}>
-       <div className="policy-details-container">
-                <Card>
-                  <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
-                    <Col xs={24} sm={12} md={6} lg={6}>
-                      <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                        Policy Number - {policyNumber}
-                      </Title>
-                    </Col>
-                    <Col xs={24} sm={12} md={6} lg={6}>
-                      <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                        Customer ID - {customerId}
-                      </Title>
-                    </Col>
-                    <Col xs={24} sm={12} md={6} lg={6}>
-                      <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                        Customer Name - {customerFirstName} {customerLastName}
-                      </Title>
-                    </Col>
-                  </Row>
-                  <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
-                    <Col xs={24} sm={12} md={6} lg={6}>
-                      <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                        LOB - Auto Liability
-                      </Title>
-                    </Col>
-                    <Col xs={24} sm={12} md={6} lg={6}>
-                      <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                        Model Name - Claim severity - Third party auto liability (FNOL)
-                      </Title>
-                    </Col>
-                    <Col xs={24} sm={12} md={6} lg={6}>
-                      <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                        Date of Loss - 01/03/2025
-                      </Title>
-                    </Col>
-                  </Row>
-                </Card>
-              </div>
+      {/* Policy Details Container */}
+      <div className="policy-details-container">
+        <Card>
+          <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
+            <Col xs={24} sm={12} md={6} lg={6}>
+              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                Policy Number - {policyNumber}
+              </Title>
+            </Col>
+            <Col xs={24} sm={12} md={6} lg={6}>
+              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                Customer ID - {customerId}
+              </Title>
+            </Col>
+            <Col xs={24} sm={12} md={6} lg={6}>
+              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                Customer Name - {customerFirstName} {customerLastName}
+              </Title>
+            </Col>
+          </Row>
+          <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
+            <Col xs={24} sm={12} md={6} lg={6}>
+              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                LOB - Auto Liability
+              </Title>
+            </Col>
+            <Col xs={24} sm={12} md={6} lg={6}>
+              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                Model Name - Claim severity - Third party auto liability (FNOL)
+              </Title>
+            </Col>
+            <Col xs={24} sm={12} md={6} lg={6}>
+              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                Date of Loss - 01/03/2025
+              </Title>
+            </Col>
+          </Row>
+        </Card>
+      </div>
+
       {/* Scatter Plot */}
       {selectedModel && (
         <Title level={3} style={{ marginBottom: '5px', color: 'royalblue', textAlign: "center", fontSize: getTitleFontSize() }}>
           Linear Regression of {selectedModel} Model
         </Title>
       )}
-      <Row gutter={[16, 16]} style={{ marginTop: '16px' }}>
+       <Row gutter={[16, 16]} style={{ marginTop: '16px' }}>
         <Col span={24}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
             <Title level={4} style={{ fontSize: getSubtitleFontSize() }}>Actual vs. Predicted Claims</Title>
-            <div style={{ width: '100%', height: getChartHeight() }}>
+            <div style={{ width: '65%', height: getChartHeight() }}>
               <ResponsiveContainer width="100%" height="100%">
                 <ScatterChart
                   margin={{
@@ -231,21 +238,23 @@ const ModelInfo = ({ predictionData }) => {
                     type="number"
                     dataKey="actual"
                     name="Actual Claim Cost"
-                    domain={[30000, 80000]}
+                    domain={consistentDomain}
+                    ticks={axisTicks}
                     label={{ 
                       value: 'Actual Claim Cost',
                       position: 'bottom',
                       offset: windowWidth < 576 ? 30 : 35,
                       style: { fontSize: windowWidth < 576 ? '12px' : '14px' }
                     }}
-                    tickFormatter={(value) => windowWidth < 576 ? `${(value/1000)}k` : `${value.toLocaleString()}`}
+                    tickFormatter={formatMillions}
                     tick={{ fontSize: windowWidth < 576 ? 10 : 12 }}
                   />
                   <YAxis
                     type="number"
                     dataKey="predicted"
                     name="Predicted Claim Cost"
-                    domain={[30000, 80000]}
+                    domain={consistentDomain}
+                    ticks={axisTicks}
                     label={{ 
                       value: 'Predicted Claim Cost',
                       angle: -90,
@@ -253,17 +262,18 @@ const ModelInfo = ({ predictionData }) => {
                       offset: windowWidth < 576 ? 25 : 35,
                       style: { fontSize: windowWidth < 576 ? '12px' : '14px' }
                     }}
-                    tickFormatter={(value) => windowWidth < 576 ? `${(value/1000)}k` : `${value.toLocaleString()}`}
+                    tickFormatter={formatMillions}
                     tick={{ fontSize: windowWidth < 576 ? 10 : 12 }}
                   />
                   <RechartsTooltip 
                     formatter={(value) => `$${value.toLocaleString()}`}
                     labelFormatter={(value) => `Actual: $${value.toLocaleString()}`}
                   />
+                  {/* Diagonal reference line (x=y) */}
                   <ReferenceLine
                     segment={[
-                      { x: 30000, y: 30000 },
-                      { x: 80000, y: 80000 }
+                      { x: consistentDomain[0], y: consistentDomain[0] },
+                      { x: consistentDomain[1], y: consistentDomain[1] }
                     ]}
                     stroke="red"
                     strokeDasharray="3 3"
@@ -271,7 +281,10 @@ const ModelInfo = ({ predictionData }) => {
                   <Scatter
                     data={data}
                     fill="#1890ff"
-                    opacity={0.6}
+                    stroke="white"
+                    strokeWidth={0.3}
+                    opacity={0.8}
+                    
                   />
                 </ScatterChart>
               </ResponsiveContainer>
@@ -279,8 +292,7 @@ const ModelInfo = ({ predictionData }) => {
           </Card>
         </Col>
       </Row>
-
-      {/* Statistics Cards - fixed to 3 cards per row regardless of screen size */}
+      {/* Statistics Cards */}
       <Row gutter={[16, 16]} style={{ marginTop: '16px' }} >
         <Col xs={24} sm={24} md={8} lg={8} xl={8}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
@@ -338,7 +350,7 @@ const ModelInfo = ({ predictionData }) => {
       </Row>
 
       {/* Feature Weights Table */}
-      <Row style={{ marginTop: '16px' }}>
+      {/* <Row style={{ marginTop: '16px' }}>
         <Col span={24}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
             <Title level={4} style={{ fontSize: getSubtitleFontSize() }}>
@@ -351,11 +363,15 @@ const ModelInfo = ({ predictionData }) => {
               </Tooltip>
             </Title>
             <div className="table-responsive" style={{ overflowX: 'auto', width: '100%' }}>
-              <FeatureWeightsTable />
+              <Table 
+                columns={columns} 
+                dataSource={featureWeights} 
+                pagination={false} 
+              />
             </div>
           </Card>
         </Col>
-      </Row>
+      </Row> */}
     </div>
   );
 };

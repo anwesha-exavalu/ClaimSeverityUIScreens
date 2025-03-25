@@ -20,9 +20,10 @@ const { Content } = Layout;
 
 const modelDescriptions = {
   "Claim Propensity": "Predicts the likelihood of a claim being filed.",
-  "Claim severity - Third party auto liability (FNOL) ": "Estimate the potential cost of a claim at the first notice of loss. This model predicts the likely financial impact based on initial claim details, helping you assess and manage risks early in the claims process.",
-  "Medical Invoice Analysis": "Medical invoice analysis for Workers’ compensation claims."
+  "Claim severity - Third party auto liability (FNOL)": "Estimates the potential cost of a claim.",
+  "Medical Invoice Analysis": "Medical invoice analysis for Workers' compensation claims."
 };
+
 const modelDetailsDescriptions = {
   "Claim Propensity": "Predicts the likelihood of a claim being filed.",
   "Claim severity - Third party auto liability (FNOL)": "Estimate the potential cost of a claim at the first notice of loss. This model predicts the likely financial impact based on initial claim details, helping you assess and manage risks early in the claims process.",
@@ -36,12 +37,11 @@ const modelRadioOptions = {
   ],
   "Claim severity - Third party auto liability (FNOL)": [
     { label: "Real Time Inference", value: "real-time" },
-    { label: "Batch Inference", value: "batch" },
-    
+    { label: "Batch Inference", value: "batch" }
   ],
   "Medical Invoice Analysis": [
     { label: "Real Time Inference", value: "real-time-medical" },
-    { label: "Batch Inference", value: "batch-medical" },
+    { label: "Batch Inference", value: "batch-medical" }
   ]
 };
 
@@ -61,21 +61,19 @@ const RadioButton = () => {
 
   const renderContent = () => {
     if (!selectedOption) return null;
-
   
     if (selectedModel === "Claim severity - Third party auto liability (FNOL)" && selectedOption === "real-time") {
       return <RealTimeInference />;
     }
-    else  if (selectedModel === "Claim severity - Third party auto liability (FNOL)" && selectedOption === "batch") {
+    else if (selectedModel === "Claim severity - Third party auto liability (FNOL)" && selectedOption === "batch") {
       return <BatchInference/>;
     }
     if (selectedModel === "Medical Invoice Analysis" && selectedOption === "real-time-medical") {
       return <RealTimeInferenceMedical />;
     }
-    else  if (selectedModel === "Medical Invoice Analysis" && selectedOption === "batch-medical") {
+    else if (selectedModel === "Medical Invoice Analysis" && selectedOption === "batch-medical") {
       return <BatchInference/>;
     }
-
 
     return (
       <Card style={{ marginTop: 16 }}>
@@ -92,8 +90,6 @@ const RadioButton = () => {
   return (
     <Layout style={{ padding: 24, background: "white" }}>
       <Content>
-       
-
         <Row justify="center">
           <Col span={24}>
             <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)"}}>
@@ -139,12 +135,11 @@ const RadioButton = () => {
                   <Radio.Group
                     onChange={handleOptionSelect}
                     value={selectedOption}
-                    style={{ marginBottom: 15, }}
+                    style={{ marginBottom: 15 }}
                   >
-                    
-                    <Row gutter={[22, 22]} >
-                      {modelRadioOptions[selectedModel].map(option => (
-                       
+                    <Row gutter={[22, 22]}>
+                      {modelRadioOptions[selectedModel]?.map(option => (
+                        <Col key={option.value}>
                           <Radio
                             value={option.value}
                             style={{ 
@@ -155,14 +150,13 @@ const RadioButton = () => {
                           >
                             {option.label}
                           </Radio>
-                      
+                        </Col>
                       ))}
                     </Row>
                   </Radio.Group>
                 </Card>
               </Col>
             </Row>
-            
           </>
         )}
 
