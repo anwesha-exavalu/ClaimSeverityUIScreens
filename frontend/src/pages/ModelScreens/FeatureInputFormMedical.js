@@ -35,13 +35,11 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
     try {
       // Hardcoded form data with proper date objects for DatePicker fields
       const hardcodedData = {
-        "Insurer FEIN": "6600F655X",
         "Insurer Postal Code": "01653-0002",
-        "Employer FEIN": "ZZZ0065ZX",
         "Employer Physical City": "WHARTON",
         "Employee Mailing City": "EL CAMPO",
         "Employee Gender Code": "F",
-        "Employee Date of Injury": moment("01-01-2024  00:00:00"), // Convert to moment object
+        "Employee Date of Injury": moment("01-01-2024"),
         "Total Charge Per Bill": "2,039.00",
         "Admission Hour": "12:00 AM",
         "Admission Type Code": "3",
@@ -50,14 +48,12 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
         "Third ICD Diagnosis Code": "R29.3",
         "Principal Diagnosis Code": "M75.91",
         "Admitting Diagnosis Code": "M75.91",
-        "policy_start_date": moment("01-26-2018  00:00:00"), // Convert to moment object
+        "policy_start_date": moment("01-26-2018"),
         "First ICD Procedure Code": "0PSJ04Z",
-        "Second ICD Procedure Code": "3E0T3BZ",
-        "Billing Provider Last Name or Group": "MATAGORDA REGIONAL MEDICAL CEN",
         "Billing Provider City": "BAY CITY",
-        "FLAG": "1",
         "Length_of_Stay": "15",
-        "date_of_joining": moment("10-11-2015  00:00:00"), // Convert to moment object
+        "Second ICD Procedure Code": "3E0T3BZ",
+        "date_of_joining": moment("10-11-2015"),
         "Diagnosis Related Group Code": "562",
         "ICD Principal Procedure Code": "0QSH06Z"
       };
@@ -77,32 +73,46 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
     setError(null);
     
     try {
+      // Prepare the data for API submission
+      const formData = {
+        "Insurer Postal Code": values["Insurer Postal Code"],
+        "Employer Physical City": values["Employer Physical City"],
+        "Employee Mailing City": values["Employee Mailing City"],
+        "Employee Gender Code": values["Employee Gender Code"],
+        "Employee Date of Injury": values["Employee Date of Injury"].format('YYYY-MM-DD'),
+        "Total Charge Per Bill": parseFloat(values["Total Charge Per Bill"].replace(/,/g, '')),
+        "Admission Hour": values["Admission Hour"],
+        "Admission Type Code": values["Admission Type Code"],
+        "Principal Diagnosis Code": values["Principal Diagnosis Code"],
+        "Admitting Diagnosis Code": values["Admitting Diagnosis Code"],
+        "ICD-9CM or ICD-10CM Principal Procedure Code": values["ICD Principal Procedure Code"],
+        "Billing Provider City": values["Billing Provider City"],
+        "Length_of_Stay": parseInt(values["Length_of_Stay"]),
+        "date_of_joining": values["date_of_joining"].format('YYYY-MM-DD'),
+        "Diagnosis Related Group Code": values["Diagnosis Related Group Code"],
+        "policy_start_date": values["policy_start_date"].format('YYYY-MM-DD')
+      };
+
+      // Make API call
       const response = await fetch('http://localhost:5000/predict', {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify(formData),
       });
 
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
       const data = await response.json();
+      
+      // Set prediction data and move to next tab
       setPredictionData(data);
       setActiveTab('3');
-      // // Convert moment objects to string format for API
-      // const formattedValues = { ...values };
-      // if (formattedValues["Employee Date of Injury"] && formattedValues["Employee Date of Injury"].format) {
-      //   formattedValues["Employee Date of Injury"] = formattedValues["Employee Date of Injury"].format('YYYY-MM-DD');
-      // }
-      // if (formattedValues["policy_start_date"] && formattedValues["policy_start_date"].format) {
-      //   formattedValues["policy_start_date"] = formattedValues["policy_start_date"].format('YYYY-MM-DD');
-      // }
-      // if (formattedValues["date_of_joining"] && formattedValues["date_of_joining"].format) {
-      //   formattedValues["date_of_joining"] = formattedValues["date_of_joining"].format('YYYY-MM-DD');
-      // }
-      
-       // Navigate to Output tab
     } catch (err) {
-      // setError('Failed to get prediction. Please try again.');
+      setError('Failed to get prediction. Please try again.');
       console.error('Error submitting form:', err);
     } finally {
       setLoading(false);
@@ -151,30 +161,30 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
         <div className="policy-details-container">
           
             <Card>
-              <Row gutter={[14, 14]} style={{ marginBottom: '24px', width: '100%' }}>
-                <Col xs={24} sm={12} md={6} lg={6}>
+              <Row gutter={[14, 14]} style={{ marginBottom: '2px', width: '100%' }}>
+                <Col xs={24} sm={12} md={8} lg={8}>
                   <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
                     Policy Number - {policyNumber}
                   </Title>
                 </Col>
-                <Col xs={24} sm={12} md={6} lg={6}>
+                <Col xs={24} sm={12} md={8} lg={8}>
                   <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
                     Customer ID - {customerId}
                   </Title>
                 </Col>
-                <Col xs={24} sm={12} md={6} lg={6}>
+                <Col xs={24} sm={12} md={8} lg={8}>
                   <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
                     Customer Name - {customerFirstName} {customerLastName}
                   </Title>
                 </Col>
               </Row>
-              <Row gutter={[14, 14]} style={{ marginBottom: '24px', width: '100%' }}>
-                <Col xs={24} sm={12} md={6} lg={6}>
+              <Row gutter={[14, 14]} style={{ marginBottom: '2px', width: '100%' }}>
+                <Col xs={24} sm={12} md={8} lg={8}>
                   <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
                     LOB - Worker's Compensation
                   </Title>
                 </Col>
-                <Col xs={24} sm={12} md={6} lg={6}>
+                <Col xs={24} sm={12} md={8} lg={8}>
                   <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
                     Model Name - Medical Invoice Analysis
                   </Title>
@@ -191,11 +201,21 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
           style={{ width: '100%' }}
         >
           <Row gutter={[24, 16]} justify="start" align="top">
-            <Col xs={24} sm={12} md={8} lg={6}>
+          <Col xs={24} sm={12} md={8} lg={6}>
               <Form.Item 
-                label={<span style={labelStyle}>Insurer FEIN</span>}
-                name="Insurer FEIN" 
-                rules={[{ required: true, message: 'Please input Insurer FEIN' }]}
+                label={<span style={labelStyle}>Employee Mailing City</span>}
+                name="Employee Mailing City" 
+                rules={[{ required: true, message: 'Please input Employee City' }]}
+                style={formItemStyle}
+              >
+                <Input style={inputStyle} />
+              </Form.Item>
+            </Col>
+          <Col xs={24} sm={12} md={8} lg={6}>
+              <Form.Item 
+                label={<span style={labelStyle}>Employee Gender Code</span>}
+                name="Employee Gender Code" 
+                rules={[{ required: true, message: 'Please input Gender Code' }]}
                 style={formItemStyle}
               >
                 <Input style={inputStyle} />
@@ -203,22 +223,12 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
               <Form.Item 
-                label={<span style={labelStyle}>Insurer Postal Code</span>}
-                name="Insurer Postal Code" 
-                rules={[{ required: true, message: 'Please input Insurer Postal Code' }]}
+                label={<span style={labelStyle}>Date of Joining</span>}
+                name="date_of_joining" 
+                rules={[{ required: true, message: 'Please input Date of Joining' }]}
                 style={formItemStyle}
               >
-                <Input style={inputStyle} />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label={<span style={labelStyle}>Employer FEIN</span>}
-                name="Employer FEIN" 
-                rules={[{ required: true, message: 'Please input Employer FEIN' }]}
-                style={formItemStyle}
-              >
-                <Input style={inputStyle} />
+                <DatePicker style={{ ...inputStyle, width: '100%' }} />
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
@@ -234,26 +244,7 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
           </Row>
 
           <Row gutter={[24, 16]} justify="start" align="top">
-            <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label={<span style={labelStyle}>Employee Mailing City</span>}
-                name="Employee Mailing City" 
-                rules={[{ required: true, message: 'Please input Employee City' }]}
-                style={formItemStyle}
-              >
-                <Input style={inputStyle} />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label={<span style={labelStyle}>Employee Gender Code</span>}
-                name="Employee Gender Code" 
-                rules={[{ required: true, message: 'Please input Gender Code' }]}
-                style={formItemStyle}
-              >
-                <Input style={inputStyle} />
-              </Form.Item>
-            </Col>
+            
             <Col xs={24} sm={12} md={8} lg={6}>
               <Form.Item 
                 label={<span style={labelStyle}>Employee Date of Injury</span>}
@@ -277,9 +268,6 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
                 />
               </Form.Item>
             </Col>
-          </Row>
-
-          <Row gutter={[24, 16]} justify="start" align="top">
             <Col xs={24} sm={12} md={8} lg={6}>
               <Form.Item 
                 label={<span style={labelStyle}>Admission Hour</span>}
@@ -300,6 +288,11 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
                 <Input style={inputStyle} />
               </Form.Item>
             </Col>
+          </Row>
+
+          <Row gutter={[24, 16]} justify="start" align="top">
+            
+            
             <Col xs={24} sm={12} md={8} lg={6}>
               <Form.Item 
                 label={<span style={labelStyle}>First ICD Diagnosis Code</span>}
@@ -320,9 +313,6 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
                 <Input style={inputStyle} />
               </Form.Item>
             </Col>
-          </Row>
-
-          <Row gutter={[24, 16]} justify="start" align="top">
             <Col xs={24} sm={12} md={8} lg={6}>
               <Form.Item 
                 label={<span style={labelStyle}>Third ICD Diagnosis Code</span>}
@@ -343,6 +333,10 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
                 <Input style={inputStyle} />
               </Form.Item>
             </Col>
+          </Row>
+
+          <Row gutter={[24, 16]} justify="start" align="top">
+            
             <Col xs={24} sm={12} md={8} lg={6}>
               <Form.Item 
                 label={<span style={labelStyle}>Admitting Diagnosis Code</span>}
@@ -363,9 +357,6 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
                 <DatePicker style={{ ...inputStyle, width: '100%' }} />
               </Form.Item>
             </Col>
-          </Row>
-
-          <Row gutter={[24, 16]} justify="start" align="top">
             <Col xs={24} sm={12} md={8} lg={6}>
               <Form.Item 
                 label={<span style={labelStyle}>First ICD Procedure Code</span>}
@@ -386,11 +377,24 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
                 <Input style={inputStyle} />
               </Form.Item>
             </Col>
+          </Row>
+          <Row gutter={[24, 16]} justify="start" align="top">
             <Col xs={24} sm={12} md={8} lg={6}>
               <Form.Item 
-                label={<span style={labelStyle}>Billing Provider Last Name/Group</span>}
-                name="Billing Provider Last Name or Group" 
-                rules={[{ required: true, message: 'Please input Billing Provider' }]}
+                label={<span style={labelStyle}>Length of Stay</span>}
+                name="Length_of_Stay" 
+                rules={[{ required: true, message: 'Please input Length of Stay' }]}
+                style={formItemStyle}
+              >
+                <Input type="number" style={inputStyle} />
+              </Form.Item>
+            </Col>
+            
+            <Col xs={24} sm={12} md={8} lg={6}>
+              <Form.Item 
+                label={<span style={labelStyle}>Diagnosis Related Group Code</span>}
+                name="Diagnosis Related Group Code" 
+                rules={[{ required: true, message: 'Please input Group Code' }]}
                 style={formItemStyle}
               >
                 <Input style={inputStyle} />
@@ -406,44 +410,11 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
                 <Input style={inputStyle} />
               </Form.Item>
             </Col>
-          </Row>
-
-          <Row gutter={[24, 16]} justify="start" align="top">
             <Col xs={24} sm={12} md={8} lg={6}>
               <Form.Item 
-                label={<span style={labelStyle}>FLAG</span>}
-                name="FLAG" 
-                rules={[{ required: true, message: 'Please input FLAG' }]}
-                style={formItemStyle}
-              >
-                <Input style={inputStyle} />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label={<span style={labelStyle}>Length of Stay</span>}
-                name="Length_of_Stay" 
-                rules={[{ required: true, message: 'Please input Length of Stay' }]}
-                style={formItemStyle}
-              >
-                <Input type="number" style={inputStyle} />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label={<span style={labelStyle}>Date of Joining</span>}
-                name="date_of_joining" 
-                rules={[{ required: true, message: 'Please input Date of Joining' }]}
-                style={formItemStyle}
-              >
-                <DatePicker style={{ ...inputStyle, width: '100%' }} />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label={<span style={labelStyle}>Diagnosis Related Group Code</span>}
-                name="Diagnosis Related Group Code" 
-                rules={[{ required: true, message: 'Please input Group Code' }]}
+                label={<span style={labelStyle}>Insurer Postal Code</span>}
+                name="Insurer Postal Code" 
+                rules={[{ required: true, message: 'Please input Insurer Postal Code' }]}
                 style={formItemStyle}
               >
                 <Input style={inputStyle} />
@@ -462,6 +433,7 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
                 <Input style={inputStyle} />
               </Form.Item>
             </Col>
+            
           </Row>
 
           <Row style={{ marginTop: '24px' }} justify="start">
