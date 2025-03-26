@@ -173,45 +173,8 @@ const ModelInfo = ({ predictionData }) => {
 
   return (
     <div className="model-info-container" style={{ padding: '24px', width: '100%' }}>
-      {/* Policy Details Container */}
-      {/* <div className="policy-details-container">
-        <Card>
-          <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
-            <Col xs={24} sm={12} md={6} lg={6}>
-              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                Policy Number - {policyNumber}
-              </Title>
-            </Col>
-            <Col xs={24} sm={12} md={6} lg={6}>
-              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                Customer ID - {customerId}
-              </Title>
-            </Col>
-            <Col xs={24} sm={12} md={6} lg={6}>
-              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                Customer Name - {customerFirstName} {customerLastName}
-              </Title>
-            </Col>
-          </Row>
-          <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
-            <Col xs={24} sm={12} md={6} lg={6}>
-              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                LOB - Auto Liability
-              </Title>
-            </Col>
-            <Col xs={24} sm={12} md={6} lg={6}>
-              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                Model Name - Claim severity - Third party auto liability (FNOL)
-              </Title>
-            </Col>
-            <Col xs={24} sm={12} md={6} lg={6}>
-              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                Date of Loss - 01/03/2025
-              </Title>
-            </Col>
-          </Row>
-        </Card>
-      </div> */}
+      {/* Customer Details Container */}
+      
 <Row gutter={[16, 16]}>
   {/* Left Column - Account Information */}
   <Col xs={24} sm={12}>
@@ -277,10 +240,7 @@ const ModelInfo = ({ predictionData }) => {
           <Text type="secondary" className="justify-self-start">Model Year - </Text>
           <Text strong  className="justify-self-end">12/25/2024</Text>
         </div>
-        {/* <div className="grid grid-cols-2 items-center">
-          <Text type="secondary" className="justify-self-start">Vehicle Identification NO. - </Text>
-          <Text strong className="justify-self-end">skylineprop@gmail.com</Text>
-        </div> */}
+       
       </div>
     </Card>
   </Col>

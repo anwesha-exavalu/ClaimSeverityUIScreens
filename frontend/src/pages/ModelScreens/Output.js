@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Typography, Statistic } from 'antd';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
-import { DollarOutlined } from '@ant-design/icons';
+import { Card, Row, Col, Typography, Statistic,  Tooltip as AntTooltip } from 'antd';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from 'recharts';
+import { DollarOutlined, InfoCircleOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
 
@@ -10,6 +10,14 @@ const OutputDetails = ({ predictionData }) => {
   const [customerId, setCustomerId] = useState("");
   const [customerFirstName, setCustomerFirstName] = useState("");
   const [customerLastName, setCustomerLastName] = useState("");
+   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+  const tooltipStyle = {
+    backgroundColor: '#e6f7ff',
+    color: '#0050b3',
+    padding: '8px 12px',
+    borderRadius: '4px',
+    maxWidth: '300px'
+  };
 
   useEffect(() => {
     // Retrieve data from localStorage
@@ -205,7 +213,13 @@ const OutputDetails = ({ predictionData }) => {
         {/* Right Column - Bar Chart */}
         <Col xs={24} sm={24} md={12} lg={16} xl={16}>
           <Card style={cardStyle}>
-            <Title level={4}>Feature Impact on Prediction (SHAP values)</Title>
+            <Title level={4}>Feature Impact on Prediction (SHAP values) 
+              <AntTooltip
+                            title="SHAP values show how each factor influences the claim amount. Positive values increase it, while negative values decrease it, helping explain the model's prediction."
+                            overlayStyle={tooltipStyle}
+                          >
+                            <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: windowWidth < 576 ? '14px' : '16px', color: '#1890ff' }} />
+                          </AntTooltip></Title>
             <div style={{ width: '100%', height: '350px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -223,7 +237,7 @@ const OutputDetails = ({ predictionData }) => {
                     dataKey="feature"
                     width={240}
                   />
-                  <Tooltip
+                  <RechartsTooltip
                     formatter={(value, name, props) => {
                       const tooltipContent = [
                         
