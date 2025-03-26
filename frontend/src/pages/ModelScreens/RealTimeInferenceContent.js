@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import {  Dropdown, Menu, Card, Row, Col, List, Tabs } from "antd";
-import { DownOutlined } from "@ant-design/icons";
+
 import "./Card.css";
 import FeatureInputForm from "./FeatureInputForm";
 import ModelInfo from "./ModelInfo";
 import OutputDetails from "./Output";
-import CustomerInfo from "./CustomerInfo";
+
+import CustomerInfoSeverity from "./CustomerInfoClaimSeverity";
 
 const RealTimeInference = () => {
   const [activeTab, setActiveTab] = useState('1');
@@ -32,25 +33,25 @@ const RealTimeInference = () => {
   //   console.log(key);
   // };
   const items = [
-    // {
-    //   key: '1',
-    //   label: 'Customer Info',
-    //   // children: <FeatureInputForm setActiveTab={setActiveTab} />,
-    //   children: <CustomerInfo  setActiveTab={setActiveTab} />,
-    // },
     {
       key: '1',
+      label: 'Customer Info',
+      // children: <FeatureInputForm setActiveTab={setActiveTab} />,
+      children: <CustomerInfoSeverity  setActiveTab={setActiveTab} />,
+    },
+    {
+      key: '2',
       label: 'Feature Input',
      
       children: <FeatureInputForm setActiveTab={setActiveTab} setPredictionData={setPredictionData} />,
     },
     {
-      key: '2',
+      key: '3',
       label: 'Model Info',
       children: <ModelInfo predictionData={predictionData} />,
     },
     {
-      key: '3',
+      key: '4',
       label: 'Output',
       children: <OutputDetails predictionData={predictionData} />,
     },

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Row, Col, Alert, Spin, AutoComplete, Card, Typography } from 'antd';
-import { SearchOutlined} from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
 const { Title } = Typography;
 const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
   const [loading, setLoading] = useState(false);
@@ -9,13 +9,26 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
   const [selectedClaim, setSelectedClaim] = useState('');
   const [isSearched, setIsSearched] = useState(false);
   const [policyNumber, setPolicyNumber] = useState("");
+  const [customerId, setCustomerId] = useState("");
+  const [customerFirstName, setCustomerFirstName] = useState("");
+  const [customerLastName, setCustomerLastName] = useState("");
   useEffect(() => {
-    // Retrieve the policy number from localStorage that was set in the CustomerInfo component
+    // Set loading to true while we fetch the data
+
+
+    // Retrieve data from localStorage
     const storedPolicyNumber = localStorage.getItem('currentPolicyNumber');
-    if (storedPolicyNumber) {
-      setPolicyNumber(storedPolicyNumber);
-    }
-    setLoading(false);
+    const storedCustomerId = localStorage.getItem('currentCustomerId');
+    const storedFirstName = localStorage.getItem('currentCustomerFirstName');
+    const storedLastName = localStorage.getItem('currentCustomerLastName');
+
+    // Update state with retrieved values
+    if (storedPolicyNumber) setPolicyNumber(storedPolicyNumber);
+    if (storedCustomerId) setCustomerId(storedCustomerId);
+    if (storedFirstName) setCustomerFirstName(storedFirstName);
+    if (storedLastName) setCustomerLastName(storedLastName);
+
+
   }, []);
   // Generate random claim numbers for suggestions
   const generateClaimNumbers = () => {
@@ -36,26 +49,21 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
   const getData = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       const prefillData = {
-        accident_severity: 3,
-        claimant_age: 23,
-        driver_age: 21,
-        driver_experience_years: 23,
-        historical_claims_count: 1,
-        initial_medical_expenses: 2425,
-        injury_severity: 3,
-        legal_fees: 15366,
-        long_term_care_costs: 67902,
-        ongoing_medical_expenses: 29307,
-        passenger_count: 1,
-        policy_coverage_limits: 48347,
-        policy_deductible: 2249,
-        time_of_accident: 12,
-        vehicle_year: 2005
+        Initial_Class_of_Claim: "Comprehensive",
+        Claimant_Injuries: "Severe",
+        Repairable_Flag: "No",
+        Initial_Attorney_Involvement: "No",
+        Primary_Cause_of_Accident: "Rollover",
+        Rate_Class: "Standard",
+        Non_Drivable_Flag: "No",
+        Claimant_State: "NY",
+        Primary_Accident_Description: "Parking Lot Incident"
+
       };
-      
+
       form.setFieldsValue(prefillData);
     } catch (err) {
       setError('Failed to get data. Please try again.');
@@ -63,40 +71,40 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
       setLoading(false);
     }
   };
+  const handlePredict = () => {
+    setLoading(true);
+    // Let the form handle validation and submission
+    form.submit();
+  };
 
   const onFinish = async (values) => {
     setLoading(true);
     setError(null);
-    
+
     try {
-      const response = await fetch('http://34.234.94.92:5000/predict', {
+      const response = await fetch('http://54.90.110.173:5000//predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           ...values,
-          accident_severity: Number(values.accident_severity),
-          claimant_age: Number(values.claimant_age),
-          driver_age: Number(values.driver_age),
-          driver_experience_years: Number(values.driver_experience_years),
-          historical_claims_count: Number(values.historical_claims_count),
-          initial_medical_expenses: Number(values.initial_medical_expenses),
-          injury_severity: Number(values.injury_severity),
-          legal_fees: Number(values.legal_fees),
-          long_term_care_costs: Number(values.long_term_care_costs),
-          ongoing_medical_expenses: Number(values.ongoing_medical_expenses),
-          passenger_count: Number(values.passenger_count),
-          policy_coverage_limits: Number(values.policy_coverage_limits),
-          policy_deductible: Number(values.policy_deductible),
-          time_of_accident: Number(values.time_of_accident),
-          vehicle_year: Number(values.vehicle_year)
+          Initial_Class_of_Claim: String(values.Initial_Class_of_Claim),
+          Claimant_Injuries: String(values.Claimant_Injuries),
+          Repairable_Flag: String(values.Repairable_Flag),
+          Initial_Attorney_Involvement: String(values.Initial_Attorney_Involvement),
+          Primary_Cause_of_Accident: String(values.Primary_Cause_of_Accident),
+          Rate_Class: String(values.Rate_Class),
+          Non_Drivable_Flag: String(values.Non_Drivable_Flag),
+          Claimant_State: String(values.Claimant_State),
+          Primary_Accident_Description: String(values.Primary_Accident_Description),
+
         }),
       });
 
       const data = await response.json();
       setPredictionData(data);
-      setActiveTab('2'); // Navigate to ModelInfo tab
+      setActiveTab('3'); // Navigate to ModelInfo tab
     } catch (err) {
       setError('Failed to get prediction. Please try again.');
     } finally {
@@ -126,15 +134,47 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
             style={{ marginBottom: '16px', width: '100%' }}
           />
         )}
- <div className="policy-details-container">
-      <Spin spinning={loading}>
-      
-          <Title level={5} style={{ color: 'royalblue', marginBottom: 14,}}>Policy Number - {policyNumber}</Title>
-          {/* Rest of your policy details content */}
-          
-      </Spin>
-    </div>
-        <Row gutter={[12, 12]} style={{ marginBottom: '24px', width: '100%' }}>
+        <div className="policy-details-container">
+          <Card>
+            <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
+              <Col xs={24} sm={12} md={6} lg={6}>
+                <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                  Policy Number - {policyNumber}
+                </Title>
+              </Col>
+              <Col xs={24} sm={12} md={6} lg={6}>
+                <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                  Customer ID - {customerId}
+                </Title>
+              </Col>
+              <Col xs={24} sm={12} md={6} lg={6}>
+                <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                  Customer Name - {customerFirstName} {customerLastName}
+                </Title>
+              </Col>
+            </Row>
+            <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
+              <Col xs={24} sm={12} md={6} lg={6}>
+                <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                  LOB - Auto Liability
+                </Title>
+              </Col>
+              <Col xs={24} sm={12} md={6} lg={6}>
+                <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                  Model Name - Claim severity - Third party auto liability (FNOL)
+                </Title>
+              </Col>
+              <Col xs={24} sm={12} md={6} lg={6}>
+                <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                  Date of Loss - 01/03/2025
+                </Title>
+              </Col>
+            </Row>
+          </Card>
+        </div>
+
+        <Row gutter={[12, 12]} style={{ marginBottom: '24px', width: '100%', marginTop: '20px' }}>
+
           <Col xs={24} sm={12} md={6} lg={6}>
             <AutoComplete
               style={{ width: '100%' }}
@@ -149,7 +189,7 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
           </Col>
           <Col xs={24} sm={12} md={6} lg={6}>
             {!isSearched ? (
-              <Button 
+              <Button
                 type="primary"
                 onClick={handleSearch}
                 disabled={!selectedClaim}
@@ -159,11 +199,11 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
                 Search
               </Button>
             ) : (
-              <Button 
+              <Button
                 type="primary"
                 onClick={getData}
                 style={{ ...buttonStyle, width: '40%' }}
-               
+
               >
                 Get Data
               </Button>
@@ -179,85 +219,85 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
         >
           <Row gutter={[24, 16]} justify="start" align="top">
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Accident severity" 
-                name="accident_severity" 
+              <Form.Item
+                label="Initial Class of Claim"
+                name="Initial_Class_of_Claim"
                 rules={[{ required: true, message: 'Please input accident severity' }]}
               >
-                <Input type="number" style={inputStyle} />
+                <Input type="text" style={inputStyle} />
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Claimant's age" 
-                name="claimant_age" 
+              <Form.Item
+                label="Claimant_Injuries"
+                name="Claimant_Injuries"
                 rules={[{ required: true, message: 'Please input claimant age' }]}
               >
-                <Input type="number" style={inputStyle} />
+                <Input type="text" style={inputStyle} />
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Driver's age" 
-                name="driver_age" 
+              <Form.Item
+                label="Repairable Flag"
+                name="Repairable_Flag"
                 rules={[{ required: true, message: 'Please input driver age' }]}
               >
-                <Input type="number" style={inputStyle} />
+                <Input type="text" style={inputStyle} />
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Driver's experience in years" 
-                name="driver_experience_years" 
+              <Form.Item
+                label="Initial Attorney Involvement"
+                name="Initial_Attorney_Involvement"
                 rules={[{ required: true, message: 'Please input driver experience' }]}
               >
-                <Input type="number" style={inputStyle} />
+                <Input type="text" style={inputStyle} />
               </Form.Item>
             </Col>
           </Row>
 
           <Row gutter={[24, 16]} justify="start" align="top">
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Historical claims count" 
-                name="historical_claims_count" 
+              <Form.Item
+                label="Primary Cause of Accident"
+                name="Primary_Cause_of_Accident"
                 rules={[{ required: true, message: 'Please input historical claims' }]}
               >
-                <Input type="number" style={inputStyle} />
+                <Input type="text" style={inputStyle} />
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Initial medical expenses" 
-                name="initial_medical_expenses" 
+              <Form.Item
+                label="Rate Class"
+                name="Rate_Class"
                 rules={[{ required: true, message: 'Please input initial expenses' }]}
               >
-                <Input 
-                  type="number" 
-                  addonBefore="$"
-                  style={inputStyle} 
+                <Input
+                  type="text"
+
+                  style={inputStyle}
                 />
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Injury severity" 
-                name="injury_severity" 
+              <Form.Item
+                label="Non Drivable Flag"
+                name="Non_Drivable_Flag"
                 rules={[{ required: true, message: 'Please input injury severity' }]}
               >
-                <Input type="number" style={inputStyle} />
+                <Input type="text" style={inputStyle} />
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Legal fees" 
-                name="legal_fees" 
+              <Form.Item
+                label="Claimant State"
+                name="Claimant_State"
                 rules={[{ required: true, message: 'Please input legal fees' }]}
               >
-                <Input 
-                  type="number" 
-                  addonBefore="$"
-                  style={inputStyle} 
+                <Input
+                  type="text"
+
+                  style={inputStyle}
                 />
               </Form.Item>
             </Col>
@@ -265,100 +305,34 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
 
           <Row gutter={[24, 16]} justify="start" align="top">
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Long term care costs" 
-                name="long_term_care_costs" 
+              <Form.Item
+                label="Primary Accident Description"
+                name="Primary_Accident_Description"
                 rules={[{ required: true, message: 'Please input care costs' }]}
               >
-                <Input 
-                  type="number" 
-                  addonBefore="$"
-                  style={inputStyle} 
+                <Input
+                  type="text"
+
+                  style={inputStyle}
                 />
               </Form.Item>
             </Col>
-            <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Ongoing medical expenses" 
-                name="ongoing_medical_expenses" 
-                rules={[{ required: true, message: 'Please input ongoing expenses' }]}
-              >
-                <Input 
-                  type="number" 
-                  addonBefore="$"
-                  style={inputStyle} 
-                />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Passenger count" 
-                name="passenger_count" 
-                rules={[{ required: true, message: 'Please input passenger count' }]}
-              >
-                <Input type="number" style={inputStyle} />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Policy coverage limits" 
-                name="policy_coverage_limits" 
-                rules={[{ required: true, message: 'Please input coverage limits' }]}
-              >
-                <Input 
-                  type="number" 
-                  addonBefore="$"
-                  style={inputStyle} 
-                />
-              </Form.Item>
-            </Col>
+
           </Row>
 
-          <Row gutter={[24, 16]} justify="start" align="top">
-            <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Policy deductible" 
-                name="policy_deductible" 
-                rules={[{ required: true, message: 'Please input policy deductible' }]}
-              >
-                <Input 
-                  type="number" 
-                  addonBefore="$"
-                  style={inputStyle} 
-                />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Time of accident" 
-                name="time_of_accident" 
-                rules={[{ required: true, message: 'Please input accident time' }]}
-              >
-                <Input type="number" style={inputStyle} />
-              </Form.Item>
-            </Col>
-            <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
-                label="Vehicle year" 
-                name="vehicle_year" 
-                rules={[{ required: true, message: 'Please input vehicle year' }]}
-              >
-                <Input type="number" style={inputStyle} />
-              </Form.Item>
-            </Col>
-          </Row>
 
           <Row style={{ marginTop: '24px' }} justify="start">
             <Col xs={24} sm={6} md={4} lg={3}>
-              <Button 
-                type="primary" 
-                htmlType="submit"
+              <Button
+                type="primary"
+                // htmlType="submit"
                 loading={loading}
                 size="large"
-                style={{ 
+                style={{
                   ...buttonStyle,
                   width: '100%'
                 }}
+                onClick={handlePredict}
               >
                 Predict
               </Button>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Typography, Statistic } from 'antd';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { DollarOutlined } from '@ant-design/icons';
@@ -6,16 +6,46 @@ import { DollarOutlined } from '@ant-design/icons';
 const { Title, Paragraph } = Typography;
 
 const OutputDetails = ({ predictionData }) => {
+  const [policyNumber, setPolicyNumber] = useState("");
+  const [customerId, setCustomerId] = useState("");
+  const [customerFirstName, setCustomerFirstName] = useState("");
+  const [customerLastName, setCustomerLastName] = useState("");
+  
+  useEffect(() => {
+    // Retrieve data from localStorage
+    const storedPolicyNumber = localStorage.getItem('currentPolicyNumber');
+    const storedCustomerId = localStorage.getItem('currentCustomerId');
+    const storedFirstName = localStorage.getItem('currentCustomerFirstName');
+    const storedLastName = localStorage.getItem('currentCustomerLastName');
+    
+    // Update state with retrieved values
+    if (storedPolicyNumber) setPolicyNumber(storedPolicyNumber);
+    if (storedCustomerId) setCustomerId(storedCustomerId);
+    if (storedFirstName) setCustomerFirstName(storedFirstName);
+    if (storedLastName) setCustomerLastName(storedLastName);
+  }, []);
+
   const formatShapData = () => {
     if (!predictionData || !predictionData.top_5_shap_values) {
       return [];
     }
     
-    return predictionData.top_5_shap_values.map(([name, value]) => ({
-      feature: name.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-      value: Math.abs(value),
-      actualValue: value
-    }));
+    // Process top_5_shap_values which is now an array of arrays: [feature, value, shap_value]
+    return predictionData.top_5_shap_values.map(shapItem => {
+      const [feature, _, shapValue] = shapItem;
+      
+      // Format feature name without underscores, properly capitalized
+      const formattedFeature = feature
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+      
+      return {
+        feature: formattedFeature,
+        value: Math.abs(shapValue),
+        actualValue: shapValue
+      };
+    });
   };
 
   const getTopFeatures = () => {
@@ -24,12 +54,18 @@ const OutputDetails = ({ predictionData }) => {
     }
     
     const positiveFeatures = predictionData.top_5_shap_values
-      .filter(([_, value]) => value > 0)
-      .map(([name, _]) => name.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));
+      .filter(([_, __, shapValue]) => shapValue > 0)
+      .map(([feature, _, __]) => feature
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' '));
       
     const negativeFeatures = predictionData.top_5_shap_values
-      .filter(([_, value]) => value < 0)
-      .map(([name, _]) => name.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));
+      .filter(([_, __, shapValue]) => shapValue < 0)
+      .map(([feature, _, __]) => feature
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' '));
       
     return { positiveFeatures, negativeFeatures };
   };
@@ -45,7 +81,45 @@ const OutputDetails = ({ predictionData }) => {
 
   return (
     <div style={{ padding: '2%' }}>
-      <Row gutter={[16, 16]}>
+      <div className="policy-details-container">
+               <Card>
+                 <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
+                   <Col xs={24} sm={12} md={6} lg={6}>
+                     <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                       Policy Number - {policyNumber}
+                     </Title>
+                   </Col>
+                   <Col xs={24} sm={12} md={6} lg={6}>
+                     <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                       Customer ID - {customerId}
+                     </Title>
+                   </Col>
+                   <Col xs={24} sm={12} md={6} lg={6}>
+                     <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                       Customer Name - {customerFirstName} {customerLastName}
+                     </Title>
+                   </Col>
+                 </Row>
+                 <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
+                   <Col xs={24} sm={12} md={6} lg={6}>
+                     <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                       LOB - Auto Liability
+                     </Title>
+                   </Col>
+                   <Col xs={24} sm={12} md={6} lg={6}>
+                     <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                       Model Name - Claim severity - Third party auto liability (FNOL)
+                     </Title>
+                   </Col>
+                   <Col xs={24} sm={12} md={6} lg={6}>
+                     <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
+                       Date of Loss - 01/03/2025
+                     </Title>
+                   </Col>
+                 </Row>
+               </Card>
+             </div>
+      <Row gutter={[16, 16]} style={{ marginTop: '16px' }}>
         {/* Left Column */}
         <Col xs={24} sm={24} md={12} lg={8} xl={8}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' }}>
@@ -71,7 +145,9 @@ const OutputDetails = ({ predictionData }) => {
                 <Col span={24}>
                   <Statistic 
                     title="Predicted Claim Amount ± Mean Absolute Error"
-                    value="37911.13-46172.13"
+                    value={predictionData?.prediction && predictionData?.mae ? 
+                      `${(predictionData.prediction - predictionData.mae).toFixed(2)}-${(predictionData.prediction + predictionData.mae).toFixed(2)}` : 
+                      "36575.31 - 90289.89"}
                     prefix={<DollarOutlined />}
                     valueStyle={{ color: '#1f77b4' }}
                   />
@@ -84,7 +160,7 @@ const OutputDetails = ({ predictionData }) => {
         {/* Right Column - Bar Chart */}
         <Col xs={24} sm={24} md={12} lg={16} xl={16}>
           <Card style={cardStyle}>
-            <Title level={4}>Feature Impact on Prediction (Absolute SHAP values)</Title>
+            <Title level={4}>Feature Impact on Prediction (SHAP values)</Title>
             <div style={{ width: '100%', height: '350px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -106,7 +182,7 @@ const OutputDetails = ({ predictionData }) => {
                     ]}
                   />
                   <Bar 
-                    dataKey="value" 
+                    dataKey="actualValue" 
                     fill="#1890ff"
                     radius={[0, 4, 4, 0]}
                   />
