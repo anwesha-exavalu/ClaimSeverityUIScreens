@@ -53,13 +53,13 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
     try {
       const prefillData = {
         Initial_Class_of_Claim: "Bodily Injury",
-        Claimant_Injuries: "Severe",
-        Repairable_Flag: "No",
+        Claimant_Injuries: "Moderate",
+        Repairable_Flag: "Yes",
         Initial_Attorney_Involvement: "Yes",
         Primary_Cause_of_Accident: "Rear-end Collision",
-        Rate_Class: "Preferred",
-        Non_Drivable_Flag: "No",
-        Claimant_State: "NY",
+        Rate_Class: "Standard",
+        Non_Drivable_Flag: "Yes",
+        Claimant_State: "CA",
         Primary_Accident_Description: "Highway Accident"
         // Initial_Class_of_Claim: "Comprehensive",
         // Claimant_Injuries: "Severe",
@@ -184,72 +184,142 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
         <Row gutter={[16, 16]}>
           {/* Left Column - Account Information */}
           <Col xs={24} sm={12}>
-            <Card 
-              type="inner" 
-              title="Customer Details" 
-              headStyle={{ 
-                backgroundColor: '#f5f5f5', 
-                fontWeight: 600 
+            <Card
+              type="inner"
+              title="Customer Details"
+              headStyle={{
+                backgroundColor: '#f5f5f5',
+                fontWeight: 600
               }}
-              style={{height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",}}
+              style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
             >
-              <div className="space-y-3">
-                <div className="grid grid-cols-2 items-center">
-                  <Text type="secondary" className="justify-self-start">Policy Number  -  </Text>
-                  <Text strong className="justify-self-end">{policyNumber}</Text>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '5px'
+              }}>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '150px 1fr',
+                  alignItems: 'center'
+                }}>
+                  <Text type="secondary" style={{
+                    textAlign: 'right',
+                    paddingRight: '16px'
+                  }}>Policy Number -</Text>
+                  <Text strong>{policyNumber}</Text>
                 </div>
-                <div className="grid grid-cols-2 items-center">
-                  <Text type="secondary" className="justify-self-start">Customer ID  -  </Text>
-                  <Text strong className="justify-self-end">{customerId}</Text>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '150px 1fr',
+                  alignItems: 'center'
+                }}>
+                  <Text type="secondary" style={{
+                    textAlign: 'right',
+                    paddingRight: '16px'
+                  }}>Customer ID -</Text>
+                  <Text strong>{customerId}</Text>
                 </div>
-                <div className="grid grid-cols-2 items-center">
-                  <Text type="secondary" className="justify-self-start"> Customer Name  -  </Text>
-                  <Text strong className="justify-self-end">{customerFirstName} {customerLastName}</Text>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '150px 1fr',
+                  alignItems: 'center'
+                }}>
+                  <Text type="secondary" style={{
+                    textAlign: 'right',
+                    paddingRight: '16px'
+                  }}>Customer Name -</Text>
+                  <Text strong>{customerFirstName} {customerLastName}</Text>
                 </div>
-                <div className="grid grid-cols-2 items-center">
-                  <Text type="secondary" className="justify-self-start">LOB  -  </Text>
-                  <Text strong className="justify-self-end"> Auto Liability</Text>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '150px 1fr',
+                  alignItems: 'center'
+                }}>
+                  <Text type="secondary" style={{
+                    textAlign: 'right',
+                    paddingRight: '16px'
+                  }}>LOB -</Text>
+                  <Text strong>Auto Liability</Text>
                 </div>
-                <div className="grid grid-cols-2 items-center">
-                  <Text type="secondary" className="justify-self-start"> Model Name  -  </Text>
-                  <Text strong className="justify-self-end">Claim severity - Third party auto liability (FNOL)</Text>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '150px 1fr',
+                  alignItems: 'center'
+                }}>
+                  <Text type="secondary" style={{
+                    textAlign: 'right',
+                    paddingRight: '16px'
+                  }}>Model Name -</Text>
+                  <Text strong>Claim severity - Third party auto liability (FNOL)</Text>
                 </div>
-                <div className="grid grid-cols-2 items-center">
-                  <Text type="secondary" className="justify-self-start">Date of Loss  -  </Text>
-                  <Text strong className="justify-self-end">01/03/2025</Text>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '150px 1fr',
+                  alignItems: 'center'
+                }}>
+                  <Text type="secondary" style={{
+                    textAlign: 'right',
+                    paddingRight: '16px'
+                  }}>Date of Loss -</Text>
+                  <Text strong>01/03/2025</Text>
                 </div>
               </div>
             </Card>
           </Col>
-        
+
           {/* Right Column - Organization Information */}
           <Col xs={24} sm={12}>
-            <Card 
-              type="inner" 
-              title="Vehicle Details" 
-              headStyle={{ 
-                backgroundColor: '#f5f5f5', 
-                fontWeight: 600 
+            <Card
+              type="inner"
+              title="Vehicle Details"
+              headStyle={{
+                backgroundColor: '#f5f5f5',
+                fontWeight: 600
               }}
-              style={{height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",}}
+              style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
             >
-              <div className="space-y-3">
-                <div className="grid grid-cols-2 items-center">
-                  <Text type="secondary" className="justify-self-start">Maker - </Text>
-                  <Text strong className="justify-self-end">Ford</Text>
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '5px'
+              }}>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '150px 1fr',
+                  alignItems: 'center'
+                }}>
+                  <Text type="secondary" style={{
+                    textAlign: 'right',
+                    paddingRight: '16px',
+                    minWidth: '150px'
+                  }}>Maker -</Text>
+                  <Text strong>Ford</Text>
                 </div>
-                <div className="grid grid-cols-2 items-center">
-                  <Text type="secondary" className="justify-self-start">Model -</Text>
-                  <Text strong className="justify-self-end">Raptor</Text>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '150px 1fr',
+                  alignItems: 'center'
+                }}>
+                  <Text type="secondary" style={{
+                    textAlign: 'right',
+                    paddingRight: '16px',
+                    minWidth: '150px'
+                  }}>Model -</Text>
+                  <Text strong>Raptor</Text>
                 </div>
-                <div className="grid grid-cols-2 items-center">
-                  <Text type="secondary" className="justify-self-start">Model Year - </Text>
-                  <Text strong  className="justify-self-end">12/25/2024</Text>
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: '150px 1fr',
+                  alignItems: 'center'
+                }}>
+                  <Text type="secondary" style={{
+                    textAlign: 'right',
+                    paddingRight: '16px',
+                    minWidth: '150px'
+                  }}>Model Year -</Text>
+                  <Text strong>12/25/2024</Text>
                 </div>
-                {/* <div className="grid grid-cols-2 items-center">
-                  <Text type="secondary" className="justify-self-start">Vehicle Identification NO. - </Text>
-                  <Text strong className="justify-self-end">skylineprop@gmail.com</Text>
-                </div> */}
               </div>
             </Card>
           </Col>
