@@ -52,8 +52,8 @@ function CustomerInfo({setActiveTab}) {
   const agentDetails = {
     agentfirstName: "Mary",
     agentlastName: "Willson",
-    agencyName: "XYZ",
-    email:"xyz@mail.com"
+    agencyName: "Action Axis",
+    email:"action.axis@mail.com"
   };
 
   // Generate fixed customer ID for dropdown
@@ -453,8 +453,8 @@ function CustomerInfo({setActiveTab}) {
                 Upload PDF
               </Button>
             </Col>
-            <Col xs={24} sm={8} md={6} lg={6}>
-              <span style={{ marginLeft: '8px' }}>Upload relevant medical document</span>
+            <Col xs={24} sm={8} md={12} lg={12}>
+              <span style={{ marginLeft: '8px' }}>Upload relevant document (Medical Invoice, Discharge Summary)</span>
             </Col>
           </Row>
           
@@ -470,7 +470,7 @@ function CustomerInfo({setActiveTab}) {
                   width: '100%'
                 }}
               >
-                Fetch
+                Extract Data
               </Button>
             </Col>
           </Row>

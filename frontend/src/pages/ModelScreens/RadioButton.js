@@ -21,13 +21,13 @@ const { Content } = Layout;
 const modelDescriptions = {
   "Claim Propensity": "Predicts the likelihood of a claim being filed.",
   "Claim severity - Third party auto liability (FNOL)": "Estimates the potential cost of a claim.",
-  "Medical Invoice Analysis": "Medical invoice analysis for Workers' compensation claims."
+  "Medical Invoice Analysis - Workers Compensation": "Medical Invoice Analysis - Workers Compensation for Workers' compensation claims."
 };
 
 const modelDetailsDescriptions = {
   "Claim Propensity": "Predicts the likelihood of a claim being filed.",
   "Claim severity - Third party auto liability (FNOL)": "Estimate the potential cost of a claim at the first notice of loss. This model predicts the likely financial impact based on initial claim details, helping you assess and manage risks early in the claims process.",
-  "Medical Invoice Analysis": "AI-ML powered system that helps optimize workers' compensation claims processing by identifying inconsistencies in medical invoices and claim patterns. It enhances adjuster efficiency by flagging cases with anomalies and prioritizing the work, reducing financial losses, and streamlining the investigation process."
+  "Medical Invoice Analysis - Workers Compensation": "AI-ML powered system that helps optimize workers' compensation claims processing by identifying inconsistencies in medical invoices and claim patterns. It enhances adjuster efficiency by flagging cases with anomalies and prioritizing the work, reducing financial losses, and streamlining the investigation process."
 };
 
 const modelRadioOptions = {
@@ -39,7 +39,7 @@ const modelRadioOptions = {
     { label: "Real Time Inference", value: "real-time" },
     { label: "Batch Inference", value: "batch" }
   ],
-  "Medical Invoice Analysis": [
+  "Medical Invoice Analysis - Workers Compensation": [
     { label: "Real Time Inference", value: "real-time-medical" },
     { label: "Batch Inference", value: "batch-medical" }
   ]
@@ -68,10 +68,10 @@ const RadioButton = () => {
     else if (selectedModel === "Claim severity - Third party auto liability (FNOL)" && selectedOption === "batch") {
       return <BatchInference/>;
     }
-    if (selectedModel === "Medical Invoice Analysis" && selectedOption === "real-time-medical") {
+    if (selectedModel === "Medical Invoice Analysis - Workers Compensation" && selectedOption === "real-time-medical") {
       return <RealTimeInferenceMedical />;
     }
-    else if (selectedModel === "Medical Invoice Analysis" && selectedOption === "batch-medical") {
+    else if (selectedModel === "Medical Invoice Analysis - Workers Compensation" && selectedOption === "batch-medical") {
       return <BatchInference/>;
     }
 

@@ -149,6 +149,7 @@ const OutputDetailsMedical = ({ predictionData }) => {
               dangerouslySetInnerHTML={{
                 __html: predictionData["SHAP Explanation"]
                   ? predictionData["SHAP Explanation"].replace(/\n/g, '<br/>')
+                    .replace(/(\d+)\. ([^-]+) - /g, '<span style="color: blue; font-weight: bold; font-size: 1.1em;">$1</span>. <span style="color: blue; font-weight: bold; font-size: 1.1em;">$2</span> - ')
                   : 'No detailed explanation available.'
               }}
             />
