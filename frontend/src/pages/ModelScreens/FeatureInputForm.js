@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Row, Col, Alert, Spin, AutoComplete, Card, Typography } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-const { Title } = Typography;
+const { Title, Text } = Typography;
 const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -52,15 +52,24 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
 
     try {
       const prefillData = {
-        Initial_Class_of_Claim: "Comprehensive",
+        Initial_Class_of_Claim: "Bodily Injury",
         Claimant_Injuries: "Severe",
         Repairable_Flag: "No",
-        Initial_Attorney_Involvement: "No",
-        Primary_Cause_of_Accident: "Rollover",
-        Rate_Class: "Standard",
+        Initial_Attorney_Involvement: "Yes",
+        Primary_Cause_of_Accident: "Rear-end Collision",
+        Rate_Class: "Preferred",
         Non_Drivable_Flag: "No",
         Claimant_State: "NY",
-        Primary_Accident_Description: "Parking Lot Incident"
+        Primary_Accident_Description: "Highway Accident"
+        // Initial_Class_of_Claim: "Comprehensive",
+        // Claimant_Injuries: "Severe",
+        // Repairable_Flag: "No",
+        // Initial_Attorney_Involvement: "No",
+        // Primary_Cause_of_Accident: "Rollover",
+        // Rate_Class: "Standard",
+        // Non_Drivable_Flag: "No",
+        // Claimant_State: "NY",
+        // Primary_Accident_Description: "Parking Lot Incident"
 
       };
 
@@ -82,7 +91,7 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
     setError(null);
 
     try {
-      const response = await fetch('http://54.90.110.173:5000//predict', {
+      const response = await fetch('http://3.88.13.136:5000//predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -134,7 +143,7 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
             style={{ marginBottom: '16px', width: '100%' }}
           />
         )}
-        <div className="policy-details-container">
+        {/* <div className="policy-details-container">
           <Card>
             <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
               <Col xs={24} sm={12} md={6} lg={6}>
@@ -171,7 +180,80 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
               </Col>
             </Row>
           </Card>
-        </div>
+        </div> */}
+        <Row gutter={[16, 16]}>
+          {/* Left Column - Account Information */}
+          <Col xs={24} sm={12}>
+            <Card 
+              type="inner" 
+              title="Customer Details" 
+              headStyle={{ 
+                backgroundColor: '#f5f5f5', 
+                fontWeight: 600 
+              }}
+              style={{height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",}}
+            >
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 items-center">
+                  <Text type="secondary" className="justify-self-start">Policy Number  -  </Text>
+                  <Text strong className="justify-self-end">{policyNumber}</Text>
+                </div>
+                <div className="grid grid-cols-2 items-center">
+                  <Text type="secondary" className="justify-self-start">Customer ID  -  </Text>
+                  <Text strong className="justify-self-end">{customerId}</Text>
+                </div>
+                <div className="grid grid-cols-2 items-center">
+                  <Text type="secondary" className="justify-self-start"> Customer Name  -  </Text>
+                  <Text strong className="justify-self-end">{customerFirstName} {customerLastName}</Text>
+                </div>
+                <div className="grid grid-cols-2 items-center">
+                  <Text type="secondary" className="justify-self-start">LOB  -  </Text>
+                  <Text strong className="justify-self-end"> Auto Liability</Text>
+                </div>
+                <div className="grid grid-cols-2 items-center">
+                  <Text type="secondary" className="justify-self-start"> Model Name  -  </Text>
+                  <Text strong className="justify-self-end">Claim severity - Third party auto liability (FNOL)</Text>
+                </div>
+                <div className="grid grid-cols-2 items-center">
+                  <Text type="secondary" className="justify-self-start">Date of Loss  -  </Text>
+                  <Text strong className="justify-self-end">01/03/2025</Text>
+                </div>
+              </div>
+            </Card>
+          </Col>
+        
+          {/* Right Column - Organization Information */}
+          <Col xs={24} sm={12}>
+            <Card 
+              type="inner" 
+              title="Vehicle Details" 
+              headStyle={{ 
+                backgroundColor: '#f5f5f5', 
+                fontWeight: 600 
+              }}
+              style={{height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",}}
+            >
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 items-center">
+                  <Text type="secondary" className="justify-self-start">Maker - </Text>
+                  <Text strong className="justify-self-end">Ford</Text>
+                </div>
+                <div className="grid grid-cols-2 items-center">
+                  <Text type="secondary" className="justify-self-start">Model -</Text>
+                  <Text strong className="justify-self-end">Raptor</Text>
+                </div>
+                <div className="grid grid-cols-2 items-center">
+                  <Text type="secondary" className="justify-self-start">Model Year - </Text>
+                  <Text strong  className="justify-self-end">12/25/2024</Text>
+                </div>
+                {/* <div className="grid grid-cols-2 items-center">
+                  <Text type="secondary" className="justify-self-start">Vehicle Identification NO. - </Text>
+                  <Text strong className="justify-self-end">skylineprop@gmail.com</Text>
+                </div> */}
+              </div>
+            </Card>
+          </Col>
+        </Row>
 
         <Row gutter={[12, 12]} style={{ marginBottom: '24px', width: '100%', marginTop: '20px' }}>
 

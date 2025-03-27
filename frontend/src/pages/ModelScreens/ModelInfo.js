@@ -4,7 +4,7 @@ import { InfoCircleOutlined, DollarOutlined } from '@ant-design/icons';
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 import FeatureWeightsTable from './FeatureweightTable';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const ModelInfo = ({ predictionData }) => {
   const [policyNumber, setPolicyNumber] = useState("");
@@ -173,46 +173,136 @@ const ModelInfo = ({ predictionData }) => {
 
   return (
     <div className="model-info-container" style={{ padding: '24px', width: '100%' }}>
-      {/* Policy Details Container */}
-      <div className="policy-details-container">
-        <Card>
-          <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
-            <Col xs={24} sm={12} md={6} lg={6}>
-              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                Policy Number - {policyNumber}
-              </Title>
-            </Col>
-            <Col xs={24} sm={12} md={6} lg={6}>
-              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                Customer ID - {customerId}
-              </Title>
-            </Col>
-            <Col xs={24} sm={12} md={6} lg={6}>
-              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                Customer Name - {customerFirstName} {customerLastName}
-              </Title>
-            </Col>
-          </Row>
-          <Row gutter={[40, 14]} justify="space-between" style={{ marginBottom: '24px', width: '100%' }}>
-            <Col xs={24} sm={12} md={6} lg={6}>
-              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                LOB - Auto Liability
-              </Title>
-            </Col>
-            <Col xs={24} sm={12} md={6} lg={6}>
-              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                Model Name - Claim severity - Third party auto liability (FNOL)
-              </Title>
-            </Col>
-            <Col xs={24} sm={12} md={6} lg={6}>
-              <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                Date of Loss - 01/03/2025
-              </Title>
-            </Col>
-          </Row>
-        </Card>
+      {/* Customer Details Container */}
+      
+<Row gutter={[16, 16]}>
+  {/* Left Column - Account Information */}
+  <Col xs={24} sm={12}>
+    <Card 
+      type="inner" 
+      title="Customer Details" 
+      headStyle={{ 
+        backgroundColor: '#f5f5f5', 
+        fontWeight: 600 
+      }}
+      style={{height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",}}
+    >
+      <div className="space-y-3">
+        <div className="grid grid-cols-2 items-center">
+          <Text type="secondary" className="justify-self-start">Policy Number  -  </Text>
+          <Text strong className="justify-self-end">{policyNumber}</Text>
+        </div>
+        <div className="grid grid-cols-2 items-center">
+          <Text type="secondary" className="justify-self-start">Customer ID  -  </Text>
+          <Text strong className="justify-self-end">{customerId}</Text>
+        </div>
+        <div className="grid grid-cols-2 items-center">
+          <Text type="secondary" className="justify-self-start"> Customer Name  -  </Text>
+          <Text strong className="justify-self-end">{customerFirstName} {customerLastName}</Text>
+        </div>
+        <div className="grid grid-cols-2 items-center">
+          <Text type="secondary" className="justify-self-start">LOB  -  </Text>
+          <Text strong className="justify-self-end"> Auto Liability</Text>
+        </div>
+        <div className="grid grid-cols-2 items-center">
+          <Text type="secondary" className="justify-self-start"> Model Name  -  </Text>
+          <Text strong className="justify-self-end">Claim severity - Third party auto liability (FNOL)</Text>
+        </div>
+        <div className="grid grid-cols-2 items-center">
+          <Text type="secondary" className="justify-self-start">Date of Loss  -  </Text>
+          <Text strong className="justify-self-end">01/03/2025</Text>
+        </div>
       </div>
+    </Card>
+  </Col>
 
+  {/* Right Column - Organization Information */}
+  <Col xs={24} sm={12}>
+    <Card 
+      type="inner" 
+      title="Vehicle Details" 
+      headStyle={{ 
+        backgroundColor: '#f5f5f5', 
+        fontWeight: 600 
+      }}
+      style={{height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",}}
+    >
+      <div className="space-y-3">
+        <div className="grid grid-cols-2 items-center">
+          <Text type="secondary" className="justify-self-start">Maker - </Text>
+          <Text strong className="justify-self-end">Ford</Text>
+        </div>
+        <div className="grid grid-cols-2 items-center">
+          <Text type="secondary" className="justify-self-start">Model -</Text>
+          <Text strong className="justify-self-end">Raptor</Text>
+        </div>
+        <div className="grid grid-cols-2 items-center">
+          <Text type="secondary" className="justify-self-start">Model Year - </Text>
+          <Text strong  className="justify-self-end">12/25/2024</Text>
+        </div>
+       
+      </div>
+    </Card>
+  </Col>
+</Row>
+
+      {/* <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg max-w-4xl">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+          <h2 className="text-2xl font-bold text-blue-700 mb-6 border-b pb-3">Customer Details</h2>
+          <div className="space-y-4">
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600"> Policy Number - </span>
+              <span className="font-semibold text-gray-800">{policyNumber}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600"> Customer ID - </span>
+              <span className="font-semibold text-gray-800">{customerId}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Customer Name - </span>
+              <span className="font-semibold text-gray-800">{customerFirstName} {customerLastName}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600"> LOB - </span>
+              <span className="font-semibold text-gray-800">Auto Liability</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600"> Model Name - Claim severity - </span>
+              <span className="font-semibold text-gray-800">Third party auto liability (FNOL)</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Date of Loss -  </span>
+              <span className="font-semibold text-gray-800">01/03/2025</span>
+            </div>
+          </div>
+        </div>
+
+       
+        <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
+          <h2 className="text-2xl font-bold text-blue-700 mb-6 border-b pb-3">Organization Details</h2>
+          <div className="space-y-4">
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Organization Type:</span>
+              <span className="font-semibold text-gray-800">Business</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Industry Code:</span>
+              <span className="font-semibold text-gray-800">243107</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Status:</span>
+              <span className="font-semibold text-green-600">Active</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="font-medium text-gray-600">Email Address:</span>
+              <span className="font-semibold text-gray-800">skylineprop@gmail.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> */}
       {/* Scatter Plot */}
       {selectedModel && (
         <Title level={3} style={{ marginBottom: '5px', color: 'royalblue', textAlign: "center", fontSize: getTitleFontSize() }}>
@@ -293,7 +383,22 @@ const ModelInfo = ({ predictionData }) => {
         </Col>
       </Row>
       {/* Statistics Cards */}
+      <div style={{ 
+            backgroundColor: '#fff', 
+            padding: '16px', 
+            borderRadius: '8px', 
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)', 
+            marginBottom: '24px' 
+          }}>
+            <div style={{ 
+              borderBottom: '1px solid #f0f0f0', 
+              marginBottom: '16px', 
+              paddingBottom: '8px' 
+            }}>
+              <Title level={4} style={{ color: 'royalblue', marginBottom: 14,}}>Metrics Values</Title>
+            </div>
       <Row gutter={[16, 16]} style={{ marginTop: '16px' }} >
+     
         <Col xs={24} sm={24} md={8} lg={8} xl={8}>
           <Card style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}>
             <Title level={4} style={{ fontSize: getSubtitleFontSize() }}>
@@ -348,7 +453,7 @@ const ModelInfo = ({ predictionData }) => {
           </Card>
         </Col>
       </Row>
-
+      </div>
       {/* Feature Weights Table */}
       {/* <Row style={{ marginTop: '16px' }}>
         <Col span={24}>
