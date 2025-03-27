@@ -91,7 +91,7 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
     setError(null);
 
     try {
-      const response = await fetch('http://3.88.13.136:5000//predict', {
+      const response = await fetch('http://204.236.215.4:5000//predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Typography, Statistic,  Tooltip as AntTooltip } from 'antd';
+import { Card, Row, Col, Typography, Statistic, Tooltip as AntTooltip } from 'antd';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from 'recharts';
 import { DollarOutlined, InfoCircleOutlined } from '@ant-design/icons';
 
@@ -10,7 +10,7 @@ const OutputDetails = ({ predictionData }) => {
   const [customerId, setCustomerId] = useState("");
   const [customerFirstName, setCustomerFirstName] = useState("");
   const [customerLastName, setCustomerLastName] = useState("");
-   const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+  const [windowWidth, setWindowWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
   const tooltipStyle = {
     backgroundColor: '#e6f7ff',
     color: '#0050b3',
@@ -52,8 +52,7 @@ const OutputDetails = ({ predictionData }) => {
         feature: formattedFeature,
         value: value,
         shapValue: shapValue,
-        positiveValue: shapValue > 0 ? shapValue : 0,
-        negativeValue: shapValue < 0 ? Math.abs(shapValue) : 0
+        positiveValue: shapValue > 0 ? shapValue : 0
       };
     });
   };
@@ -102,14 +101,14 @@ const OutputDetails = ({ predictionData }) => {
       <Row gutter={[16, 16]}>
         {/* Left Column - Account Information */}
         <Col xs={24} sm={12}>
-          <Card 
-            type="inner" 
-            title="Customer Details" 
-            headStyle={{ 
-              backgroundColor: '#f5f5f5', 
-              fontWeight: 600 
+          <Card
+            type="inner"
+            title="Customer Details"
+            headStyle={{
+              backgroundColor: '#f5f5f5',
+              fontWeight: 600
             }}
-            style={{height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",}}
+            style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", }}
           >
             <div className="space-y-3">
               <div className="grid grid-cols-2 items-center">
@@ -139,17 +138,17 @@ const OutputDetails = ({ predictionData }) => {
             </div>
           </Card>
         </Col>
-      
+
         {/* Right Column - Organization Information */}
         <Col xs={24} sm={12}>
-          <Card 
-            type="inner" 
-            title="Vehicle Details" 
-            headStyle={{ 
-              backgroundColor: '#f5f5f5', 
-              fontWeight: 600 
+          <Card
+            type="inner"
+            title="Vehicle Details"
+            headStyle={{
+              backgroundColor: '#f5f5f5',
+              fontWeight: 600
             }}
-            style={{height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",}}
+            style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", }}
           >
             <div className="space-y-3">
               <div className="grid grid-cols-2 items-center">
@@ -162,7 +161,7 @@ const OutputDetails = ({ predictionData }) => {
               </div>
               <div className="grid grid-cols-2 items-center">
                 <Text type="secondary" className="justify-self-start">Model Year - </Text>
-                <Text strong  className="justify-self-end">12/25/2024</Text>
+                <Text strong className="justify-self-end">12/25/2024</Text>
               </div>
               {/* <div className="grid grid-cols-2 items-center">
                 <Text type="secondary" className="justify-self-start">Vehicle Identification NO. - </Text>
@@ -213,13 +212,13 @@ const OutputDetails = ({ predictionData }) => {
         {/* Right Column - Bar Chart */}
         <Col xs={24} sm={24} md={12} lg={16} xl={16}>
           <Card style={cardStyle}>
-            <Title level={4}>Feature Impact on Prediction (SHAP values) 
+            <Title level={4}>Feature Impact on Prediction (SHAP values)
               <AntTooltip
-                            title="SHAP values show how each factor influences the claim amount. Positive values increase it, while negative values decrease it, helping explain the model's prediction."
-                            overlayStyle={tooltipStyle}
-                          >
-                            <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: windowWidth < 576 ? '14px' : '16px', color: '#1890ff' }} />
-                          </AntTooltip></Title>
+                title="SHAP values show how each factor influences the claim amount. Positive values increase it, while negative values decrease it, helping explain the model's prediction."
+                overlayStyle={tooltipStyle}
+              >
+                <InfoCircleOutlined style={{ marginLeft: '8px', fontSize: windowWidth < 576 ? '14px' : '16px', color: '#1890ff' }} />
+              </AntTooltip></Title>
             <div style={{ width: '100%', height: '350px' }}>
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -239,19 +238,36 @@ const OutputDetails = ({ predictionData }) => {
                   />
                   <RechartsTooltip
                     formatter={(value, name, props) => {
-                      const tooltipContent = [
-                        
-                        ` ${value.toFixed(2)} Value: ${props.payload.value}`
-                      ];
+                      // Determine if it's a positive or negative impact
+                      const isPositiveImpact = name === 'positiveValue';
+                      const impactValue = Math.abs(value);
 
-                      // Only add impact type if the impact is not zero
-                      if (value.toFixed(2) !== 0) {
-                        tooltipContent.push(
-                          name === 'positiveValue' ? 'Positive Impact' : 'Negative Impact'
-                        );
+                      // Only show tooltip for non-zero values
+                      if (impactValue === 0) return null;
+
+                      // Ensure we only show tooltip if there's an actual impact
+                      if ((isPositiveImpact && props.payload.positiveValue === 0) ||
+                        (!isPositiveImpact && props.payload.negativeValue === 0)) {
+                        return null;
                       }
 
-                      return tooltipContent;
+                      // Create the impact description
+                      const impactDescription = isPositiveImpact
+                        ? `Adding this feature to the Model increased the Claim Amount by ${impactValue.toFixed(2)}`
+                        : `Adding this feature to the Model decreased the Claim Amount by ${impactValue.toFixed(2)}`;
+
+                      // Return an array of tooltip content
+                      return [
+                        // `${isPositiveImpact ? '+' : '-'}${impactValue.toFixed(2)}`,
+                        impactDescription
+                      ];
+                    }}
+                    labelStyle={{ fontWeight: 'bold' }}
+                    contentStyle={{
+                      backgroundColor: 'white',
+                      border: '1px solid #ddd',
+                      borderRadius: '4px',
+                      padding: '10px'
                     }}
                   />
 
@@ -275,34 +291,34 @@ const OutputDetails = ({ predictionData }) => {
       </Row>
 
       <Row gutter={[16, 16]}>
-  <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-    <Card style={{ ...cardStyle, marginTop: '16px' }}>
-      <Title level={4}>Inference</Title>
-      <Row gutter={[16, 16]}>
-        <Col span={24}>
-          <Title level={5}>Summary</Title>
-          <ul>
-            <li>
-              <strong>Claimant Injuries (Severe)</strong> → <strong>+46,825.90</strong> → Increases claim amount due to high medical and legal costs.
-            </li>
-            <li>
-              <strong>Repairable Flag (No)</strong> → <strong>+27,778.15</strong> → Higher claims as non-repairable vehicles are often total losses.
-            </li>
-            <li>
-              <strong>Initial Class of Claim (Comprehensive)</strong> → <strong>-20,270.69</strong> → Lowers claim amount since comprehensive claims are usually less costly.
-            </li>
-            <li>
-              <strong>Primary Cause of Accident (Rollover)</strong> → <strong>-17,501.27</strong> → Unexpectedly reduces claims, possibly due to less severe injuries in the dataset.
-            </li>
-            <li>
-              <strong>Non Drivable Flag (No)</strong> → <strong>-17,354.24</strong> → Lowers claim amount since drivable vehicles have less damage and repair costs.
-            </li>
-          </ul>
+        <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+          <Card style={{ ...cardStyle, marginTop: '16px' }}>
+            <Title level={4}>Inference</Title>
+            <Row gutter={[16, 16]}>
+              <Col span={24}>
+                <Title level={5}>Summary</Title>
+                <ul>
+                  <li>
+                    <strong>Claimant Injuries (Severe)</strong> → <strong>+134,183.58</strong> → Severe injuries significantly increase the claim amount, indicating high medical costs and potential long-term care expenses.
+                  </li>
+                  <li>
+                    <strong>Initial_Class_of_Claim (Bodily Injury)</strong> → <strong>+111,748.39</strong> → Bodily injury claims drive higher payouts due to medical treatments, rehabilitation, and legal considerations.
+                  </li>
+                  <li>
+                    <strong>Initial_Attorney_Involvement (Yes)</strong> → <strong>+91,923.87</strong> → Attorney involvement leads to higher claim amounts, likely due to legal fees and prolonged settlement negotiations.
+                  </li>
+                  <li>
+                    <strong>Repairable_Flag (No)</strong> → <strong>+86,347.79</strong> → If the vehicle is non-repairable, the claim cost rises significantly, reflecting total loss settlements.
+                  </li>
+                  <li>
+                    <strong>Claimant_State (NY)</strong> → <strong>+18,491.07</strong> → Claims in New York tend to be higher, possibly due to state regulations, cost of living, and legal factors.
+                  </li>
+                </ul>
+              </Col>
+            </Row>
+          </Card>
         </Col>
       </Row>
-    </Card>
-  </Col>
-</Row>
 
     </div>
   );
