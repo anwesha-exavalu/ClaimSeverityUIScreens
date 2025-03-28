@@ -63,85 +63,85 @@ const OutputDetailsMedical = ({ predictionData }) => {
   return (
     <div style={{ padding: '1%' }}>
       <Row>
-                    {/* Left Column - Account Information */}
-                 
-                      <Card
-                        type="inner"
-                        title="Customer Details"
-                        headStyle={{
-                          backgroundColor: '#f5f5f5',
-                          fontWeight: 600
-                        }}
-                        style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" , width: '800px', marginBottom: '50px'}}
-                      >
-                        <div style={{
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '5px'
-                        }}>
-                          <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: '150px 1fr',
-                            alignItems: 'center'
-                          }}>
-                            <Text type="secondary" style={{
-                              textAlign: 'right',
-                              paddingRight: '16px'
-                            }}>Policy Number -</Text>
-                            <Text strong>{policyNumber}</Text>
-                          </div>
-                          <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: '150px 1fr',
-                            alignItems: 'center'
-                          }}>
-                            <Text type="secondary" style={{
-                              textAlign: 'right',
-                              paddingRight: '16px'
-                            }}>Customer ID -</Text>
-                            <Text strong>{customerId}</Text>
-                          </div>
-                          <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: '150px 1fr',
-                            alignItems: 'center'
-                          }}>
-                            <Text type="secondary" style={{
-                              textAlign: 'right',
-                              paddingRight: '16px'
-                            }}>Customer Name -</Text>
-                            <Text strong>{customerFirstName} {customerLastName}</Text>
-                          </div>
-                          <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: '150px 1fr',
-                            alignItems: 'center'
-                          }}>
-                            <Text type="secondary" style={{
-                              textAlign: 'right',
-                              paddingRight: '16px'
-                            }}>LOB -</Text>
-                            <Text strong>Workers Compensation</Text>
-                          </div>
-                          <div style={{
-                            display: 'grid',
-                            gridTemplateColumns: '150px 1fr',
-                            alignItems: 'center'
-                          }}>
-                            <Text type="secondary" style={{
-                              textAlign: 'right',
-                              paddingRight: '16px'
-                            }}>Model Name -</Text>
-                            <Text strong>Medical Invoice Analysis - Workers Compensation</Text>
-                          </div>
-                         
-                        </div>
-                      </Card>
-                  
-            
-                 
-                  </Row>
-             y
+        {/* Left Column - Account Information */}
+
+        <Card
+          type="inner"
+          title="Customer Details"
+          headStyle={{
+            backgroundColor: '#f5f5f5',
+            fontWeight: 600
+          }}
+          style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: '800px', marginBottom: '50px' }}
+        >
+          <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '5px'
+          }}>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '150px 1fr',
+              alignItems: 'center'
+            }}>
+              <Text type="secondary" style={{
+                textAlign: 'right',
+                paddingRight: '16px'
+              }}>Policy Number -</Text>
+              <Text strong>{policyNumber}</Text>
+            </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '150px 1fr',
+              alignItems: 'center'
+            }}>
+              <Text type="secondary" style={{
+                textAlign: 'right',
+                paddingRight: '16px'
+              }}>Customer ID -</Text>
+              <Text strong>{customerId}</Text>
+            </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '150px 1fr',
+              alignItems: 'center'
+            }}>
+              <Text type="secondary" style={{
+                textAlign: 'right',
+                paddingRight: '16px'
+              }}>Customer Name -</Text>
+              <Text strong>{customerFirstName} {customerLastName}</Text>
+            </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '150px 1fr',
+              alignItems: 'center'
+            }}>
+              <Text type="secondary" style={{
+                textAlign: 'right',
+                paddingRight: '16px'
+              }}>LOB -</Text>
+              <Text strong>Workers Compensation</Text>
+            </div>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '150px 1fr',
+              alignItems: 'center'
+            }}>
+              <Text type="secondary" style={{
+                textAlign: 'right',
+                paddingRight: '16px'
+              }}>Model Name -</Text>
+              <Text strong>Medical Invoice Analysis - Workers Compensation</Text>
+            </div>
+
+          </div>
+        </Card>
+
+
+
+      </Row>
+
 
 
 
