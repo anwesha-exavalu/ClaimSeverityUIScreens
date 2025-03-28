@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Row, Col, Alert, Spin, Card, Typography, DatePicker } from 'antd';
 import moment from 'moment'; // Import moment for handling dates
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
   const [loading, setLoading] = useState(false);
@@ -158,41 +158,85 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
             style={{ marginBottom: '16px', width: '100%' }}
           />
         )}
-        <div className="policy-details-container">
-          
-            <Card>
-              <Row gutter={[14, 14]} style={{ marginBottom: '2px', width: '100%' }}>
-                <Col xs={24} sm={12} md={8} lg={8}>
-                  <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                    Policy Number - {policyNumber}
-                  </Title>
-                </Col>
-                <Col xs={24} sm={12} md={8} lg={8}>
-                  <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                    Customer ID - {customerId}
-                  </Title>
-                </Col>
-                <Col xs={24} sm={12} md={8} lg={8}>
-                  <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                    Customer Name - {customerFirstName} {customerLastName}
-                  </Title>
-                </Col>
-              </Row>
-              <Row gutter={[14, 14]} style={{ marginBottom: '2px', width: '100%' }}>
-                <Col xs={24} sm={12} md={8} lg={8}>
-                  <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                    LOB - Worker's Compensation
-                  </Title>
-                </Col>
-                <Col xs={24} sm={12} md={8} lg={8}>
-                  <Title level={5} style={{ color: 'royalblue', marginBottom: 14 }}>
-                    Model Name - Medical Invoice Analysis
-                  </Title>
-                </Col>
-              </Row>
-            </Card> 
+       <Row>
+               {/* Left Column - Account Information */}
+            
+                 <Card
+                   type="inner"
+                   title="Customer Details"
+                   headStyle={{
+                     backgroundColor: '#f5f5f5',
+                     fontWeight: 600
+                   }}
+                   style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" , width: '800px', marginBottom: '50px'}}
+                 >
+                   <div style={{
+                     display: 'flex',
+                     flexDirection: 'column',
+                     gap: '5px'
+                   }}>
+                     <div style={{
+                       display: 'grid',
+                       gridTemplateColumns: '150px 1fr',
+                       alignItems: 'center'
+                     }}>
+                       <Text type="secondary" style={{
+                         textAlign: 'right',
+                         paddingRight: '16px'
+                       }}>Policy Number -</Text>
+                       <Text strong>{policyNumber}</Text>
+                     </div>
+                     <div style={{
+                       display: 'grid',
+                       gridTemplateColumns: '150px 1fr',
+                       alignItems: 'center'
+                     }}>
+                       <Text type="secondary" style={{
+                         textAlign: 'right',
+                         paddingRight: '16px'
+                       }}>Customer ID -</Text>
+                       <Text strong>{customerId}</Text>
+                     </div>
+                     <div style={{
+                       display: 'grid',
+                       gridTemplateColumns: '150px 1fr',
+                       alignItems: 'center'
+                     }}>
+                       <Text type="secondary" style={{
+                         textAlign: 'right',
+                         paddingRight: '16px'
+                       }}>Customer Name -</Text>
+                       <Text strong>{customerFirstName} {customerLastName}</Text>
+                     </div>
+                     <div style={{
+                       display: 'grid',
+                       gridTemplateColumns: '150px 1fr',
+                       alignItems: 'center'
+                     }}>
+                       <Text type="secondary" style={{
+                         textAlign: 'right',
+                         paddingRight: '16px'
+                       }}>LOB -</Text>
+                       <Text strong>Workers Compensation</Text>
+                     </div>
+                     <div style={{
+                       display: 'grid',
+                       gridTemplateColumns: '150px 1fr',
+                       alignItems: 'center'
+                     }}>
+                       <Text type="secondary" style={{
+                         textAlign: 'right',
+                         paddingRight: '16px'
+                       }}>Model Name -</Text>
+                       <Text strong>Medical Invoice Analysis - Workers Compensation</Text>
+                     </div>
+                    
+                   </div>
+                 </Card>
+             
        
-        </div>
+            
+             </Row>
         
         <Form
           form={form}

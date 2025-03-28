@@ -20,7 +20,7 @@ import {
   UploadOutlined,
   SearchOutlined
 } from "@ant-design/icons";
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 function CustomerInfo({setActiveTab}) {
   // Form and state management
@@ -211,7 +211,12 @@ function CustomerInfo({setActiveTab}) {
         </Row>
 
         {/* Search Section with fixed customer ID */}
+        <Text type="primary" style={{
+                              textAlign: 'right',
+                              paddingRight: '16px'
+                            }}>Enter Customer Id</Text>
         <Row gutter={[12, 12]} style={{ marginBottom: '24px', width: '100%' }}>
+        
           <Col xs={24} sm={12} md={6} lg={6}>
             <AutoComplete
               style={{ width: '100%' }}
