@@ -59,6 +59,12 @@ const OutputDetailsMedical = ({ predictionData }) => {
 
   // Check if flag is 1
   const isAnomalyDetected = predictionData["Predicted FLAG"] === 1;
+  const cardStyle = {
+    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",
+    height: "100%",
+    width: "100%",
+    padding: "10px"
+  };
 
   return (
     <div style={{ padding: '1%' }}>
@@ -141,7 +147,7 @@ const OutputDetailsMedical = ({ predictionData }) => {
             
                  
                   </Row>
-             y
+             
 
 
 
@@ -160,11 +166,7 @@ const OutputDetailsMedical = ({ predictionData }) => {
               }}
             />
           </Card>
-          <Card style={mediumCardStyle} bordered={true}>
-            <div style={{ textAlign: 'center' }}>
-              <img src='/ConfusionMatrix.png' alt='Confusion Matrix' />
-            </div>
-          </Card>
+         
         </Col>
 
         <Col xs={24} sm={12} md={6} lg={6} xl={6}>
@@ -181,20 +183,38 @@ const OutputDetailsMedical = ({ predictionData }) => {
         </Col>
 
         <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-          <Card style={bigCardStyle} bordered={true}>
-            <div style={{ textAlign: 'left', width: '100%', height: '100%' }}>
-              <Title level={4}>Key Factors Behind Prediction</Title>
-              <FeatureImportanceChart />
+        <Card style={mediumCardStyle} bordered={true}>
+            <div style={{ textAlign: 'center' }}>
+              <img src='/ConfusionMatrix.png' alt='Confusion Matrix' />
             </div>
           </Card>
+         
         </Col>
       </Row>
 
       {/* Third row - Expectations */}
-      <Row gutter={[8, 8]}>
-        <Col span={24}>
-          <Card style={expCardStyle} bordered={true}>
-            <Title level={4}>Explanation of Feature Impact</Title>
+
+      <Row gutter={[16, 16]} style={{ marginTop: '15px', marginBottom: '15px', width: '305%', display: 'flex', flexWrap: 'nowrap' }}>
+      <Col xs={24} sm={24} md={12} lg={8} xl={8} style={{
+          width: '50%',
+          flexGrow: 1
+        }}>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '16px', height: '100%', width: '100%' }}>
+           <Card style={{
+              ...cardStyle,
+              flex: 1,
+              width: '50%'
+            }}>
+            <Title
+              level={4}
+              style={{
+                marginBottom: '16px',
+                padding: '10px'
+              }}
+            >
+             Explanation of Feature Impact
+            </Title>
+           
             <div
               dangerouslySetInnerHTML={{
                 __html: predictionData["SHAP Explanation"]
@@ -204,8 +224,27 @@ const OutputDetailsMedical = ({ predictionData }) => {
               }}
             />
           </Card>
+       
+           <Card style={{
+              ...cardStyle,
+              flex: 1,
+              width: '50%'
+            }}>
+               Key Factors Behind Prediction
+               
+             
+               
+            <div style={{ textAlign: 'left', width: '100%', height: '100%' }}>
+              <Title level={4}>Key Factors Behind Prediction</Title>
+              <FeatureImportanceChart />
+            </div>
+      
+           
+          </Card>
+          </div>
         </Col>
       </Row>
+      
     </div>
   );
 };

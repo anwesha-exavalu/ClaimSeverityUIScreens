@@ -294,19 +294,17 @@ const OutputDetails = ({ predictionData }) => {
 
 
 
-      <Row>
-        <Col
-          xs={24}
-          sm={24}
-          md={8}
-          lg={8}
-          xl={8}
-          style={{
-            paddingRight: '8px',
-            paddingLeft: '8px'
-          }}
-        >
-          <Card>
+      <Row gutter={[16, 16]} style={{ marginTop: '15px', marginBottom: '15px', width: '305%', display: 'flex', flexWrap: 'nowrap' }}>
+      <Col xs={24} sm={24} md={12} lg={8} xl={8} style={{
+          width: '50%',
+          flexGrow: 1
+        }}>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '16px', height: '100%', width: '100%' }}>
+           <Card style={{
+              ...cardStyle,
+              flex: 1,
+              width: '50%'
+            }}>
             <Title
               level={4}
               style={{
@@ -350,26 +348,12 @@ const OutputDetails = ({ predictionData }) => {
               </li>
             </ul>
           </Card>
-        </Col>
-        <Col
-          xs={24}
-          sm={24}
-          md={16}
-          lg={16}
-          xl={16}
-          style={{
-            paddingRight: '8px',
-            paddingLeft: '8px'
-          }}
-        >
-          <Card
-            title={
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center'
-                }}
-              >
+       
+           <Card style={{
+              ...cardStyle,
+              flex: 1,
+              width: '50%'
+            }}>
                 Feature Impact on Prediction (SHAP values)
                 <Tooltip
                   title="SHAP values show how each factor influences the claim amount. Positive values increase it, while negative values decrease it, helping explain the model's prediction."
@@ -385,15 +369,8 @@ const OutputDetails = ({ predictionData }) => {
                     }}
                   />
                 </Tooltip>
-              </div>
-            }
-          >
-            <div
-              style={{
-                width: '100%',
-                height: '350px'
-              }}
-            >
+             
+            
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
                   layout="vertical"
@@ -437,8 +414,9 @@ const OutputDetails = ({ predictionData }) => {
                   />
                 </BarChart>
               </ResponsiveContainer>
-            </div>
+           
           </Card>
+          </div>
         </Col>
       </Row>
 
