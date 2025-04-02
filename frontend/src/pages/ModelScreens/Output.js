@@ -290,7 +290,7 @@ const OutputDetails = ({ predictionData }) => {
           </div>
         </Col>
       </Row>
-      {/* Right Column - Bar Chart */}
+   
 
 
 
@@ -300,54 +300,7 @@ const OutputDetails = ({ predictionData }) => {
           flexGrow: 1
         }}>
           <div style={{ display: 'flex', flexDirection: 'row', gap: '16px', height: '100%', width: '100%' }}>
-           <Card style={{
-              ...cardStyle,
-              flex: 1,
-              width: '50%'
-            }}>
-            <Title
-              level={4}
-              style={{
-                marginBottom: '16px',
-                padding: '10px'
-              }}
-            >
-              Inference
-            </Title>
-            <Title
-              level={5}
-              style={{
-                marginBottom: '12px',
-                padding: '10px'
-              }}
-            >
-              Summary
-            </Title>
-            <ul
-              style={{
-                listStyleType: 'none',
-                padding: '10px',
-                maxHeight: '400px',
-                overflowY: 'auto'
-              }}
-            >
-              <li style={{ marginBottom: '12px' }}>
-                <strong>Initial_Class_of_Claim (Bodily Injury)</strong> → <strong>+46,729</strong> → Claims classified as "Bodily Injury" significantly increase the predicted claim cost, indicating that injury-related claims tend to be much higher than other types.
-              </li>
-              <li style={{ marginBottom: '12px' }}>
-                <strong>Initial_Attorney_Involvement (Yes)</strong> → <strong>+31,137</strong> → The presence of an attorney is associated with higher claim costs, likely due to legal fees, negotiations, and extended processing times.
-              </li>
-              <li style={{ marginBottom: '12px' }}>
-                <strong>Rate_Class (Standard)</strong> → <strong>-25,538</strong> → Being in the "Standard" rate class lowers the predicted claim cost compared to higher-risk categories, possibly because this group has a lower accident severity or better driving history.
-              </li>
-              <li style={{ marginBottom: '12px' }}>
-                <strong>Repairable_Flag (Yes)</strong> → <strong>-23,302</strong> → If a vehicle is repairable, the claim cost is lower, as it avoids total loss payouts and focuses only on repair expenses.
-              </li>
-              <li style={{ marginBottom: '12px' }}>
-                <strong>Primary_Cause_of_Accident (Rear-end Collision)</strong> → <strong>-22,586</strong> → Rear-end collisions tend to have lower claim costs compared to more severe accident types (e.g., head-on collisions or rollovers), possibly due to lower injury severity and repair costs.
-              </li>
-            </ul>
-          </Card>
+         
        
            <Card style={{
               ...cardStyle,
@@ -415,6 +368,54 @@ const OutputDetails = ({ predictionData }) => {
                 </BarChart>
               </ResponsiveContainer>
            
+          </Card>
+          <Card style={{
+              ...cardStyle,
+              flex: 1,
+              width: '50%'
+            }}>
+            <Title
+              level={4}
+              style={{
+                marginBottom: '16px',
+                padding: '10px'
+              }}
+            >
+              Inference
+            </Title>
+            <Title
+              level={5}
+              style={{
+                marginBottom: '12px',
+                padding: '10px'
+              }}
+            >
+              Summary
+            </Title>
+            <ul
+              style={{
+                listStyleType: 'none',
+                padding: '10px',
+                maxHeight: '400px',
+                overflowY: 'auto'
+              }}
+            >
+              <li style={{ marginBottom: '12px' }}>
+                <strong>Initial_Class_of_Claim (Bodily Injury)</strong> → <strong>+46,729</strong> → Claims classified as "Bodily Injury" significantly increase the predicted claim cost, indicating that injury-related claims tend to be much higher than other types.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong>Initial_Attorney_Involvement (Yes)</strong> → <strong>+31,137</strong> → The presence of an attorney is associated with higher claim costs, likely due to legal fees, negotiations, and extended processing times.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong>Rate_Class (Standard)</strong> → <strong>-25,538</strong> → Being in the "Standard" rate class lowers the predicted claim cost compared to higher-risk categories, possibly because this group has a lower accident severity or better driving history.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong>Repairable_Flag (Yes)</strong> → <strong>-23,302</strong> → If a vehicle is repairable, the claim cost is lower, as it avoids total loss payouts and focuses only on repair expenses.
+              </li>
+              <li style={{ marginBottom: '12px' }}>
+                <strong>Primary_Cause_of_Accident (Rear-end Collision)</strong> → <strong>-22,586</strong> → Rear-end collisions tend to have lower claim costs compared to more severe accident types (e.g., head-on collisions or rollovers), possibly due to lower injury severity and repair costs.
+              </li>
+            </ul>
           </Card>
           </div>
         </Col>

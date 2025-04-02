@@ -34,18 +34,18 @@ const FeatureImportanceChart = () => {
           annotation: 'EL CAMPO'
         }
     ];
-
+    
     const shortenedData = data.map(item => ({
         ...item,
         shortName: item.name.length > 25 ? item.name.substring(0, 25) + '...' : item.name
     }));
-    
+        
     // Custom label component for annotations
     const renderCustomizedLabel = (props) => {
         const { x, y, width, index } = props;
         if (index === undefined || !shortenedData[index]) return null;
         const annotation = shortenedData[index].annotation;
-        
+                
         return (
             <text
                 x={x + width + 5}
@@ -58,17 +58,19 @@ const FeatureImportanceChart = () => {
             </text>
         );
     };
-
+    
     return (
-        <div style={{ width: '100%', height: '400px' }}>
-            <ResponsiveContainer width="100%" height="85%">
+        <div className="flex justify-center items-center">
+            <div className="w-98 h-96">
                 <BarChart
                     layout="vertical"
+                    width={600}
+                    height={400}
                     data={shortenedData}
-                    margin={{ top: 5, right: 50, left: 10, bottom: 5 }}
+                    margin={{ top: 5, right: 60, bottom: 5 }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis 
+                    <XAxis
                         type="number"
                         domain={[0, 1.5]}
                         tickCount={6}
@@ -78,18 +80,18 @@ const FeatureImportanceChart = () => {
                         <Label
                             value="SHAP Value (Impact on Model Output)"
                             position="bottom"
-                            offset={-10}
+                            offset={-6}
                         />
                     </XAxis>
-                    <YAxis 
+                    <YAxis
                         type="category"
                         dataKey="shortName"
                         tick={{ fontSize: 11 }}
-                        width={200}
+                        width={120}
                         axisLine={true}
                         tickLine={false}
                     />
-                    <Tooltip 
+                    <Tooltip
                         formatter={(value, name) => [value, "SHAP Impact"]}
                         labelFormatter={(label) => {
                             const item = shortenedData.find(d => d.shortName === label);
@@ -100,7 +102,7 @@ const FeatureImportanceChart = () => {
                         <LabelList content={renderCustomizedLabel} />
                     </Bar>
                 </BarChart>
-            </ResponsiveContainer>
+            </div>
         </div>
     );
 };

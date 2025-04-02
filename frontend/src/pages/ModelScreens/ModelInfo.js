@@ -320,63 +320,8 @@ const ModelInfo = ({ predictionData }) => {
         </Col>
       </Row>
 
-      {/* <div className="container mx-auto p-6 bg-white shadow-lg rounded-lg max-w-4xl">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-          <h2 className="text-2xl font-bold text-blue-700 mb-6 border-b pb-3">Customer Details</h2>
-          <div className="space-y-4">
-            <div className="flex justify-between">
-              <span className="font-medium text-gray-600"> Policy Number - </span>
-              <span className="font-semibold text-gray-800">{policyNumber}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-gray-600"> Customer ID - </span>
-              <span className="font-semibold text-gray-800">{customerId}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-gray-600">Customer Name - </span>
-              <span className="font-semibold text-gray-800">{customerFirstName} {customerLastName}</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-gray-600"> LOB - </span>
-              <span className="font-semibold text-gray-800">Auto Liability</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-gray-600"> Model Name - Claim severity - </span>
-              <span className="font-semibold text-gray-800">Third party auto liability (FNOL)</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-gray-600">Date of Loss -  </span>
-              <span className="font-semibold text-gray-800">01/03/2025</span>
-            </div>
-          </div>
-        </div>
-
-       
-        <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-          <h2 className="text-2xl font-bold text-blue-700 mb-6 border-b pb-3">Organization Details</h2>
-          <div className="space-y-4">
-            <div className="flex justify-between">
-              <span className="font-medium text-gray-600">Organization Type:</span>
-              <span className="font-semibold text-gray-800">Business</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-gray-600">Industry Code:</span>
-              <span className="font-semibold text-gray-800">243107</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-gray-600">Status:</span>
-              <span className="font-semibold text-green-600">Active</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="font-medium text-gray-600">Email Address:</span>
-              <span className="font-semibold text-gray-800">skylineprop@gmail.com</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> */}
+    
+          
       {/* Scatter Plot */}
       {selectedModel && (
         <Title level={3} style={{ marginTop: '50px',marginBottom: '5px', color: 'royalblue', textAlign: "center", fontSize: getTitleFontSize() }}>

@@ -94,7 +94,7 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
       };
 
       // Make API call
-      const response = await fetch('http://13.217.109.69:5000/predict', {
+      const response = await fetch('http://204.236.254.168:5000/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -158,86 +158,117 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
             style={{ marginBottom: '16px', width: '100%' }}
           />
         )}
-       <Row>
-               {/* Left Column - Account Information */}
-            
-                 <Card
-                   type="inner"
-                   title="Customer Details"
-                   headStyle={{
-                     backgroundColor: '#f5f5f5',
-                     fontWeight: 600
-                   }}
-                   style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" , width: '800px', marginBottom: '50px'}}
-                 >
-                   <div style={{
-                     display: 'flex',
-                     flexDirection: 'column',
-                     gap: '5px'
-                   }}>
-                     <div style={{
-                       display: 'grid',
-                       gridTemplateColumns: '150px 1fr',
-                       alignItems: 'center'
-                     }}>
-                       <Text type="secondary" style={{
-                         textAlign: 'right',
-                         paddingRight: '16px'
-                       }}>Policy Number -</Text>
-                       <Text strong>{policyNumber}</Text>
-                     </div>
-                     <div style={{
-                       display: 'grid',
-                       gridTemplateColumns: '150px 1fr',
-                       alignItems: 'center'
-                     }}>
-                       <Text type="secondary" style={{
-                         textAlign: 'right',
-                         paddingRight: '16px'
-                       }}>Customer ID -</Text>
-                       <Text strong>{customerId}</Text>
-                     </div>
-                     <div style={{
-                       display: 'grid',
-                       gridTemplateColumns: '150px 1fr',
-                       alignItems: 'center'
-                     }}>
-                       <Text type="secondary" style={{
-                         textAlign: 'right',
-                         paddingRight: '16px'
-                       }}>Customer Name -</Text>
-                       <Text strong>{customerFirstName} {customerLastName}</Text>
-                     </div>
-                     <div style={{
-                       display: 'grid',
-                       gridTemplateColumns: '150px 1fr',
-                       alignItems: 'center'
-                     }}>
-                       <Text type="secondary" style={{
-                         textAlign: 'right',
-                         paddingRight: '16px'
-                       }}>LOB -</Text>
-                       <Text strong>Workers Compensation</Text>
-                     </div>
-                     <div style={{
-                       display: 'grid',
-                       gridTemplateColumns: '150px 1fr',
-                       alignItems: 'center'
-                     }}>
-                       <Text type="secondary" style={{
-                         textAlign: 'right',
-                         paddingRight: '16px'
-                       }}>Model Name -</Text>
-                       <Text strong>Medical Invoice Analysis - Workers Compensation</Text>
-                     </div>
-                    
-                   </div>
-                 </Card>
+        <Row gutter={[16, 16]}>
+                     {/* Left Column - Account Information */}
+                     <Col xs={24} sm={12}>
+                       <Card
+                         type="inner"
+                         title="Customer Details"
+                         headStyle={{
+                           backgroundColor: '#f5f5f5',
+                           fontWeight: 600
+                         }}
+                         style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
+                       >
+                         <div style={{
+                           display: 'flex',
+                           flexDirection: 'column',
+                           gap: '5px'
+                         }}>
+                         
+                           <div style={{
+                             display: 'grid',
+                             gridTemplateColumns: '150px 1fr',
+                             alignItems: 'center'
+                           }}>
+                             <Text type="secondary" style={{
+                               textAlign: 'right',
+                               paddingRight: '16px'
+                             }}>Customer ID -</Text>
+                             <Text strong>{customerId}</Text>
+                           </div>
+                           <div style={{
+                             display: 'grid',
+                             gridTemplateColumns: '150px 1fr',
+                             alignItems: 'center'
+                           }}>
+                             <Text type="secondary" style={{
+                               textAlign: 'right',
+                               paddingRight: '16px'
+                             }}>Customer Name -</Text>
+                             <Text strong>{customerFirstName} {customerLastName}</Text>
+                           </div>
+                           
+                           
+                           <div style={{
+                             display: 'grid',
+                             gridTemplateColumns: '150px 1fr',
+                             alignItems: 'center'
+                           }}>
+                             <Text type="secondary" style={{
+                               textAlign: 'right',
+                               paddingRight: '16px'
+                             }}>Email Address -</Text>
+                             <Text strong>smith.john@mail.com</Text>
+                           </div>
+                         </div>
+                       </Card>
+                     </Col>
              
-       
-            
-             </Row>
-        
+                     {/* Right Column - Organization Information */}
+                     <Col xs={24} sm={12}>
+                       <Card
+                         type="inner"
+                         title="Business Details"
+                         headStyle={{
+                           backgroundColor: '#f5f5f5',
+                           fontWeight: 600
+                         }}
+                         style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
+                       >
+                         <div style={{
+                           display: 'flex',
+                           flexDirection: 'column',
+                           gap: '5px'
+                         }}>
+                             <div style={{
+                             display: 'grid',
+                             gridTemplateColumns: '150px 1fr',
+                             alignItems: 'center'
+                           }}>
+                             <Text type="secondary" style={{
+                               textAlign: 'right',
+                               paddingRight: '16px'
+                             }}>Policy Number -</Text>
+                             <Text strong>{policyNumber}</Text>
+                           </div>
+                           <div style={{
+                             display: 'grid',
+                             gridTemplateColumns: '150px 1fr',
+                             alignItems: 'center'
+                           }}>
+                             <Text type="secondary" style={{
+                               textAlign: 'right',
+                               paddingRight: '16px'
+                             }}>LOB -</Text>
+                             <Text strong>Workers Compensation</Text>
+                           </div>
+                           <div style={{
+                             display: 'grid',
+                             gridTemplateColumns: '150px 1fr',
+                             alignItems: 'center'
+                           }}>
+                             <Text type="secondary" style={{
+                               textAlign: 'right',
+                               paddingRight: '16px',
+                               minWidth: '150px'
+                             }}>Model Name -</Text>
+                             <Text strong>Medical Invoice Analysis - Workers Compensation</Text>
+                           </div>
+                         </div>
+                       </Card>
+                     </Col>
+                   </Row>
         <Form
           form={form}
           layout="vertical"
