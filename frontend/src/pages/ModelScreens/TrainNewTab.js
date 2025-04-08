@@ -179,7 +179,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
       algorithm: 'XGBoost',
       trainingStartTime: '2025-04-02 16:39',
       trainingEndTime: '2025-04-02 17:41',
-      mae: '2.94M',
+      mae: '29,400',
       rmse: '15.6M',
       r2: '0.58',
       status: 'Completed',
@@ -191,7 +191,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
       algorithm: 'LinearLearner',
       trainingStartTime: '2025-04-01 13:10',
       trainingEndTime: '2025-04-01 13:49',
-      mae: '3.12M',
+      mae: '31,200',
       rmse: '16.1M',
       r2: '0.55',
       status: 'Completed',
@@ -203,7 +203,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
       algorithm: 'CatBoost',
       trainingStartTime: '2025-03-30 10:05',
       trainingEndTime: '2025-03-30 10:41',
-      mae: '2.99M',
+      mae: '29,900',
       rmse: '15.9M',
       r2: '0.56',
       status: 'Completed',
@@ -215,7 +215,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
       algorithm: 'RandomForest',
       trainingStartTime: '2025-03-28 11:30',
       trainingEndTime: '2025-03-28 12:18',
-      mae: '3.08M',
+      mae: '30,80',
       rmse: '16.3M',
       r2: '0.53',
       status: 'Completed',
@@ -340,7 +340,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
 
         {/* Button Row */}
         <Row gutter={[16, 16]} justify="center" style={{ marginTop: "1rem" }}>
-          <Col xs={24} sm={8} md={8} lg={8} xl={8} className="text-center">
+          {/* <Col xs={24} sm={8} md={8} lg={8} xl={8} className="text-center">
             <Button
               type="default"
               icon={<DownloadOutlined />}
@@ -350,7 +350,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
             >
               Download Template
             </Button>
-          </Col>
+          </Col> */}
           <Col xs={24} sm={8} md={8} lg={8} xl={8} className="text-center">
             <Upload {...uploadProps}>
               <Button
