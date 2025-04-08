@@ -15,19 +15,19 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
   useEffect(() => {
     // Set loading to true while we fetch the data
     setLoading(true);
-    
+
     // Retrieve data from localStorage
     const storedPolicyNumber = localStorage.getItem('currentPolicyNumber');
     const storedCustomerId = localStorage.getItem('currentCustomerId');
     const storedFirstName = localStorage.getItem('currentCustomerFirstName');
     const storedLastName = localStorage.getItem('currentCustomerLastName');
-    
+
     // Update state with retrieved values
     if (storedPolicyNumber) setPolicyNumber(storedPolicyNumber);
     if (storedCustomerId) setCustomerId(storedCustomerId);
     if (storedFirstName) setCustomerFirstName(storedFirstName);
     if (storedLastName) setCustomerLastName(storedLastName);
-    
+
     setHardcodedFormData();
   }, []);
 
@@ -57,7 +57,7 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
         "Diagnosis Related Group Code": "562",
         "ICD Principal Procedure Code": "0QSH06Z"
       };
-      
+
       // Set the form values
       form.setFieldsValue(hardcodedData);
     } catch (err) {
@@ -71,7 +71,7 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
   const onFinish = async (values) => {
     setLoading(true);
     setError(null);
-    
+
     try {
       // Prepare the data for API submission
       const formData = {
@@ -107,7 +107,7 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
       }
 
       const data = await response.json();
-      
+
       // Set prediction data and move to next tab
       setPredictionData(data);
       setActiveTab('3');
@@ -158,86 +158,86 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
             style={{ marginBottom: '16px', width: '100%' }}
           />
         )}
-       <Row>
-               {/* Left Column - Account Information */}
-            
-                 <Card
-                   type="inner"
-                   title="Customer Details"
-                   headStyle={{
-                     backgroundColor: '#f5f5f5',
-                     fontWeight: 600
-                   }}
-                   style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" , width: '800px', marginBottom: '50px'}}
-                 >
-                   <div style={{
-                     display: 'flex',
-                     flexDirection: 'column',
-                     gap: '5px'
-                   }}>
-                     <div style={{
-                       display: 'grid',
-                       gridTemplateColumns: '150px 1fr',
-                       alignItems: 'center'
-                     }}>
-                       <Text type="secondary" style={{
-                         textAlign: 'right',
-                         paddingRight: '16px'
-                       }}>Policy Number -</Text>
-                       <Text strong>{policyNumber}</Text>
-                     </div>
-                     <div style={{
-                       display: 'grid',
-                       gridTemplateColumns: '150px 1fr',
-                       alignItems: 'center'
-                     }}>
-                       <Text type="secondary" style={{
-                         textAlign: 'right',
-                         paddingRight: '16px'
-                       }}>Customer ID -</Text>
-                       <Text strong>{customerId}</Text>
-                     </div>
-                     <div style={{
-                       display: 'grid',
-                       gridTemplateColumns: '150px 1fr',
-                       alignItems: 'center'
-                     }}>
-                       <Text type="secondary" style={{
-                         textAlign: 'right',
-                         paddingRight: '16px'
-                       }}>Customer Name -</Text>
-                       <Text strong>{customerFirstName} {customerLastName}</Text>
-                     </div>
-                     <div style={{
-                       display: 'grid',
-                       gridTemplateColumns: '150px 1fr',
-                       alignItems: 'center'
-                     }}>
-                       <Text type="secondary" style={{
-                         textAlign: 'right',
-                         paddingRight: '16px'
-                       }}>LOB -</Text>
-                       <Text strong>Workers Compensation</Text>
-                     </div>
-                     <div style={{
-                       display: 'grid',
-                       gridTemplateColumns: '150px 1fr',
-                       alignItems: 'center'
-                     }}>
-                       <Text type="secondary" style={{
-                         textAlign: 'right',
-                         paddingRight: '16px'
-                       }}>Model Name -</Text>
-                       <Text strong>Medical Invoice Analysis - Workers Compensation</Text>
-                     </div>
-                    
-                   </div>
-                 </Card>
-             
-       
-            
-             </Row>
-        
+        <Row>
+          {/* Left Column - Account Information */}
+
+          <Card
+            type="inner"
+            title="Customer Details"
+            headStyle={{
+              backgroundColor: '#f5f5f5',
+              fontWeight: 600
+            }}
+            style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: '100%', marginBottom: '50px' }}
+          >
+            <div style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '5px'
+            }}>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '150px 1fr',
+                alignItems: 'center'
+              }}>
+                <Text type="secondary" style={{
+                  textAlign: 'right',
+                  paddingRight: '16px'
+                }}>Policy Number -</Text>
+                <Text strong>{policyNumber}</Text>
+              </div>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '150px 1fr',
+                alignItems: 'center'
+              }}>
+                <Text type="secondary" style={{
+                  textAlign: 'right',
+                  paddingRight: '16px'
+                }}>Customer ID -</Text>
+                <Text strong>{customerId}</Text>
+              </div>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '150px 1fr',
+                alignItems: 'center'
+              }}>
+                <Text type="secondary" style={{
+                  textAlign: 'right',
+                  paddingRight: '16px'
+                }}>Customer Name -</Text>
+                <Text strong>{customerFirstName} {customerLastName}</Text>
+              </div>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '150px 1fr',
+                alignItems: 'center'
+              }}>
+                <Text type="secondary" style={{
+                  textAlign: 'right',
+                  paddingRight: '16px'
+                }}>LOB -</Text>
+                <Text strong>Workers Compensation</Text>
+              </div>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '150px 1fr',
+                alignItems: 'center'
+              }}>
+                <Text type="secondary" style={{
+                  textAlign: 'right',
+                  paddingRight: '16px'
+                }}>Model Name -</Text>
+                <Text strong>Medical Invoice Analysis - Workers Compensation</Text>
+              </div>
+
+            </div>
+          </Card>
+
+
+
+        </Row>
+
         <Form
           form={form}
           layout="vertical"
@@ -245,20 +245,20 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
           style={{ width: '100%' }}
         >
           <Row gutter={[24, 16]} justify="start" align="top">
-          <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+            <Col xs={24} sm={12} md={8} lg={6}>
+              <Form.Item
                 label={<span style={labelStyle}>Employee Mailing City</span>}
-                name="Employee Mailing City" 
+                name="Employee Mailing City"
                 rules={[{ required: true, message: 'Please input Employee City' }]}
                 style={formItemStyle}
               >
                 <Input style={inputStyle} />
               </Form.Item>
             </Col>
-          <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+            <Col xs={24} sm={12} md={8} lg={6}>
+              <Form.Item
                 label={<span style={labelStyle}>Employee Gender Code</span>}
-                name="Employee Gender Code" 
+                name="Employee Gender Code"
                 rules={[{ required: true, message: 'Please input Gender Code' }]}
                 style={formItemStyle}
               >
@@ -266,9 +266,9 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Date of Joining</span>}
-                name="date_of_joining" 
+                name="date_of_joining"
                 rules={[{ required: true, message: 'Please input Date of Joining' }]}
                 style={formItemStyle}
               >
@@ -276,9 +276,9 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Employer Physical City</span>}
-                name="Employer Physical City" 
+                name="Employer Physical City"
                 rules={[{ required: true, message: 'Please input Employer City' }]}
                 style={formItemStyle}
               >
@@ -288,11 +288,11 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
           </Row>
 
           <Row gutter={[24, 16]} justify="start" align="top">
-            
+
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Employee Date of Injury</span>}
-                name="Employee Date of Injury" 
+                name="Employee Date of Injury"
                 rules={[{ required: true, message: 'Please input Date of Injury' }]}
                 style={formItemStyle}
               >
@@ -300,22 +300,22 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Total Charge Per Bill</span>}
-                name="Total Charge Per Bill" 
+                name="Total Charge Per Bill"
                 rules={[{ required: true, message: 'Please input Total Charge' }]}
                 style={formItemStyle}
               >
-                <Input 
-                  addonBefore="$" 
-                  style={inputStyle} 
+                <Input
+                  addonBefore="$"
+                  style={inputStyle}
                 />
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Admission Hour</span>}
-                name="Admission Hour" 
+                name="Admission Hour"
                 rules={[{ required: true, message: 'Please input Admission Hour' }]}
                 style={formItemStyle}
               >
@@ -323,9 +323,9 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Admission Type Code</span>}
-                name="Admission Type Code" 
+                name="Admission Type Code"
                 rules={[{ required: true, message: 'Please input Admission Type' }]}
                 style={formItemStyle}
               >
@@ -335,12 +335,12 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
           </Row>
 
           <Row gutter={[24, 16]} justify="start" align="top">
-            
-            
+
+
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>First ICD Diagnosis Code</span>}
-                name="First ICD Diagnosis Code" 
+                name="First ICD Diagnosis Code"
                 rules={[{ required: true, message: 'Please input First ICD Code' }]}
                 style={formItemStyle}
               >
@@ -348,9 +348,9 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Second ICD Diagnosis Code</span>}
-                name="Second ICD Diagnosis Code" 
+                name="Second ICD Diagnosis Code"
                 rules={[{ required: false }]}
                 style={formItemStyle}
               >
@@ -358,9 +358,9 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Third ICD Diagnosis Code</span>}
-                name="Third ICD Diagnosis Code" 
+                name="Third ICD Diagnosis Code"
                 rules={[{ required: false }]}
                 style={formItemStyle}
               >
@@ -368,9 +368,9 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Principal Diagnosis Code</span>}
-                name="Principal Diagnosis Code" 
+                name="Principal Diagnosis Code"
                 rules={[{ required: true, message: 'Please input Principal Diagnosis' }]}
                 style={formItemStyle}
               >
@@ -380,11 +380,11 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
           </Row>
 
           <Row gutter={[24, 16]} justify="start" align="top">
-            
+
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Admitting Diagnosis Code</span>}
-                name="Admitting Diagnosis Code" 
+                name="Admitting Diagnosis Code"
                 rules={[{ required: true, message: 'Please input Admitting Diagnosis' }]}
                 style={formItemStyle}
               >
@@ -392,9 +392,9 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Policy Start Date</span>}
-                name="policy_start_date" 
+                name="policy_start_date"
                 rules={[{ required: true, message: 'Please input Policy Start Date' }]}
                 style={formItemStyle}
               >
@@ -402,9 +402,9 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>First ICD Procedure Code</span>}
-                name="First ICD Procedure Code" 
+                name="First ICD Procedure Code"
                 rules={[{ required: false }]}
                 style={formItemStyle}
               >
@@ -412,9 +412,9 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Second ICD Procedure Code</span>}
-                name="Second ICD Procedure Code" 
+                name="Second ICD Procedure Code"
                 rules={[{ required: false }]}
                 style={formItemStyle}
               >
@@ -424,20 +424,20 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
           </Row>
           <Row gutter={[24, 16]} justify="start" align="top">
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Length of Stay</span>}
-                name="Length_of_Stay" 
+                name="Length_of_Stay"
                 rules={[{ required: true, message: 'Please input Length of Stay' }]}
                 style={formItemStyle}
               >
                 <Input type="number" style={inputStyle} />
               </Form.Item>
             </Col>
-            
+
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Diagnosis Related Group Code</span>}
-                name="Diagnosis Related Group Code" 
+                name="Diagnosis Related Group Code"
                 rules={[{ required: true, message: 'Please input Group Code' }]}
                 style={formItemStyle}
               >
@@ -445,9 +445,9 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Billing Provider City</span>}
-                name="Billing Provider City" 
+                name="Billing Provider City"
                 rules={[{ required: true, message: 'Please input Provider City' }]}
                 style={formItemStyle}
               >
@@ -455,9 +455,9 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
               </Form.Item>
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>Insurer Postal Code</span>}
-                name="Insurer Postal Code" 
+                name="Insurer Postal Code"
                 rules={[{ required: true, message: 'Please input Insurer Postal Code' }]}
                 style={formItemStyle}
               >
@@ -468,26 +468,26 @@ const FeatureInputFormMedical = ({ setActiveTab, setPredictionData }) => {
 
           <Row gutter={[24, 16]} justify="start" align="top">
             <Col xs={24} sm={12} md={8} lg={6}>
-              <Form.Item 
+              <Form.Item
                 label={<span style={labelStyle}>ICD Principal Procedure Code</span>}
-                name="ICD Principal Procedure Code" 
+                name="ICD Principal Procedure Code"
                 rules={[{ required: true, message: 'Please input Principal Procedure' }]}
                 style={formItemStyle}
               >
                 <Input style={inputStyle} />
               </Form.Item>
             </Col>
-            
+
           </Row>
 
           <Row style={{ marginTop: '24px' }} justify="start">
             <Col xs={24} sm={6} md={4} lg={3}>
-              <Button 
-                type="primary" 
+              <Button
+                type="primary"
                 htmlType="submit"
                 loading={loading}
                 size="large"
-                style={{ 
+                style={{
                   ...buttonStyle,
                   width: '100%'
                 }}

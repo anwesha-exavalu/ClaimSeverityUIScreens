@@ -45,10 +45,10 @@ const OutputDetailsMedical = ({ predictionData }) => {
   const mediumCardStyle = {
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",
     marginBottom: '10px',
-    marginTop: '10px',
-    height: '60%',
-    width: '200%',
-    marginLeft: '10px'
+    marginTop: '12px',
+    height: '58%',
+    width: '202%',
+    // marginLeft: '10px'
   };
   const expCardStyle = {
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",
@@ -72,7 +72,7 @@ const OutputDetailsMedical = ({ predictionData }) => {
             backgroundColor: '#f5f5f5',
             fontWeight: 600
           }}
-          style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: '800px', marginBottom: '50px' }}
+          style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: '100%', marginBottom: '50px' }}
         >
           <div style={{
             display: 'flex',
