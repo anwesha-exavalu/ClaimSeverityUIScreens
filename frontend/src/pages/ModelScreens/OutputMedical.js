@@ -32,7 +32,7 @@ const OutputDetailsMedical = ({ predictionData }) => {
   const smallCardStyle = {
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",
     marginBottom: '10px',
-    height: '40%',
+    height: '100%',
     width: '100%'
   };
 
@@ -40,15 +40,16 @@ const OutputDetailsMedical = ({ predictionData }) => {
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",
     marginBottom: '1px',
     height: '100%',
-    width: '100%'
+    width: '152%',
+    marginLeft: '11px'
   };
   const mediumCardStyle = {
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",
     marginBottom: '10px',
-    marginTop: '12px',
-    height: '58%',
-    width: '202%',
-    // marginLeft: '10px'
+    marginTop: '10px',
+    height: '60%',
+    width: '200%',
+    marginLeft: '10px'
   };
   const expCardStyle = {
     boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",
@@ -59,96 +60,136 @@ const OutputDetailsMedical = ({ predictionData }) => {
 
   // Check if flag is 1
   const isAnomalyDetected = predictionData["Predicted FLAG"] === 1;
+  // Common card style to maintain consistency
+  const cardStyle = {
+    boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)",
+    height: "100%",
+    width: "100%",
+    padding: "10px"
+  };
 
   return (
     <div style={{ padding: '1%' }}>
-      <Row>
-        {/* Left Column - Account Information */}
 
-        <Card
-          type="inner"
-          title="Customer Details"
-          headStyle={{
-            backgroundColor: '#f5f5f5',
-            fontWeight: 600
-          }}
-          style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: '100%', marginBottom: '50px' }}
-        >
-          <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '5px'
-          }}>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '150px 1fr',
-              alignItems: 'center'
-            }}>
-              <Text type="secondary" style={{
-                textAlign: 'right',
-                paddingRight: '16px'
-              }}>Policy Number -</Text>
-              <Text strong>{policyNumber}</Text>
-            </div>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '150px 1fr',
-              alignItems: 'center'
-            }}>
-              <Text type="secondary" style={{
-                textAlign: 'right',
-                paddingRight: '16px'
-              }}>Customer ID -</Text>
-              <Text strong>{customerId}</Text>
-            </div>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '150px 1fr',
-              alignItems: 'center'
-            }}>
-              <Text type="secondary" style={{
-                textAlign: 'right',
-                paddingRight: '16px'
-              }}>Customer Name -</Text>
-              <Text strong>{customerFirstName} {customerLastName}</Text>
-            </div>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '150px 1fr',
-              alignItems: 'center'
-            }}>
-              <Text type="secondary" style={{
-                textAlign: 'right',
-                paddingRight: '16px'
-              }}>LOB -</Text>
-              <Text strong>Workers Compensation</Text>
-            </div>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: '150px 1fr',
-              alignItems: 'center'
-            }}>
-              <Text type="secondary" style={{
-                textAlign: 'right',
-                paddingRight: '16px'
-              }}>Model Name -</Text>
-              <Text strong>Medical Invoice Analysis - Workers Compensation</Text>
-            </div>
-
-          </div>
-        </Card>
-
-
-
-      </Row>
-
-
-
-
-      <Row gutter={[10, 10]}>
-        {/* First row - Small cards and feature importance */}
-        <Col xs={24} sm={12} md={6} lg={6} xl={6}>
-          <Card style={smallCardStyle} bordered={true}>
+        <Row gutter={[16, 16]}>
+              {/* Left Column - Account Information */}
+              <Col xs={24} sm={12}>
+                <Card
+                  type="inner"
+                  title="Customer Details"
+                  headStyle={{
+                    backgroundColor: '#f5f5f5',
+                    fontWeight: 600
+                  }}
+                  style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
+                >
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '5px'
+                  }}>
+                  
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: '150px 1fr',
+                      alignItems: 'center'
+                    }}>
+                      <Text type="secondary" style={{
+                        textAlign: 'right',
+                        paddingRight: '16px'
+                      }}>Customer ID -</Text>
+                      <Text strong>{customerId}</Text>
+                    </div>
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: '150px 1fr',
+                      alignItems: 'center'
+                    }}>
+                      <Text type="secondary" style={{
+                        textAlign: 'right',
+                        paddingRight: '16px'
+                      }}>Customer Name -</Text>
+                      <Text strong>{customerFirstName} {customerLastName}</Text>
+                    </div>
+                    
+                    
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: '150px 1fr',
+                      alignItems: 'center'
+                    }}>
+                      <Text type="secondary" style={{
+                        textAlign: 'right',
+                        paddingRight: '16px'
+                      }}>Email Address -</Text>
+                      <Text strong>smith.john@mail.com</Text>
+                    </div>
+                  </div>
+                </Card>
+              </Col>
+      
+              {/* Right Column - Organization Information */}
+              <Col xs={24} sm={12}>
+                <Card
+                  type="inner"
+                  title="Business Details"
+                  headStyle={{
+                    backgroundColor: '#f5f5f5',
+                    fontWeight: 600
+                  }}
+                  style={{ height: '230px', boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
+                >
+                  <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '5px'
+                  }}>
+                      <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: '150px 1fr',
+                      alignItems: 'center'
+                    }}>
+                      <Text type="secondary" style={{
+                        textAlign: 'right',
+                        paddingRight: '16px'
+                      }}>Policy Number -</Text>
+                      <Text strong>{policyNumber}</Text>
+                    </div>
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: '150px 1fr',
+                      alignItems: 'center'
+                    }}>
+                      <Text type="secondary" style={{
+                        textAlign: 'right',
+                        paddingRight: '16px'
+                      }}>LOB -</Text>
+                      <Text strong>Workers Compensation</Text>
+                    </div>
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: '150px 1fr',
+                      alignItems: 'center'
+                    }}>
+                      <Text type="secondary" style={{
+                        textAlign: 'right',
+                        paddingRight: '16px',
+                        minWidth: '150px'
+                      }}>Model Name -</Text>
+                      <Text strong>Medical Invoice Analysis - Workers Compensation</Text>
+                    </div>
+                  </div>
+                </Card>
+              </Col>
+            </Row>
+   
+             
+                  <Row gutter={[16, 16]} style={{ marginTop: '16px' }}>
+        {/* Left Column */}
+        <Col xs={24} sm={24} md={24} lg={12} xl={12}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' }}>
+            {/* First Card */}
+            <Card style={smallCardStyle}>
             <Title level={4}>Model Prediction</Title>
             <Alert
               message={isAnomalyDetected ? "Anomaly Detected" : "No Anomaly Detected"}
@@ -159,16 +200,11 @@ const OutputDetailsMedical = ({ predictionData }) => {
                 fontWeight: 'bold'
               }}
             />
-          </Card>
-          <Card style={mediumCardStyle} bordered={true}>
-            <div style={{ textAlign: 'center' }}>
-              <img src='/ConfusionMatrix.png' alt='Confusion Matrix' />
-            </div>
-          </Card>
-        </Col>
+                
+            </Card>
 
-        <Col xs={24} sm={12} md={6} lg={6} xl={6}>
-          <Card style={smallCardStyle} bordered={true}>
+            {/* Second Card */}
+            <Card style={{ ...smallCardStyle }}>
             <Title level={4}>Risk Score</Title>
             <Statistic
               value={(predictionData["Probability Score"] * 100).toFixed(2) + "%"}
@@ -177,24 +213,46 @@ const OutputDetailsMedical = ({ predictionData }) => {
                 fontWeight: 'bold'
               }}
             />
-          </Card>
+               
+            </Card>
+          </div>
         </Col>
 
-        <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-          <Card style={bigCardStyle} bordered={true}>
-            <div style={{ textAlign: 'left', width: '100%', height: '100%' }}>
-              <Title level={4}>Key Factors Behind Prediction</Title>
-              <FeatureImportanceChart />
+        {/* Right Column - Bar Chart */}
+        <Col xs={24} sm={12} md={12} lg={8} xl={8}>
+          <Card style={bigCardStyle}>
+          <div style={{ textAlign: 'center' }}>
+              <img src='/ConfusionMatrix.png' alt='Confusion Matrix' />
             </div>
           </Card>
         </Col>
       </Row>
 
-      {/* Third row - Expectations */}
-      <Row gutter={[8, 8]}>
-        <Col span={24}>
-          <Card style={expCardStyle} bordered={true}>
-            <Title level={4}>Explanation of Feature Impact</Title>
+      <Row gutter={[16, 16]} style={{ marginTop: '15px', marginBottom: '15px', width: '305%', display: 'flex', flexWrap: 'nowrap' }}>
+      <Col xs={24} sm={24} md={12} lg={8} xl={8} style={{
+          width: '50%',
+          flexGrow: 1
+        }}>
+          <div style={{ display: 'flex', flexDirection: 'row', gap: '16px', height: '100%', width: '100%' }}>
+          <Card style={{
+              ...cardStyle,
+              flex: 1,
+              width: '50%'
+            }}>
+              
+              <div style={{ textAlign: 'left', width: '100%', height: '100%' }}>
+              <Title level={4}>Key Factors Behind Prediction</Title>
+              <FeatureImportanceChart />
+            </div>
+           
+           
+          </Card>
+           <Card style={{
+              ...cardStyle,
+              flex: 1,
+              width: '50%'
+            }}>
+             <Title level={4}>Explanation of Feature Impact</Title>
             <div
               dangerouslySetInnerHTML={{
                 __html: predictionData["SHAP Explanation"]
@@ -204,8 +262,13 @@ const OutputDetailsMedical = ({ predictionData }) => {
               }}
             />
           </Card>
+       
+          
+          </div>
         </Col>
       </Row>
+      
+     
     </div>
   );
 };
