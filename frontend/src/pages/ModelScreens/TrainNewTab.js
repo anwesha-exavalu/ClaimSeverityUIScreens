@@ -237,11 +237,11 @@ const ClaimSeverityUI = ({ predictionData }) => {
       key: '1',
       modelName: 'autopilot-job-1743592164',
       algorithm: 'XGBoost',
-      trainingStartTime: '2025-04-02 16:39',
-      trainingEndTime: '2025-04-02 17:41',
-      mae: '29,400',
+      trainingStartTime: '2025-04-09 17:57',
+      trainingEndTime: '2025-04-09 18:02',
+      mae: '4,130',
       rmse: '15.6M',
-      r2: '0.58',
+      r2: '0.72',
       status: 'Completed',
       bestModel: true,
     },
@@ -249,9 +249,9 @@ const ClaimSeverityUI = ({ predictionData }) => {
       key: '2',
       modelName: 'autopilot-job-1743105119',
       algorithm: 'LinearLearner',
-      trainingStartTime: '2025-04-01 13:10',
-      trainingEndTime: '2025-04-01 13:49',
-      mae: '31,200',
+      trainingStartTime: '2025-04-09 17:57',
+      trainingEndTime: '2025-04-09 18:02',
+      mae: '5,110',
       rmse: '16.1M',
       r2: '0.55',
       status: 'Completed',
@@ -261,9 +261,9 @@ const ClaimSeverityUI = ({ predictionData }) => {
       key: '3',
       modelName: 'autopilot-job-1742201152',
       algorithm: 'CatBoost',
-      trainingStartTime: '2025-03-30 10:05',
-      trainingEndTime: '2025-03-30 10:41',
-      mae: '29,900',
+      trainingStartTime: '2025-04-09 17:57',
+      trainingEndTime: '2025-04-09 18:02',
+      mae: '8,212',
       rmse: '15.9M',
       r2: '0.56',
       status: 'Completed',
@@ -273,9 +273,9 @@ const ClaimSeverityUI = ({ predictionData }) => {
       key: '4',
       modelName: 'autopilot-job-1741028271',
       algorithm: 'RandomForest',
-      trainingStartTime: '2025-03-28 11:30',
-      trainingEndTime: '2025-03-28 12:18',
-      mae: '30,80',
+      trainingStartTime: '2025-04-09 17:57',
+      trainingEndTime: '2025-04-09 18:02',
+      mae: '9,080',
       rmse: '16.3M',
       r2: '0.53',
       status: 'Completed',
@@ -597,7 +597,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
                       />
                       <Statistic
                         title="Mean Absolute Error"
-                        value="4,130.50"
+                        value="4,130"
                         prefix={<DollarOutlined />}
                         valueStyle={{ color: 'crimson' }}
                       />
@@ -612,7 +612,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
                 </Card>
 
                 {/* Second Card */}
-                <Card style={{ ...statsCardStyle, flex: 1, minHeight: "220px" }}>
+                {/* <Card style={{ ...statsCardStyle, flex: 1, minHeight: "220px" }}>
                   <Row gutter={[16, 16]}>
                     <Col span={24}>
                       <Statistic
@@ -629,7 +629,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
                       />
                     </Col>
                   </Row>
-                </Card>
+                </Card> */}
               </div>
             </Col>
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
@@ -645,7 +645,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
             </Col>
           </Row>
 
-          <Row gutter={[16, 16]} style={{ marginTop: "1rem" }}>
+          {/* <Row gutter={[16, 16]} style={{ marginTop: "1rem" }}>
             <Col span={24}>
               <Card
                 title={
@@ -663,7 +663,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
                 <FeatureWeightsTable />
               </Card>
             </Col>
-          </Row>
+          </Row> */}
 
           <Row gutter={[16, 16]} style={{ marginTop: "1rem" }}>
             <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{ display: 'flex', justifyContent: 'flex-end' }}>
