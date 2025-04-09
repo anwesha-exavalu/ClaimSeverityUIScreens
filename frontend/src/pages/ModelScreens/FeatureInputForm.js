@@ -91,7 +91,7 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
     setError(null);
 
     try {
-      const response = await fetch('http://204.236.215.4:5000//predict', {
+      const response = await fetch('http://18.212.100.149:5000/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -381,7 +381,7 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
             </Col>
             <Col xs={24} sm={12} md={8} lg={6}>
               <Form.Item
-                label="Claimant_Injuries"
+                label="Claimant Injuries"
                 name="Claimant_Injuries"
                 rules={[{ required: true, message: 'Please input claimant age' }]}
               >

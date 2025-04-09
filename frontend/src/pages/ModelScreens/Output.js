@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Typography, Statistic, Tooltip } from 'antd';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend, ReferenceLine } from 'recharts';
 import { DollarOutlined, InfoCircleOutlined } from '@ant-design/icons';
 
 const { Title, Text } = Typography;
@@ -49,10 +49,9 @@ const OutputDetails = ({ predictionData }) => {
         .join(' ');
 
       return {
-        feature: formattedFeature,
-        value: value,
-        shapValue: shapValue,
-        positiveValue: shapValue > 0 ? shapValue : 0
+        feature: `${formattedFeature}: ${value}`,
+        value: shapValue,
+        // No longer need separate positive/negative values as we'll use ReferenceLine
       };
     });
   };
@@ -290,23 +289,19 @@ const OutputDetails = ({ predictionData }) => {
           </div>
         </Col>
       </Row>
-   
-
-
 
       <Row gutter={[16, 16]} style={{ marginTop: '15px', marginBottom: '15px', width: '305%', display: 'flex', flexWrap: 'nowrap' }}>
-      <Col xs={24} sm={24} md={12} lg={8} xl={8} style={{
+        <Col xs={24} sm={24} md={12} lg={8} xl={8} style={{
           width: '50%',
           flexGrow: 1
         }}>
           <div style={{ display: 'flex', flexDirection: 'row', gap: '16px', height: '100%', width: '100%' }}>
-         
-       
-           <Card style={{
+            <Card style={{
               ...cardStyle,
               flex: 1,
               width: '50%'
             }}>
+              <Title level={4} style={{ marginBottom: '16px' }}>
                 Feature Impact on Prediction (SHAP values)
                 <Tooltip
                   title="SHAP values show how each factor influences the claim amount. Positive values increase it, while negative values decrease it, helping explain the model's prediction."
@@ -322,105 +317,98 @@ const OutputDetails = ({ predictionData }) => {
                     }}
                   />
                 </Tooltip>
-             
+              </Title>
+              
+              <div style={{ height: '380px', width: '100%' }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    layout="vertical"
+                    data={formatShapData()}
+                    margin={{ top: 10, right: 10, left: 1, bottom: 10 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis 
+                      type="number" 
+                      domain={['auto', 'auto']}
+                      label={{ value: 'SHAP Value Impact', position: 'bottom', offset: 0 }}
+                    />
+                    <YAxis 
+                      type="category" 
+                      dataKey="feature" 
+                      width={200}
+                      tick={{ fontSize: 12 }}
+                    />
+                    <RechartsTooltip 
+                      formatter={(value) => [`Impact: ${value.toFixed(2)}`]}
+                      contentStyle={{
+                        backgroundColor: 'white',
+                        border: '1px solid #ddd',
+                        borderRadius: '4px',
+                        padding: '10px'
+                      }}
+                    />
+                    <ReferenceLine x={0} stroke="#000" />
+                    <Bar 
+                      dataKey="value" 
+                      fill="#1e88e5" 
+                      name="SHAP Value"
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </Card>
             
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart
-                  layout="vertical"
-                  data={formatShapData()}
-                  margin={{ top: 8, right: 40, left: 5, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis type="number" allowDecimals={true} />
-                  <YAxis type="category" dataKey="feature" width={240} />
-                  <RechartsTooltip
-                    formatter={(value, name, props) => {
-                      const impactValue = Math.abs(value);
-
-                      if (impactValue === 0) return null;
-
-                      const impactDescription = name === 'positiveValue'
-                        ? `Positive impact increased the Claim Amount by ${impactValue.toFixed(2)}`
-                        : `Negative impact decreased the Claim Amount by ${impactValue.toFixed(2)}`;
-
-                      return [impactDescription];
-                    }}
-                    labelStyle={{ fontWeight: 'bold' }}
-                    contentStyle={{
-                      backgroundColor: 'white',
-                      border: '1px solid #ddd',
-                      borderRadius: '4px',
-                      padding: '10px'
-                    }}
-                  />
-                  <Bar
-                    dataKey="positiveValue"
-                    fill="#1890ff"
-                    stackId="a"
-                    radius={[0, 4, 4, 0]}
-                  />
-                  <Bar
-                    dataKey="negativeValue"
-                    fill="#f5222d"
-                    stackId="a"
-                    radius={[4, 0, 0, 4]}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-           
-          </Card>
-          <Card style={{
+            <Card style={{
               ...cardStyle,
               flex: 1,
               width: '50%'
             }}>
-            <Title
-              level={4}
-              style={{
-                marginBottom: '16px',
-                padding: '10px'
-              }}
-            >
-              Inference
-            </Title>
-            <Title
-              level={5}
-              style={{
-                marginBottom: '12px',
-                padding: '10px'
-              }}
-            >
-              Summary
-            </Title>
-            <ul
-              style={{
-                listStyleType: 'none',
-                padding: '10px',
-                maxHeight: '400px',
-                overflowY: 'auto'
-              }}
-            >
-              <li style={{ marginBottom: '12px' }}>
-                <strong>Initial_Class_of_Claim (Bodily Injury)</strong> → <strong>+46,729</strong> → Claims classified as "Bodily Injury" significantly increase the predicted claim cost, indicating that injury-related claims tend to be much higher than other types.
-              </li>
-              <li style={{ marginBottom: '12px' }}>
-                <strong>Initial_Attorney_Involvement (Yes)</strong> → <strong>+31,137</strong> → The presence of an attorney is associated with higher claim costs, likely due to legal fees, negotiations, and extended processing times.
-              </li>
-              <li style={{ marginBottom: '12px' }}>
-                <strong>Rate_Class (Standard)</strong> → <strong>-25,538</strong> → Being in the "Standard" rate class lowers the predicted claim cost compared to higher-risk categories, possibly because this group has a lower accident severity or better driving history.
-              </li>
-              <li style={{ marginBottom: '12px' }}>
-                <strong>Repairable_Flag (Yes)</strong> → <strong>-23,302</strong> → If a vehicle is repairable, the claim cost is lower, as it avoids total loss payouts and focuses only on repair expenses.
-              </li>
-              <li style={{ marginBottom: '12px' }}>
-                <strong>Primary_Cause_of_Accident (Rear-end Collision)</strong> → <strong>-22,586</strong> → Rear-end collisions tend to have lower claim costs compared to more severe accident types (e.g., head-on collisions or rollovers), possibly due to lower injury severity and repair costs.
-              </li>
-            </ul>
-          </Card>
+              <Title
+                level={4}
+                style={{
+                  marginBottom: '16px',
+                  padding: '10px'
+                }}
+              >
+                Inference
+              </Title>
+              <Title
+                level={5}
+                style={{
+                  marginBottom: '12px',
+                  padding: '10px'
+                }}
+              >
+                Summary
+              </Title>
+              <ul
+                style={{
+                  listStyleType: 'none',
+                  padding: '10px',
+                  maxHeight: '400px',
+                  overflowY: 'auto'
+                }}
+              >
+                <li style={{ marginBottom: '12px' }}>
+                  <strong>Initial_Class_of_Claim (Bodily Injury)</strong> → <strong>+46,729</strong> → Claims classified as "Bodily Injury" significantly increase the predicted claim cost, indicating that injury-related claims tend to be much higher than other types.
+                </li>
+                <li style={{ marginBottom: '12px' }}>
+                  <strong>Initial_Attorney_Involvement (Yes)</strong> → <strong>+31,137</strong> → The presence of an attorney is associated with higher claim costs, likely due to legal fees, negotiations, and extended processing times.
+                </li>
+                <li style={{ marginBottom: '12px' }}>
+                  <strong>Rate_Class (Standard)</strong> → <strong>-25,538</strong> → Being in the "Standard" rate class lowers the predicted claim cost compared to higher-risk categories, possibly because this group has a lower accident severity or better driving history.
+                </li>
+                <li style={{ marginBottom: '12px' }}>
+                  <strong>Repairable_Flag (Yes)</strong> → <strong>-23,302</strong> → If a vehicle is repairable, the claim cost is lower, as it avoids total loss payouts and focuses only on repair expenses.
+                </li>
+                <li style={{ marginBottom: '12px' }}>
+                  <strong>Primary_Cause_of_Accident (Rear-end Collision)</strong> → <strong>-22,586</strong> → Rear-end collisions tend to have lower claim costs compared to more severe accident types (e.g., head-on collisions or rollovers), possibly due to lower injury severity and repair costs.
+                </li>
+              </ul>
+            </Card>
           </div>
         </Col>
       </Row>
-
     </div>
   );
 };

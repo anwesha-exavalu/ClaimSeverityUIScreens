@@ -29,8 +29,8 @@ const { Content } = Layout;
 
 const modelDescriptions = {
   "Claim Propensity": "Predicts the likelihood of a claim being filed.",
-  "Claim Severity": "Estimates the potential cost of a claim.",
-  "Medical Invoice Analysis": "Medical invoice analysis for Workers’ compensation claims."
+  "Claim severity - Third party auto liability (FNOL)": "Estimates the potential cost of a claim.",
+  "Medical Invoice Analysis - Workers Compensation": "Medical Invoice Analysis - Workers Compensation for Workers' compensation claims."
 };
 
 const ClaimSeverityUI = ({ predictionData }) => {
@@ -42,6 +42,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
   const [showTable, setShowTable] = useState(false);
   const [currentModel, setCurrentModel] = useState(null);
   const [selectedModelForSave, setSelectedModelForSave] = useState(null);
+  const [selectedTarget, setSelectedTarget] = useState(null);
 
   const handleModelSelect = (value) => {
     setSelectedModel(value);
@@ -172,6 +173,65 @@ const ClaimSeverityUI = ({ predictionData }) => {
     // You could also store this in localStorage, Redux store, or context for use in other screens
     localStorage.setItem('savedModel', selectedModelForSave);
   };
+  // const handleTarget = () => {
+  //   if (!selectedTarget) {
+  //     message.error('Please select a model to save');
+  //     return;
+  //   }
+
+  //   // Here you would typically save the selected model to use in another screen
+  //   message.success(`Target ${selectedTarget} saved successfully!`);
+  //   // You could also store this in localStorage, Redux store, or context for use in other screens
+  //   localStorage.setItem('savedModel', selectedTarget);
+  // };
+  const target= [
+    {
+      key: '1',
+      targetName: 'Initial Class of Claim',
+      
+    },
+    {
+      key: '2',
+      targetName: 'Claimant Injuries',
+      
+    },
+    {
+      key: '3',
+      targetName: 'Repairable Flag',
+      
+    },
+    {
+      key: '4',
+      targetName: 'Primary Cause of Accident',
+      
+    },
+    {
+      key: '5',
+      targetName: 'Rate Class',
+      
+    },
+    {
+      key: '6',
+      targetName: 'Non Drivable Flag',
+      
+    },
+    {
+      key: '7',
+      targetName: 'Claimant State',
+      
+    },
+    {
+      key: '8',
+      targetName: 'Primary Accident Description',
+      
+    },
+    {
+      key: '9',
+      targetName: 'Claim Cost',
+      
+    },
+
+  ]
   const models = [
     {
       key: '1',
@@ -363,6 +423,19 @@ const ClaimSeverityUI = ({ predictionData }) => {
               </Button>
             </Upload>
           </Col>
+          <Col xs={24} sm={8} md={8} lg={8} xl={8} className="text-center">
+          <Select
+              placeholder="Select a target variable"
+              style={{ width: '300px' }}
+              onChange={(value) => setSelectedTarget(value)}
+            >
+              {target.map(model => (
+                <Option key={model.key} value={model.targetName}>
+                  {model.targetName} 
+                </Option>
+              ))}
+            </Select>
+              </Col>
           <Col xs={24} sm={8} md={8} lg={8} xl={8} className="text-center">
             <Button
               type="primary"
