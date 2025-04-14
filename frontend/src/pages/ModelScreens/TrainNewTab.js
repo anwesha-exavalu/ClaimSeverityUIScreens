@@ -173,65 +173,55 @@ const ClaimSeverityUI = ({ predictionData }) => {
     // You could also store this in localStorage, Redux store, or context for use in other screens
     localStorage.setItem('savedModel', selectedModelForSave);
   };
-  // const handleTarget = () => {
-  //   if (!selectedTarget) {
-  //     message.error('Please select a model to save');
-  //     return;
-  //   }
 
-  //   // Here you would typically save the selected model to use in another screen
-  //   message.success(`Target ${selectedTarget} saved successfully!`);
-  //   // You could also store this in localStorage, Redux store, or context for use in other screens
-  //   localStorage.setItem('savedModel', selectedTarget);
-  // };
-  const target= [
+  const target = [
     {
       key: '1',
       targetName: 'Initial Class of Claim',
-      
+
     },
     {
       key: '2',
       targetName: 'Claimant Injuries',
-      
+
     },
     {
       key: '3',
       targetName: 'Repairable Flag',
-      
+
     },
     {
       key: '4',
       targetName: 'Primary Cause of Accident',
-      
+
     },
     {
       key: '5',
       targetName: 'Rate Class',
-      
+
     },
     {
       key: '6',
       targetName: 'Non Drivable Flag',
-      
+
     },
     {
       key: '7',
       targetName: 'Claimant State',
-      
+
     },
     {
       key: '8',
       targetName: 'Primary Accident Description',
-      
+
     },
     {
       key: '9',
       targetName: 'Claim Cost',
-      
-    },
 
-  ]
+    },
+  ];
+
   const models = [
     {
       key: '1',
@@ -239,7 +229,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
       algorithm: 'XGBoost',
       trainingStartTime: '2025-04-09 17:57',
       trainingEndTime: '2025-04-09 18:02',
-      mae: '4,130',
+      mae: '±$4,130',
       rmse: '15.6M',
       r2: '0.72',
       status: 'Completed',
@@ -250,8 +240,8 @@ const ClaimSeverityUI = ({ predictionData }) => {
       modelName: 'autopilot-job-1743105119',
       algorithm: 'LinearLearner',
       trainingStartTime: '2025-04-09 17:57',
-      trainingEndTime: '2025-04-09 18:02',
-      mae: '5,110',
+      trainingEndTime: '2025-04-09 18:03',
+      mae: '±$5,110',
       rmse: '16.1M',
       r2: '0.55',
       status: 'Completed',
@@ -262,8 +252,8 @@ const ClaimSeverityUI = ({ predictionData }) => {
       modelName: 'autopilot-job-1742201152',
       algorithm: 'CatBoost',
       trainingStartTime: '2025-04-09 17:57',
-      trainingEndTime: '2025-04-09 18:02',
-      mae: '8,212',
+      trainingEndTime: '2025-04-09 18:04',
+      mae: '±$8,212',
       rmse: '15.9M',
       r2: '0.56',
       status: 'Completed',
@@ -274,21 +264,16 @@ const ClaimSeverityUI = ({ predictionData }) => {
       modelName: 'autopilot-job-1741028271',
       algorithm: 'RandomForest',
       trainingStartTime: '2025-04-09 17:57',
-      trainingEndTime: '2025-04-09 18:02',
-      mae: '9,080',
+      trainingEndTime: '2025-04-09 18:03',
+      mae: '±$9,080',
       rmse: '16.3M',
       r2: '0.53',
       status: 'Completed',
       bestModel: false,
     },
   ];
+
   const columnsTable = [
-    // {
-    //   title: 'Model Name',
-    //   dataIndex: 'modelName',
-    //   key: 'modelName',
-    //   render: (text) => <Text code>{text}</Text>,
-    // },
     {
       title: 'Algorithm',
       dataIndex: 'algorithm',
@@ -305,15 +290,10 @@ const ClaimSeverityUI = ({ predictionData }) => {
       key: 'trainingEndTime',
     },
     {
-      title: 'MAE',
+      title: 'Error Range',
       dataIndex: 'mae',
       key: 'mae',
     },
-    // {
-    //   title: 'RMSE',
-    //   dataIndex: 'rmse',
-    //   key: 'rmse',
-    // },
     {
       title: 'R²',
       dataIndex: 'r2',
@@ -356,7 +336,6 @@ const ClaimSeverityUI = ({ predictionData }) => {
     height: "100%",
     width: "100%",
     marginBottom: "1rem"
-
   };
 
   // Statistics card styling
@@ -400,17 +379,6 @@ const ClaimSeverityUI = ({ predictionData }) => {
 
         {/* Button Row */}
         <Row gutter={[16, 16]} justify="center" style={{ marginTop: "1rem" }}>
-          {/* <Col xs={24} sm={8} md={8} lg={8} xl={8} className="text-center">
-            <Button
-              type="default"
-              icon={<DownloadOutlined />}
-              onClick={handleDownload}
-              size="large"
-              style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: "100%", maxWidth: "200px" }}
-            >
-              Download Template
-            </Button>
-          </Col> */}
           <Col xs={24} sm={8} md={8} lg={8} xl={8} className="text-center">
             <Upload {...uploadProps}>
               <Button
@@ -424,25 +392,28 @@ const ClaimSeverityUI = ({ predictionData }) => {
             </Upload>
           </Col>
           <Col xs={24} sm={8} md={8} lg={8} xl={8} className="text-center">
-          <Select
+            <Text type="primary" style={{
+              textAlign: 'right',
+            }}>Select a Target Variable:</Text>
+            <Select
               placeholder="Select a target variable"
-              style={{ width: '300px' }}
+              style={{ width: '300px', marginLeft: '5px' }}
               onChange={(value) => setSelectedTarget(value)}
             >
               {target.map(model => (
                 <Option key={model.key} value={model.targetName}>
-                  {model.targetName} 
+                  {model.targetName}
                 </Option>
               ))}
             </Select>
-              </Col>
+          </Col>
           <Col xs={24} sm={8} md={8} lg={8} xl={8} className="text-center">
             <Button
               type="primary"
               size="large"
               onClick={handleTrain}
               loading={isTraining}
-              style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: "100%", maxWidth: "200px" }}
+              style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)", width: "100%", maxWidth: "200px", marginLeft: '250px' }}
             >
               Train Model
             </Button>
@@ -476,12 +447,12 @@ const ClaimSeverityUI = ({ predictionData }) => {
           <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '16px' }}>
             <Select
               placeholder="Select a model to save"
-              style={{ width: '300px' }}
+              style={{ width: '450px' }}
               onChange={(value) => setSelectedModelForSave(value)}
             >
               {models.map(model => (
                 <Option key={model.key} value={model.modelName}>
-                  {model.modelName} ({model.algorithm}) {model.bestModel && '⭐️'}
+                  ({model.algorithm}) {model.bestModel && '⭐️'} {model.trainingStartTime} - {model.trainingEndTime}
                 </Option>
               ))}
             </Select>
@@ -490,14 +461,14 @@ const ClaimSeverityUI = ({ predictionData }) => {
               icon={<SaveOutlined />}
               onClick={handleSaveModel}
             >
-              Save Selected Model
+              Save & Publish Selected Model
             </Button>
           </div>
         )}
-        {/* Modal for Results */}
+        {/* Modal for Results - Changed 'visible' to 'open' */}
         <Modal
           title="Training Results"
-          visible={isModalVisible}
+          open={isModalVisible}
           onCancel={() => setIsModalVisible(false)}
           width="90%"
           style={{ maxWidth: "1400px" }}
@@ -584,7 +555,7 @@ const ClaimSeverityUI = ({ predictionData }) => {
           <Row gutter={[16, 16]}>
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' }}>
-                {/* First Card */}
+                {/* First Card - Updated MAE to Error Range */}
                 <Card style={{ ...statsCardStyle, flex: 1, minHeight: "220px" }}>
                   <Title level={4}>Metrics</Title>
                   <Row gutter={[16, 16]}>
@@ -596,10 +567,11 @@ const ClaimSeverityUI = ({ predictionData }) => {
                         valueStyle={{ color: '#3f8600' }}
                       />
                       <Statistic
-                        title="Mean Absolute Error"
-                        value="4,130"
+                        title="Error Range"
+                        value="±$4,130"
                         prefix={<DollarOutlined />}
                         valueStyle={{ color: 'crimson' }}
+                        style={{marginTop:'50px'}}
                       />
                     </Col>
                     <Col span={12}>
@@ -610,26 +582,6 @@ const ClaimSeverityUI = ({ predictionData }) => {
                     </Col>
                   </Row>
                 </Card>
-
-                {/* Second Card */}
-                {/* <Card style={{ ...statsCardStyle, flex: 1, minHeight: "220px" }}>
-                  <Row gutter={[16, 16]}>
-                    <Col span={24}>
-                      <Statistic
-                        title="Predicted Claim Amount"
-                        value="42,041.63"
-                        prefix={<DollarOutlined />}
-                        valueStyle={{ color: '#3f8600' }}
-                      />
-                      <Statistic
-                        title="Confidence Interval"
-                        value="37911.13-46172.13"
-                        prefix={<DollarOutlined />}
-                        valueStyle={{ color: '#1f77b4' }}
-                      />
-                    </Col>
-                  </Row>
-                </Card> */}
               </div>
             </Col>
             <Col xs={24} sm={24} md={24} lg={12} xl={12}>
@@ -646,37 +598,17 @@ const ClaimSeverityUI = ({ predictionData }) => {
           </Row>
 
           {/* <Row gutter={[16, 16]} style={{ marginTop: "1rem" }}>
-            <Col span={24}>
-              <Card
-                title={
-                  <span>
-                    Feature Weights
-                    <Tooltip
-                      title="Feature weights show the relative importance of each feature in making predictions"
-                    >
-                      <InfoCircleOutlined style={{ marginLeft: 8 }} />
-                    </Tooltip>
-                  </span>
-                }
-                style={cardStyle}
-              >
-                <FeatureWeightsTable />
-              </Card>
-            </Col>
-          </Row> */}
-
-          <Row gutter={[16, 16]} style={{ marginTop: "1rem" }}>
             <Col xs={24} sm={24} md={24} lg={24} xl={24} style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Button
                 type="primary"
                 size="large"
-                onClick={handleTrain}
+                onClick={() => setIsModalVisible(false)}
                 style={{ boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.05)" }}
               >
                 Save & Publish
               </Button>
             </Col>
-          </Row>
+          </Row> */}
         </Modal>
       </Content>
     </Layout>
