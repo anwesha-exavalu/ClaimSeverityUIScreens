@@ -27,11 +27,11 @@ const Tab = () => {
       label: 'Pre-Trained',
       children: <RadioButton/>,
     },
-    {
-      key: '2',
-      label: 'Train New',
-      children: <ClaimSeverityUI/>,
-    },
+    // {
+    //   key: '2',
+    //   label: 'Train New',
+    //   children: <ClaimSeverityUI/>,
+    // },
   ];
 
   return (
