@@ -248,17 +248,7 @@ const ModelInfo = ({ predictionData }) => {
                 }}>Model Name -</Text>
                 <Text strong>Claim severity - Third party auto liability (FNOL)</Text>
               </div>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: '150px 1fr',
-                alignItems: 'center'
-              }}>
-                <Text type="secondary" style={{
-                  textAlign: 'right',
-                  paddingRight: '16px'
-                }}>Date of Loss -</Text>
-                <Text strong>01/03/2025</Text>
-              </div>
+              
             </div>
           </Card>
         </Col>
@@ -314,6 +304,17 @@ const ModelInfo = ({ predictionData }) => {
                   minWidth: '150px'
                 }}>Model Year -</Text>
                 <Text strong>12/25/2024</Text>
+              </div>
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '150px 1fr',
+                alignItems: 'center'
+              }}>
+                <Text type="secondary" style={{
+                  textAlign: 'right',
+                  paddingRight: '16px'
+                }}>Date of Loss -</Text>
+                <Text strong>01/03/2025</Text>
               </div>
             </div>
           </Card>
