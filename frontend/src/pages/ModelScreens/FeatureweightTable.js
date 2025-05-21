@@ -9,7 +9,7 @@ const FeatureWeightsTable = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post("http://52.23.214.116:5000//predict", { 
+        const response = await axios.post("http://34.227.57.102:5000//predict", { 
             headers: {
               'Content-Type': 'application/json',}}); // Replace with actual API endpoint
         const result = response.data;
