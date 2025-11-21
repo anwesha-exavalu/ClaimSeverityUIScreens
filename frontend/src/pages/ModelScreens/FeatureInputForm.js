@@ -60,7 +60,7 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
         Rate_Class: "Standard",
         Non_Drivable_Flag: "Yes",
         Claimant_State: "CA",
-        Primary_Accident_Description: "Highway Accident"
+        // Primary_Accident_Description: "Highway Accident"
         // Initial_Class_of_Claim: "Comprehensive",
         // Claimant_Injuries: "Severe",
         // Repairable_Flag: "No",
@@ -91,7 +91,7 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
     setError(null);
 
     try {
-      const response = await fetch('http://34.227.57.102:5000/predict', {
+      const response = await fetch('http://34.93.173.172:5000/predict', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -106,7 +106,7 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
           Rate_Class: String(values.Rate_Class),
           Non_Drivable_Flag: String(values.Non_Drivable_Flag),
           Claimant_State: String(values.Claimant_State),
-          Primary_Accident_Description: String(values.Primary_Accident_Description),
+          // Primary_Accident_Description: String(values.Primary_Accident_Description),
 
         }),
       });
@@ -455,7 +455,7 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
             </Col>
           </Row>
 
-          <Row gutter={[24, 16]} justify="start" align="top">
+          {/* <Row gutter={[24, 16]} justify="start" align="top">
             <Col xs={24} sm={12} md={8} lg={6}>
               <Form.Item
                 label="Primary Accident Description"
@@ -470,7 +470,7 @@ const FeatureInputForm = ({ setActiveTab, setPredictionData }) => {
               </Form.Item>
             </Col>
 
-          </Row>
+          </Row> */}
 
 
           <Row style={{ marginTop: '24px' }} justify="start">
