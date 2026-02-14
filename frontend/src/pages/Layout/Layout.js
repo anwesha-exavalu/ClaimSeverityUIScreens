@@ -3,8 +3,8 @@ import { Layout } from "antd";
 import Header from "../Header/Header";
 import CustomFooter from "../Footer/Footer";
 import { Routes, Route } from "react-router-dom"; 
-
 import Tab from "../ModelScreens/Tab";
+import MLAppStore from "../ModelScreens/Dashboard";
 const {  Content } = Layout;
 
 const CustomLayout = () => {
@@ -40,7 +40,7 @@ const CustomLayout = () => {
       >
        <Routes>
           <Route path="/" element={<Tab/>} />
-        
+         {/* <Route path="/model-details/claim-severity" element={<Tab/>}/> */}
           
         </Routes>
       </Content>

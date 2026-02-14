@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import {  Dropdown, Menu, Card, Row, Col, List, Tabs } from "antd";
-
+import { DownOutlined } from "@ant-design/icons";
 import "./Card.css";
 import FeatureInputForm from "./FeatureInputForm";
 import ModelInfo from "./ModelInfo";
 import OutputDetails from "./Output";
+import CustomerInfo from "./CustomerInfo";
+import FeatureInputFormMedical from "./FeatureInputFormMedical";
+import OutputDetailsMedical from "./OutputMedical";
 
-import CustomerInfoSeverity from "./CustomerInfoClaimSeverity";
-
-const RealTimeInference = () => {
+const RealTimeInferenceMedical = () => {
   const [activeTab, setActiveTab] = useState('1');
   const [predictionData, setPredictionData] = useState(null);
 
@@ -37,23 +38,23 @@ const RealTimeInference = () => {
       key: '1',
       label: 'Customer Info',
       // children: <FeatureInputForm setActiveTab={setActiveTab} />,
-      children: <CustomerInfoSeverity  setActiveTab={setActiveTab} />,
+      children: <CustomerInfo  setActiveTab={setActiveTab} />,
     },
     {
       key: '2',
       label: 'Feature Input',
      
-      children: <FeatureInputForm setActiveTab={setActiveTab} setPredictionData={setPredictionData} />,
+      children: <FeatureInputFormMedical setActiveTab={setActiveTab} setPredictionData={setPredictionData} />,
     },
+    // {
+    //   key: '3',
+    //   label: 'Model Info',
+    //   children: <ModelInfo predictionData={predictionData} />,
+    // },
     {
       key: '3',
-      label: 'Model Info',
-      children: <ModelInfo predictionData={predictionData} />,
-    },
-    {
-      key: '4',
       label: 'Output',
-      children: <OutputDetails predictionData={predictionData} />,
+      children: <OutputDetailsMedical predictionData={predictionData} />,
     },
   ];
   return (
@@ -111,4 +112,4 @@ const RealTimeInference = () => {
   );
 };
 
-export default RealTimeInference; 
+export default RealTimeInferenceMedical; 

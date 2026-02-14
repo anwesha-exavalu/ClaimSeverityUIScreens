@@ -1,19 +1,24 @@
-import { MenuOutlined } from "@ant-design/icons";
-import { Button, Dropdown, Menu } from "antd";
+import { MenuOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Dropdown, Menu, Tooltip, Typography } from "antd";
 import "./Header.css";
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-
+const { Title } = Typography;
 const Header = () => {
     const location = useLocation();
+    const [mobileMenuVisible, setMobileMenuVisible] = useState(false);
     
     const isActive = (path) => {
         return location.pathname === path ? "active" : "";
     };
 
+    const toggleMobileMenu = () => {
+        setMobileMenuVisible(!mobileMenuVisible);
+    };
+
     const menuItems = (
         <Menu selectedKeys={[location.pathname]}>
-            {/* <Menu.Item key="/background">
+            <Menu.Item key="/background">
                 <Link to="/background">Background</Link>
             </Menu.Item>
             <Menu.Item key="/individualAdhaar">
@@ -21,7 +26,7 @@ const Header = () => {
             </Menu.Item>
             <Menu.Item key="/bulkMasking">
                 <Link to="/bulkMasking">Bulk Masking</Link>
-            </Menu.Item> */}
+            </Menu.Item>
         </Menu>
     );
 
@@ -31,9 +36,13 @@ const Header = () => {
             <div className="logo">
                 <img src="/exa.png" alt="Logo" width={150} height={40} />
             </div>
-            <div className="allnav">
-                <nav className="nav-links">
-                    {/* <Link to="/background" className={isActive("/background")}>
+            <Title level={3} style={{ color: "royalblue", textAlign: "center",  }}>
+        Insurance ML Workbench
+      </Title>
+            {/* Navigation Links */}
+            {/* <div className="allnav">
+                <nav className={`nav-links ${mobileMenuVisible ? 'mobile-visible' : ''}`}>
+                    <Link to="/background" className={isActive("/background")}>
                         Background
                     </Link>
                     <Link to="/individualAdhaar" className={isActive("/individualAdhaar")}>
@@ -41,18 +50,27 @@ const Header = () => {
                     </Link>
                     <Link to="/bulkMasking" className={isActive("/bulkMasking")}>
                         Bulk Masking
-                    </Link> */}
+                    </Link>
                 </nav>
-            </div>
+            </div> */}
 
             {/* Right Side - Buttons */}
             <div className="header-right">
-                <Button className="login-btn" type="link">Login</Button>
-                <Button type="primary" >Sign Up</Button>
-                {/* Mobile Menu */}
-                <Dropdown overlay={menuItems} trigger={["click"]}>
-                    <Button className="hamburger-menu" icon={<MenuOutlined />} />
-                </Dropdown>
+                <Tooltip title="Login" placement="bottom">
+                    <Button 
+                        className="login-icon-btn" 
+                        type="link" 
+                        icon={<UserOutlined />} 
+                    />
+                </Tooltip>
+                <Button type="primary">Sign Up</Button>
+                
+                {/* Mobile Menu Button */}
+                <Button 
+                    className="menu-icon" 
+                    icon={<MenuOutlined />} 
+                    onClick={toggleMobileMenu}
+                />
             </div>
         </header>
     );
